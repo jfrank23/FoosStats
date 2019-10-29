@@ -1,0 +1,78 @@
+﻿@page
+@model FoosStats.Pages.Players.ListModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Players</h1>
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" class="form-control" asp-for="SearchTerm"/>
+            <span>
+                <button class="btn">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead class="thead">
+        <tr>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Goals For</td>
+            <td>Goals Against</td>
+            <td>Games Played</td>
+            <td>Games Won</td>
+            <td>Games Lost</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ( var player in Model.players)
+        {
+        <tr>
+            <td>
+                @player.FirstName
+            </td>
+            <td>
+                @player.LastName
+            </td>
+            <td>
+                @player.GoalsFor
+            </td>
+            <td>
+                @player.GoalsAgainst
+            </td>
+            <td>
+                @player.GamesPlayed
+            </td>
+            <td>
+                @player.GamesWon
+            </td>
+            <td>
+                @player.GamesLost
+            </td>
+            <td>
+                <a class="btn btn-lg" asp-page="./Detail" asp-route-playerID="@player.ID">
+                    <i class="fa fa-search"></i>
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-lg" asp-page="./EditPlayer" asp-route-playerID="@player.ID">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-lg" asp-page="./DeletePlayer" asp-route-playerID="@player.ID">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-page="./EditPlayer" class="btn btn-outline-primary">Add New</a>
+</div>

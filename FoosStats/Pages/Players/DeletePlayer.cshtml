@@ -1,0 +1,11 @@
+﻿@page "{playerID:Guid}"
+@model FoosStats.Pages.Players.DeletePlayerModel
+@{
+    ViewData["Title"] = "DeletePlayer";
+}
+
+<h1>Delete Player</h1>
+<form method="post">
+    <label class="text-warning">Are you sure you want to permanently delete @Model.player.FirstName @Model.player.LastName?</label>
+    <div><button type="submit">Yes!</button></div>
+</form>

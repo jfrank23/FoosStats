@@ -1,0 +1,49 @@
+﻿@page "{playerID:Guid?}"
+@model FoosStats.Pages.Players.EditPlayerModel
+@{
+    ViewData["Title"] = "EditPlayer";
+}
+
+<h1>Edit Player</h1>
+<h2>@Model.Player.FirstName @Model.Player.LastName</h2>
+<form method="post">
+    <input type="hidden" asp-for="Player.ID" />
+    <div class="form-group">
+        <label asp-for="Player.FirstName">First Name</label>
+        <input asp-for="Player.FirstName" class="form-control" />
+        <span class="text-danger" asp-validation-for="Player.FirstName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Player.LastName">Last Name</label>
+        <input asp-for="Player.LastName" class="form-control" />
+        <span class="text-danger" asp-validation-for="Player.LastName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Player.GamesPlayed">Games Played</label>
+        <input asp-for="Player.GamesPlayed" class="form-control" />
+        <span class="text-danger" asp-validation-for="Player.GamesPlayed"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Player.GamesWon">Games Won</label>
+        <input asp-for="Player.GamesWon" class="form-control" />
+        <span class="text-danger" asp-validation-for="Player.GamesWon"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Player.GamesLost">Games Lost</label>
+        <input asp-for="Player.GamesLost" class="form-control" />
+        <span class="text-danger" asp-validation-for="Player.GamesLost"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Player.GoalsFor">Goals For</label>
+        <input asp-for="Player.GoalsFor" class="form-control" />
+        <span class="text-danger" asp-validation-for="Player.GoalsFor"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Player.GoalsAgainst">Goals Against</label>
+        <input asp-for="Player.GoalsAgainst" class="form-control" />
+        <span class="text-danger" asp-validation-for="Player.GoalsAgainst"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+

@@ -1,0 +1,48 @@
+﻿@page
+@model FoosStats.Pages.Games.ListModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Game List</h1>
+<table class="table">
+    <thead>
+        <tr class="font-weight-bold">
+            <td>Game</td>
+            <td>Blue Score</td>
+            <td>Red Score</td>
+            <td>Blue Defense</td>
+            <td>Blue Offense</td>
+            <td>Red Defense</td>
+            <td>Red Offense</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model.games)
+        {
+        <tr>
+            <td>@game.GameTime</td>
+            <td>@game.BlueScore</td>
+            <td>@game.RedScore</td>
+            <td>@Model.playerRepo.ReturnPlayerNameFromId(game.BlueDefense)</td>
+            <td>@Model.playerRepo.ReturnPlayerNameFromId(game.BlueOffense)</td>
+            <td>@Model.playerRepo.ReturnPlayerNameFromId(game.RedDefense)</td>
+            <td>@Model.playerRepo.ReturnPlayerNameFromId(game.RedOffense)</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./EditGame" asp-route-gameID="@game.GameID">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-lg" asp-page="./DeleteGame" asp-route-gameID="@game.GameID">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-page="./EditGame" class="btn btn-outline-primary">Add New</a>
+</div>
+

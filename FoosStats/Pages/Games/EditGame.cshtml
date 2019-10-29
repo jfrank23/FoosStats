@@ -1,0 +1,83 @@
+﻿@page "{gameID:Guid?}"
+@model FoosStats.Pages.Games.EditGameModel
+@{
+    ViewData["Title"] = "EditGame";
+}
+
+<h1>Edit Game</h1>
+<form method="post">
+    <input type="hidden" asp-for="game.GameID" />
+    <div class="form-group">
+        <label asp-for="game.GameTime">Game Time</label>
+        <input asp-for="game.GameTime" class="form-control" />
+        <span class="text-danger" asp-validation-for="game.GameTime"></span>
+    </div>
+    <div class="row-fluid">
+        <div class="form-group">
+            <label asp-for="game.RedScore">Red Score</label>
+            <input asp-for="game.RedScore" class="form-control" />
+            <span class="text-danger" asp-validation-for="game.RedScore"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="game.RedOffense">Red Offense</label>
+            <div>
+                <select asp-for="game.RedOffense">
+                    @foreach (var player in Model.players)
+                    {
+                        <option value="@player.ID">@player.FirstName @player.LastName</option>
+                    }
+                    <option value="@Guid.Empty"> None </option>
+                </select>
+            </div>
+            <span class="text-danger" asp-validation-for="game.RedOffense"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="game.RedDefense">Red Defense</label>
+            <div>
+                <select asp-for="game.RedDefense">
+                    @foreach (var player in Model.players)
+                    {
+                        <option value="@player.ID">@player.FirstName @player.LastName</option>
+                    }
+                    <option value="@Guid.Empty"> None </option>
+                </select>
+            </div>
+            <span class="text-danger" asp-validation-for="game.RedDefense"></span>
+        </div>
+        <div>
+            <div>
+                <label asp-for="game.BlueScore">Blue Score</label>
+                <input asp-for="game.BlueScore" class="form-control" />
+                <span class="text-danger" asp-validation-for="game.BlueScore"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="game.BlueOffense">Blue Offense</label>
+            <div>
+                <select asp-for="game.BlueOffense">
+                    @foreach (var player in Model.players)
+                    {
+                        <option value="@player.ID">@player.FirstName @player.LastName</option>
+                    }
+                    <option value="@Guid.Empty"> None </option>
+                </select>
+            </div>
+            <span class="text-danger" asp-validation-for="game.BlueOffense"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="game.BlueDefense">Blue Defense</label>
+            <div>
+                <select asp-for="game.BlueDefense">
+                    @foreach (var player in Model.players)
+                    {
+                        <option value="@player.ID">@player.FirstName @player.LastName</option>
+                    }
+                    <option value="@Guid.Empty"> None </option>
+                </select>
+            </div>
+            <span class="text-danger" asp-validation-for="game.BlueDefense"></span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+
+</form>
