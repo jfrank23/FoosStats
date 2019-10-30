@@ -7,16 +7,23 @@ namespace FoosStats.Data
 {
     public class LitePlayerRepository : IPlayerRepository
     {
-        string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats", "\\FoosStats") + "\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
-
+        readonly string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats", "\\FoosStats") + "\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
+        public LitePlayerRepository(string connectionString = null)
+        {
+            if (connectionString != null)
+            {
+                this.connectionString = connectionString;
+            }
+        }
         public Player Add(Player player)
         {
+            player.ID = Guid.NewGuid();
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
                 command.CommandText = $"Insert into Players(Id, FirstName,LastName,GamesPlayed,GamesWon,GamesLost,GoalsFor,GoalsAgainst) values(@Id, @FirstName,@LastName,@GamesPlayed,@GamesWon,@GamesLost,@GoalsFor,@GoalsAgainst)";
-                command.Parameters.Add(new SQLiteParameter("@Id", Guid.NewGuid()));
+                command.Parameters.Add(new SQLiteParameter("@Id", player.ID));
                 command.Parameters.Add(new SQLiteParameter("@FirstName", player.FirstName));
                 command.Parameters.Add(new SQLiteParameter("@LastName", player.LastName));
                 command.Parameters.Add(new SQLiteParameter("@GamesPlayed", player.GamesPlayed));
