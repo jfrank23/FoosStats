@@ -9,16 +9,23 @@ namespace FoosStats.Data
     public class LiteGameRepository : IGameRepository
     {
         //Add and Delete games automatically triggers a response in the players table to update those stats. Look at the SQL files to see update information
-        string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats","\\FoosStats") +"\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
-        
+        readonly string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats","\\FoosStats") +"\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
+        public LiteGameRepository(string connectionString = null)
+        {
+            if (connectionString != null)
+            {
+                this.connectionString = connectionString;
+            }
+        }
         public Game Add(Game newGame)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
+                newGame.GameID = Guid.NewGuid();
                 connection.Open();
                 var command = connection.CreateCommand();
                 command.CommandText = $"Insert into Games(Id, BlueScore,RedScore,GameTime,RedOffense,RedDefense,BlueOffense,BlueDefense) values(@Id, @BlueScore,@RedScore,@GameTime,@RedOffense,@RedDefense,@BlueOffense,@BlueDefense)";
-                command.Parameters.Add(new SQLiteParameter("@Id", Guid.NewGuid()));
+                command.Parameters.Add(new SQLiteParameter("@Id", newGame.GameID));
                 command.Parameters.Add(new SQLiteParameter("@BlueScore", newGame.BlueScore));
                 command.Parameters.Add(new SQLiteParameter("@RedScore", newGame.RedScore));
                 command.Parameters.Add(new SQLiteParameter("@GameTime", newGame.GameTime.ToString()));
