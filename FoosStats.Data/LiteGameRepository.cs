@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using FoosStats.Core;
+using System.Web;
 
 namespace FoosStats.Data
 {
     public class LiteGameRepository : IGameRepository
     {
         //Add and Delete games automatically triggers a response in the players table to update those stats. Look at the SQL files to see update information
-        const string connectionString = "Data Source= C:\\Users\\jfranklin\\source\\repos\\FoosStats\\FoosStats.Data\\FoosData.db; Version=3; BinaryGUID=False;";
+        string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats","\\FoosStats") +"\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
         
         public Game Add(Game newGame)
         {

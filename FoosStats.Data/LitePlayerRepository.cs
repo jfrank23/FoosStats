@@ -7,14 +7,9 @@ namespace FoosStats.Data
 {
     public class LitePlayerRepository : IPlayerRepository
     {
-        readonly string connectionString = "Data Source= C:\\Users\\jfranklin\\source\\repos\\FoosStats\\FoosStats.Data\\FoosData.db; Version=3; BinaryGUID=False;";
+        string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats", "\\FoosStats") + "\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
 
         public Player Add(Player player)
-        {
-            return NewMethod(player);
-        }
-
-        private Player NewMethod(Player player)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -34,6 +29,7 @@ namespace FoosStats.Data
                 return player;
             }
         }
+
 
         public void Delete(Guid playerID)
         {
