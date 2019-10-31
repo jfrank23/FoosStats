@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace FoosStats.Core
 {

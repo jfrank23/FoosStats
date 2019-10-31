@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using FoosStats.Core;
 
-namespace FoosStats.Data
+
+namespace FoosStats.Core
 {
     public interface IGameRepository
     {

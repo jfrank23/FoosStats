@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using FoosStats.Core;
-using System.Web;
 
 namespace FoosStats.Data
 {

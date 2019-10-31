@@ -1,8 +1,8 @@
-﻿using FoosStats.Core;
+﻿
 using System;
 using System.Collections.Generic;
 
-namespace FoosStats.Data
+namespace FoosStats.Core
 {
     public interface IPlayerRepository
     {
