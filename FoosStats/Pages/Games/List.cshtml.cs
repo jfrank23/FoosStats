@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FoosStats.Core;
+using FoosStats.Core.Retrievers;
 
 namespace FoosStats.Pages.Games
 {
     public class ListModel : PageModel
     {
-        public IGameRepository gameRepo;
-        public IPlayerRepository playerRepo;
+        private IGameRetriever gameRetriever;
         public IEnumerable<DisplayGame> games;
 
-        public ListModel(IGameRepository gameRepository, IPlayerRepository playerRepo)
+        public ListModel(IGameRetriever gameRetriever)
         {
-            this.gameRepo = gameRepository;
-            this.playerRepo = playerRepo;
+            this.gameRetriever = gameRetriever;
         }
         public void OnGet()
         {
-            games = gameRepo.GetGames();
+            games = gameRetriever.GetAllGames();
         }
     }
 }

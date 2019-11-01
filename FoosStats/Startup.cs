@@ -1,4 +1,8 @@
 using FoosStats.Core;
+using FoosStats.Core.Creators;
+using FoosStats.Core.Deleters;
+using FoosStats.Core.Retrievers;
+using FoosStats.Core.Updaters;
 using FoosStats.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +27,19 @@ namespace FoosStats
             services.AddRazorPages();
             services.AddSingleton<IPlayerRepository, LitePlayerRepository>();
             services.AddSingleton<IGameRepository, LiteGameRepository>();
-            services.AddSingleton<IPlayerDetailRetriever, LitePlayerDetailRetriever>();
+
+
+            services.AddScoped<ICreator<Game>, GameCreator>();
+            services.AddScoped<ICreator<Player>, PlayerCreator>();
+
+            services.AddScoped<IDeleter<Game>, GameDeleter>();
+            services.AddScoped<IDeleter<Player>, PlayerDeleter>();
+
+            services.AddScoped<IGameRetriever, GameRetriever>();
+            services.AddScoped<IPlayerRetriever, PlayerRetriever>();
+
+            services.AddScoped<IUpdater<Game>, GameUpdater>();
+            services.AddScoped<IUpdater<Player>, PlayerUpdater>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

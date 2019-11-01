@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using FoosStats.Core;
+using FoosStats.Core.Creators;
+using FoosStats.Core.Retrievers;
+using FoosStats.Core.Updaters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,22 +12,26 @@ namespace FoosStats.Pages.Games
     public class EditGameModel : PageModel
     {
         public IEnumerable<Game> games;
-        public IGameRepository gameRepo;
-        public IPlayerRepository playerRepo;
         public IEnumerable<Player> players;
+        public IGameRetriever gameRetriever;
+        public IPlayerRetriever playerRetriever;
+        public IUpdater<Game> gameUpdater;
+        public ICreator<Game> gameCreator;
 
         [BindProperty]
         public Game game { get; set; }
-        public EditGameModel(IGameRepository gameRepository, IPlayerRepository playerRepository)
+        public EditGameModel(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, IUpdater<Game> gameUpdater)
         {
-            this.gameRepo = gameRepository;
-            this.playerRepo = playerRepository;
+            this.gameRetriever = gameRetriever;
+            this.playerRetriever = playerRetriever;
+            this.gameCreator = gameCreator;
+            this.gameUpdater = gameUpdater;
         }
         public void OnGet(Guid gameID)
         {
-            games = gameRepo.GetGames();
-            players = playerRepo.GetPlayersByName();
-            game = gameRepo.GetGameByID(gameID);
+            games = gameRetriever.GetAllGames();
+            players = playerRetriever.GetPlayersByName();
+            game = gameRetriever.GetGameById(gameID);
         }
         public IActionResult OnPost()
         {
@@ -35,11 +42,11 @@ namespace FoosStats.Pages.Games
 
             if (!Guid.Equals(game.GameID, Guid.Empty))
             {
-                gameRepo.Update(game);
+                gameUpdater.Update(game);
             }
             else
             {
-                gameRepo.Add(game);
+                gameCreator.Create(game);
             }
             TempData["Message"] = "Game saved!";
             return RedirectToPage("./List");

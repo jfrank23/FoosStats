@@ -129,33 +129,6 @@ namespace FoosStats.Data
                 return players.OrderBy(r => r.LastName);
             }
         }
-        
-        public string ReturnPlayerNameFromId(Guid id)
-        {
-            using (var connection = new SQLiteConnection(connectionString))
-            {
-                connection.Open();
-                var command = connection.CreateCommand();
-                command.CommandText = "Select * from Players where PlayerId = @Id";
-                command.Parameters.Add(new SQLiteParameter("@Id", id));
-                var reader = command.ExecuteReader();
-                var player = new Player();
-                while (reader.Read())
-                {
-                    player.ID = new Guid(reader.GetString(0));
-                    player.FirstName = reader.GetString(1);
-                    player.LastName = reader.GetString(2);
-                    player.GamesPlayed = reader.GetInt32(3);
-                    player.GamesWon = reader.GetInt32(4);
-                    player.GamesLost = reader.GetInt32(5);
-                    player.GoalsFor = reader.GetInt32(6);
-                    player.GoalsAgainst = reader.GetInt32(7);
-
-                }
-                return $"{player.FirstName} {player.LastName}";
-
-            }
-        }
 
         public Player Update(Player player)
         {
