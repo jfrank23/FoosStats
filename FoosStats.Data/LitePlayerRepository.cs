@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 
 namespace FoosStats.Data
 {
@@ -22,7 +23,7 @@ namespace FoosStats.Data
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = $"Insert into Players(Id, FirstName,LastName,GamesPlayed,GamesWon,GamesLost,GoalsFor,GoalsAgainst) values(@Id, @FirstName,@LastName,@GamesPlayed,@GamesWon,@GamesLost,@GoalsFor,@GoalsAgainst)";
+                command.CommandText = $"Insert into Players(PlayerId, FirstName,LastName,GamesPlayed,GamesWon,GamesLost,GoalsFor,GoalsAgainst) values(@Id, @FirstName,@LastName,@GamesPlayed,@GamesWon,@GamesLost,@GoalsFor,@GoalsAgainst)";
                 command.Parameters.Add(new SQLiteParameter("@Id", player.ID));
                 command.Parameters.Add(new SQLiteParameter("@FirstName", player.FirstName));
                 command.Parameters.Add(new SQLiteParameter("@LastName", player.LastName));
@@ -44,7 +45,7 @@ namespace FoosStats.Data
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = $"Delete from Players where Id = @Id";
+                command.CommandText = $"Delete from Players where PlayerId = @Id";
                 command.Parameters.Add(new SQLiteParameter("@Id", playerID));
                 command.ExecuteNonQuery();
             }
@@ -56,7 +57,7 @@ namespace FoosStats.Data
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = $"Select * from Players where Id = @Id";
+                command.CommandText = $"Select * from Players where PlayerId = @Id";
                 command.Parameters.Add(new SQLiteParameter("@Id", id));
                 var reader = command.ExecuteReader();
                 var player = new Player();
@@ -125,7 +126,7 @@ namespace FoosStats.Data
                         }
                     }
                 }
-                return players;
+                return players.OrderBy(r => r.LastName);
             }
         }
         
@@ -135,7 +136,7 @@ namespace FoosStats.Data
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = "Select * from Players where Id = @Id";
+                command.CommandText = "Select * from Players where PlayerId = @Id";
                 command.Parameters.Add(new SQLiteParameter("@Id", id));
                 var reader = command.ExecuteReader();
                 var player = new Player();
@@ -162,7 +163,7 @@ namespace FoosStats.Data
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = $"Update Players Set FirstName = @FirstName,LastName= @LastName,GamesPlayed= @GamesPlayed,GamesWon= @GamesWon,GamesLost= @GamesLost,GoalsFor= @GoalsFor,GoalsAgainst = @GoalsAgainst WHERE Id = @Id";
+                command.CommandText = $"Update Players Set FirstName = @FirstName,LastName= @LastName,GamesPlayed= @GamesPlayed,GamesWon= @GamesWon,GamesLost= @GamesLost,GoalsFor= @GoalsFor,GoalsAgainst = @GoalsAgainst WHERE PlayerId = @Id";
                 command.Parameters.Add(new SQLiteParameter("@Id", player.ID));
                 command.Parameters.Add(new SQLiteParameter("@FirstName", player.FirstName));
                 command.Parameters.Add(new SQLiteParameter("@LastName", player.LastName));

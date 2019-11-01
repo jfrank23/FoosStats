@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using FoosStats.Core;
 
 namespace FoosStats.Data
@@ -8,7 +9,7 @@ namespace FoosStats.Data
     public class LiteGameRepository : IGameRepository
     {
         //Add and Delete games automatically triggers a response in the players table to update those stats. Look at the SQL files to see update information
-        readonly string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats","\\FoosStats") +"\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
+        readonly string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats", "\\FoosStats") + "\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
         public LiteGameRepository(string connectionString = null)
         {
             if (connectionString != null)
@@ -23,7 +24,7 @@ namespace FoosStats.Data
                 newGame.GameID = Guid.NewGuid();
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = $"Insert into Games(Id, BlueScore,RedScore,GameTime,RedOffense,RedDefense,BlueOffense,BlueDefense) values(@Id, @BlueScore,@RedScore,@GameTime,@RedOffense,@RedDefense,@BlueOffense,@BlueDefense)";
+                command.CommandText = $"Insert into Games(GameId, BlueScore,RedScore,GameTime,RedOffense,RedDefense,BlueOffense,BlueDefense) values(@Id, @BlueScore,@RedScore,@GameTime,@RedOffense,@RedDefense,@BlueOffense,@BlueDefense)";
                 command.Parameters.Add(new SQLiteParameter("@Id", newGame.GameID));
                 command.Parameters.Add(new SQLiteParameter("@BlueScore", newGame.BlueScore));
                 command.Parameters.Add(new SQLiteParameter("@RedScore", newGame.RedScore));
@@ -33,7 +34,7 @@ namespace FoosStats.Data
                 command.Parameters.Add(new SQLiteParameter("@BlueOffense", newGame.BlueOffense));
                 command.Parameters.Add(new SQLiteParameter("@BlueDefense", newGame.BlueDefense));
 
-                
+
                 command.ExecuteNonQuery();
 
             }
@@ -46,63 +47,85 @@ namespace FoosStats.Data
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = $"Delete from Games where Id = @Id";
+                command.CommandText = $"Delete from Games where GameId = @Id";
                 command.Parameters.Add(new SQLiteParameter("@Id", gameID));
                 command.ExecuteNonQuery();
             }
         }
 
-        public Game GetGameByID(Guid gameID)
+        public DisplayGame GetGameByID(Guid gameID)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = $"Select * from Games where Id = @Id";
+                command.CommandText = "SELECT " +
+                    "GameId, BlueScore,RedScore,GameTime, BlueDefense,BDFirst, BDLast,BlueOffense, BOFirst,BOLast,RedDefense,RDFirst,RDLast,RedOffense,ROFirst,ROLast " +
+                    "From(SELECT * FROM Games " +
+                    "LEFT JOIN(SELECT PlayerId as BDId,FirstName as BDFirst,LastName as BDLast from Players) ON BlueDefense = BDId " +
+                    "LEFT JOIN(SELECT PlayerId as BOId,FirstName as BOFirst,LastName as BOLast from Players) ON BlueOffense = BOId " +
+                    "LEFT JOIN(SELECT PlayerId as RDId,FirstName as RDFirst,LastName as RDLast from Players) ON RedDefense = RDId " +
+                    "LEFT JOIN(SELECT PlayerId as ROId,FirstName as ROFirst, LastName as ROLast from Players) ON RedOffense = ROId)" +
+                    "WHERE GameId = @Id; ";
                 command.Parameters.Add(new SQLiteParameter("@Id", gameID));
                 var reader = command.ExecuteReader();
-                var game = new Game();
+                var game = new DisplayGame();
                 while (reader.Read())
                 {
                     game.GameID = new Guid(reader.GetString(0));
                     game.BlueScore = reader.GetInt32(1);
                     game.RedScore = reader.GetInt32(2);
                     game.GameTime = DateTime.Parse(reader.GetString(3));
-                    game.RedOffense = new Guid(reader.GetString(4));
-                    game.RedDefense = new Guid(reader.GetString(5));
-                    game.BlueOffense = new Guid(reader.GetString(6));
-                    game.BlueDefense = new Guid(reader.GetString(7));
+                    game.BlueDefense = new Guid(reader.GetString(4));
+                    game.BlueDefenseName = reader.GetValue(5).ToString() + " " + reader.GetValue(6).ToString();
+                    game.BlueOffense = new Guid(reader.GetString(7));
+                    game.BlueOffenseName = reader.GetValue(8).ToString() + " " + reader.GetValue(9).ToString();
+                    game.RedDefense = new Guid(reader.GetString(10));
+                    game.RedDefenseName = reader.GetValue(11).ToString() + " " + reader.GetValue(12).ToString();
+                    game.RedOffense = new Guid(reader.GetString(13));
+                    game.RedOffenseName = reader.GetValue(14).ToString() + " " + reader.GetValue(15).ToString();
 
                 }
                 return game;
             }
         }
 
-        public IEnumerable<Game> GetGames()
+        public IEnumerable<DisplayGame> GetGames()
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
-                var games = new List<Game>();
+                var games = new List<DisplayGame>();
                 var command = connection.CreateCommand();
-                command.CommandText = "Select * from Games";
+                command.CommandText = "SELECT " +
+                    "GameId, BlueScore,RedScore,GameTime, BlueDefense,BDFirst, BDLast,BlueOffense, BOFirst,BOLast,RedDefense,RDFirst,RDLast,RedOffense,ROFirst,ROLast " +
+                    "From(SELECT * FROM Games " +
+                    "LEFT JOIN(SELECT PlayerId as BDId,FirstName as BDFirst,LastName as BDLast from Players) ON BlueDefense = BDId " +
+                    "LEFT JOIN(SELECT PlayerId as BOId,FirstName as BOFirst,LastName as BOLast from Players) ON BlueOffense = BOId " +
+                    "LEFT JOIN(SELECT PlayerId as RDId,FirstName as RDFirst,LastName as RDLast from Players) ON RedDefense = RDId " +
+                    "LEFT JOIN(SELECT PlayerId as ROId,FirstName as ROFirst, LastName as ROLast from Players) ON RedOffense = ROId); ";
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    games.Add(new Game
+                    games.Add(new DisplayGame
                     {
                         GameID = new Guid(reader.GetString(0)),
                         BlueScore = reader.GetInt32(1),
                         RedScore = reader.GetInt32(2),
                         GameTime = DateTime.Parse(reader.GetString(3)),
-                        RedOffense = new Guid(reader.GetString(4)),
-                        RedDefense = new Guid(reader.GetString(5)),
-                        BlueOffense = new Guid(reader.GetString(6)),
-                        BlueDefense = new Guid(reader.GetString(7)),
+                        BlueDefense = new Guid(reader.GetString(4)),
+                        BlueDefenseName = reader.GetValue(5).ToString() + " " + reader.GetValue(6).ToString(),
+                        BlueOffense = new Guid(reader.GetString(7)),
+                        BlueOffenseName = reader.GetValue(8).ToString() + " " + reader.GetValue(9).ToString(),
+                        RedDefense = new Guid(reader.GetString(10)),
+                        RedDefenseName = reader.GetValue(11).ToString() + " " + reader.GetValue(12).ToString(),
+                        RedOffense = new Guid(reader.GetString(13)),
+                        RedOffenseName = reader.GetValue(14).ToString() + " " + reader.GetValue(15).ToString()
 
                     });
                 }
-                return games;
+
+                return games.OrderBy(r => r.GameTime).Reverse();
             }
         }
 

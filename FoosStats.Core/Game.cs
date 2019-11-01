@@ -1,10 +1,13 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace FoosStats.Core
 {
     public class Game
     {
+        public Game()
+        {
+            GameTime = DateTime.Now;
+        }
         public Guid GameID { get; set; }
         public DateTime GameTime { get; set; }
         public Guid RedOffense { get; set; }
@@ -14,4 +17,13 @@ namespace FoosStats.Core
         public int RedScore { get; set; }
         public int BlueScore { get; set; }
     }
+    public class DisplayGame : Game
+    {
+        public string RedOffenseName{ get; set; }
+        public string RedDefenseName { get; set; }
+        public string BlueOffenseName { get; set; }
+        public string BlueDefenseName { get; set; }
+
+    }
 }
+

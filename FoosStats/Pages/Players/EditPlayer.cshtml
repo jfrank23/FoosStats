@@ -18,6 +18,8 @@
         <input asp-for="Player.LastName" class="form-control" />
         <span class="text-danger" asp-validation-for="Player.LastName"></span>
     </div>
+    <text class="bg-warning">Warning: Editing Any of the below fields will mess up the game auto update. 
+    If you wish to add a game or edit a game please go <a href="../../Games/List">here</a></text>
     <div class="form-group">
         <label asp-for="Player.GamesPlayed">Games Played</label>
         <input asp-for="Player.GamesPlayed" class="form-control" />

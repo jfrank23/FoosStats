@@ -8,7 +8,7 @@ namespace FoosStats.Pages.Games
     {
         public IGameRepository gameRepo;
         public IPlayerRepository playerRepo;
-        public IEnumerable<Game> games;
+        public IEnumerable<DisplayGame> games;
 
         public ListModel(IGameRepository gameRepository, IPlayerRepository playerRepo)
         {

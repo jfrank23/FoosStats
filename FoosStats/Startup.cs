@@ -23,6 +23,7 @@ namespace FoosStats
             services.AddRazorPages();
             services.AddSingleton<IPlayerRepository, LitePlayerRepository>();
             services.AddSingleton<IGameRepository, LiteGameRepository>();
+            services.AddSingleton<IPlayerDetailRetriever, LitePlayerDetailRetriever>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
