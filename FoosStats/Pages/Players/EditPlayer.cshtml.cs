@@ -1,30 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FoosStats.Data;
 using FoosStats.Core;
+using FoosStats.Core.Retrievers;
+using FoosStats.Core.Updaters;
+using FoosStats.Core.Creators;
 
 namespace FoosStats.Pages.Players
 {
     public class EditPlayerModel : PageModel
     {
-        private readonly IPlayerRepository playerRepo;
+        public IPlayerRetriever playerRetriever;
+        public IUpdater<Player> playerUpdater;
+        public ICreator<Player> playerCreator;
+
         [BindProperty]
         public Player Player { get; set; }
 
-        public EditPlayerModel(IPlayerRepository playerRepository)
+        public EditPlayerModel(IPlayerRetriever playerRetriever, IUpdater<Player> playerUpdater, ICreator<Player> playerCreator)
         {
-            this.playerRepo = playerRepository;
+            this.playerRetriever = playerRetriever;
+            this.playerUpdater = playerUpdater;
+            this.playerCreator = playerCreator;
         }
 
         public IActionResult OnGet(Guid? playerID)
         {
             if (playerID.HasValue)
             {
-                Player = playerRepo.GetPlayerById(playerID.Value);
+                Player = playerRetriever.GetPlayerById(playerID.Value);
             }
             else
             {
@@ -47,11 +51,11 @@ namespace FoosStats.Pages.Players
             
             if(!Guid.Equals(Player.ID,Guid.Empty))
             {
-                playerRepo.Update(Player);
+                playerUpdater.Update(Player);
             }
             else
             {
-                playerRepo.Add(Player);
+                playerCreator.Create(Player);
             }
             TempData["Message"] = "Player saved!";
             return RedirectToPage("./List");

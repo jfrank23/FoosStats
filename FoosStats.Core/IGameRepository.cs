@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using FoosStats.Core;
 
-namespace FoosStats.Data
+
+namespace FoosStats.Core
 {
     public interface IGameRepository
     {
         Game Add(Game newGame);
-        IEnumerable<Game> GetGames();
+        IEnumerable<DisplayGame> GetGames();
         Game Update(Game updatedGame);
-        Game GetGameByID(Guid gameID);
+        DisplayGame GetGameByID(Guid gameID);
         void Delete(Guid gameID);
     }
 }

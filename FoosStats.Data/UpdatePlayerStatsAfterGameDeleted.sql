@@ -7,7 +7,7 @@ BEGIN
 		GamesPlayed =GamesPlayed -1,
 		GamesWon = CASE WHEN Old.BlueScore=10 THEN GamesWon -1 ELSE GamesWon END,
 		GamesLost = CASE WHEN Old.RedScore=10 THEN GamesLost -1 ELSE GamesLost END
-	WHERE Id = Old.BlueDefense OR Id = Old.BlueOffense;
+	WHERE PlayerId = Old.BlueDefense OR PlayerId = Old.BlueOffense;
 	UPDATE Players
 	SET 
 		GoalsFor = GoalsFor - Old.RedScore, 
@@ -15,5 +15,5 @@ BEGIN
 		GamesPlayed =GamesPlayed -1,
 		GamesWon = CASE WHEN Old.RedScore=10 THEN GamesWon -1 ELSE GamesWon +0  END,
 		GamesLost = CASE WHEN Old.BlueScore=10 THEN GamesLost -1 ELSE GamesLost +0  END
-	WHERE Id =Old.RedDefense OR Id = Old.RedOffense;
+	WHERE PlayerId =Old.RedDefense OR PlayerId = Old.RedOffense;
 END;

@@ -1,6 +1,7 @@
 ﻿using System;
 using FoosStats.Core;
-using FoosStats.Data;
+using FoosStats.Core.Deleters;
+using FoosStats.Core.Retrievers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,11 +9,14 @@ namespace FoosStats.Pages.Players
 {
     public class DeletePlayerModel : PageModel
     {
-        public IPlayerRepository playerRepo;
+        public IPlayerRetriever playerRetriever;
+        public IDeleter<Player> playerDeleter;
+
         public Player player;
-        public DeletePlayerModel(IPlayerRepository playerRepository)
+        public DeletePlayerModel(IPlayerRetriever playerRetriever, IDeleter<Player> playerDeleter)
         {
-            this.playerRepo = playerRepository;
+            this.playerRetriever = playerRetriever;
+            this.playerDeleter = playerDeleter;
         }
 
         public IActionResult OnGet(Guid playerID)
@@ -21,13 +25,13 @@ namespace FoosStats.Pages.Players
             {
                 return Redirect("./NotFound");
             }
-            player = playerRepo.GetPlayerById(playerID);
+            player = playerRetriever.GetPlayerById(playerID);
             return Page();
 
         }
         public IActionResult OnPost(Guid playerID)
         {
-            playerRepo.Delete(playerID);
+            playerDeleter.Delete(playerID);
             return Redirect("~/Players/List");
         }
     }

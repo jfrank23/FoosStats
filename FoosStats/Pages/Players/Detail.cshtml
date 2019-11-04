@@ -5,7 +5,73 @@
 }
 
 <h1>@Model.Player.FirstName @Model.Player.LastName</h1>
+    <div class="row justify-content-around">
+        <p><text class="font-weight-bold">Goals For: </text> @Model.Player.GoalsFor</p>
+        <p><text class="font-weight-bold">Goals Against: </text> @Model.Player.GoalsAgainst</p>
+        <p><text class="font-weight-bold">Record: </text> @Model.Player.GamesWon - @Model.Player.GamesLost</p>
+    </div>
+    <div class="card-deck">
+        <div class="card">
+            <h5 class="card-title">Personal Stats</h5>
+            <div class="card-body">
+                <div><text class="font-weight-bold">Win Percentage: </text> @Model.WinPercentage.ToString("F02") %</div>
+                <div><text class="font-weight-bold">Goals For Per Game: </text> @Model.GoalsForPerGame.ToString("F02")</div>
+                <div><text class="font-weight-bold">Goals Against Per Game: </text> @Model.GoalsAgainstPerGame.ToString("F02")</div>
+            </div>
+        </div>
+        <div class="card">
+            <h5 class="card-title">Positional Stats</h5>
+            <div class="card-body">
+                <div><text class="font-weight-bold">Offense Win Percentage: </text> @Model.OffenseWinPct.ToString("F02") %</div>
+                <div><text class="font-weight-bold">Defense Win Percentage: </text> @Model.DefenseWinPct.ToString("F02") %</div>
+                <div><text class="font-weight-bold">Blue Side Win Percentage: </text> @Model.BlueWinPct.ToString("F02") %</div>
+                <div><text class="font-weight-bold">Red Side Win Percentage: </text> @Model.RedWinPct.ToString("F02") %</div>
+            </div>
+        </div>
+        <div class="card">
+            <h5 class="card-title">Teammate Stats</h5>
+            <div class="card-body">
+                <div><text class="font-weight-bold">Most Played With: </text> @Model.MostPlayedWith</div>
+                <div><text class="font-weight-bold">Best Win Percentage With: </text> @Model.BestPercentageWith</div>
+            </div>
+        </div>
+        <div class="card">
+            <h5 class="card-title">Office Standing</h5>
+            <div class="card-body">
+                <div><text class="font-weight-bold">Win Percentage Rank: </text> @Model.WinPctStanding</div>
+                <div><text class="font-weight-bold">Goals For Average Rank: </text> @Model.GoalsForAvgStanding</div>
+                <div><text class="font-weight-bold">Goals Against Average Rank: </text> @Model.GoalsAgainstAvgStanding</div>
+            </div>
+        </div>
+    </div>
 <div>
-
+    <h2>Most Recent Games Played In</h2>
+    <table class="table">
+        <thead>
+            <tr class="font-weight-bold">
+                <td>Game</td>
+                <td>Blue Defense</td>
+                <td>Blue Offense</td>
+                <td>Blue Score</td>
+                <td>Red Score</td>
+                <td>Red Offense</td>
+                <td>Red Defense</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in Model.top3Games)
+            {
+                <tr>
+                    <td>@game.GameTime</td>
+                    <td><a href="../../Players/Detail/@game.BlueDefense">@game.BlueDefenseName</a></td>
+                    <td><a href="../../Players/Detail/@game.BlueOffense">@game.BlueOffenseName</a></td>
+                    <td>@game.BlueScore</td>
+                    <td>@game.RedScore</td>
+                    <td><a href="../../Players/Detail/@game.RedOffense">@game.RedOffenseName</a></td>
+                    <td><a href="../../Players/Detail/@game.RedDefense">@game.RedDefenseName</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 

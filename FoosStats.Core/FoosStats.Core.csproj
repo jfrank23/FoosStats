@@ -9,11 +9,4 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Creators\" />
-    <Folder Include="Deleters\" />
-    <Folder Include="Readers\" />
-    <Folder Include="Updaters\" />
-  </ItemGroup>
-
 </Project>

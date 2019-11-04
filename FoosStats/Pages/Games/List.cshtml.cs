@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FoosStats.Data;
 using FoosStats.Core;
+using FoosStats.Core.Retrievers;
 
 namespace FoosStats.Pages.Games
 {
     public class ListModel : PageModel
     {
-        public IGameRepository gameRepo;
-        public IPlayerRepository playerRepo;
-        public IEnumerable<Game> games;
+        private IGameRetriever gameRetriever;
+        public IEnumerable<DisplayGame> games;
 
-        public ListModel(IGameRepository gameRepository, IPlayerRepository playerRepo)
+        public ListModel(IGameRetriever gameRetriever)
         {
-            this.gameRepo = gameRepository;
-            this.playerRepo = playerRepo;
+            this.gameRetriever = gameRetriever;
         }
         public void OnGet()
         {
-            games = gameRepo.GetGames();
+            games = gameRetriever.GetAllGames();
         }
     }
 }
