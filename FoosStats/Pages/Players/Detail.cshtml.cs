@@ -22,6 +22,10 @@ namespace FoosStats.Pages.Players
         public int WinPctStanding { get; set; }
         public int GoalsForAvgStanding { get; set; }
         public int GoalsAgainstAvgStanding { get; set; }
+        public float OffenseWinPct { get; set; }
+        public float DefenseWinPct { get; set; }
+        public float BlueWinPct { get; set; }
+        public float RedWinPct { get; set; }
         public Player Player { get; private set; }
 
 
@@ -50,6 +54,10 @@ namespace FoosStats.Pages.Players
             WinPctStanding = detailHandler.WinPercentageStanding(Player);
             GoalsForAvgStanding = detailHandler.GoalsForAverageStanding(Player);
             GoalsAgainstAvgStanding = detailHandler.GoalsAgainstAverageStanding(Player);
+            OffenseWinPct = detailHandler.OffenseWinPct(Player);
+            DefenseWinPct = detailHandler.DefenseWinPct(Player);
+            RedWinPct = detailHandler.RedSideWinPct(Player);
+            BlueWinPct = detailHandler.BlueSideWinPct(Player);
             return Page();
         }
 

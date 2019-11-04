@@ -20,6 +20,15 @@
             </div>
         </div>
         <div class="card">
+            <h5 class="card-title">Positional Stats</h5>
+            <div class="card-body">
+                <div><text class="font-weight-bold">Offense Win Percentage: </text> @Model.OffenseWinPct.ToString("F02") %</div>
+                <div><text class="font-weight-bold">Defense Win Percentage: </text> @Model.DefenseWinPct.ToString("F02") %</div>
+                <div><text class="font-weight-bold">Blue Side Win Percentage: </text> @Model.BlueWinPct.ToString("F02") %</div>
+                <div><text class="font-weight-bold">Red Side Win Percentage: </text> @Model.RedWinPct.ToString("F02") %</div>
+            </div>
+        </div>
+        <div class="card">
             <h5 class="card-title">Teammate Stats</h5>
             <div class="card-body">
                 <div><text class="font-weight-bold">Most Played With: </text> @Model.MostPlayedWith</div>
