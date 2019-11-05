@@ -4,6 +4,62 @@
     ViewData["Title"] = "Home page";
 }
 
+
 <div class="text-center">
     <h1 class="display-4">Welcome to FoosStats</h1>
 </div>
+<div>
+    <canvas id="RedVsBlue-chart"></canvas>
+</div>
+<div class="card-deck">
+
+    <div class="card">
+        <h5 class="card-title text-center">Win Percentage</h5>
+        @{ var count = 1;}
+        @foreach (var player in Model.top5PlayerWinPct)
+        {
+            <ol><text class="font-weight-bold">@count. @player.FirstName @player.LastName</text> : @(((float)player.GamesWon / player.GamesPlayed * 100).ToString("F02"))%</ol>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Average Goals For Per Game</h5>
+        @{count = 1;}
+        @foreach (var player in Model.top5PlayerGoalsFor)
+        {
+            <ol><text class="font-weight-bold">@count. @player.FirstName @player.LastName</text> : @(((float)player.GoalsFor / player.GamesPlayed).ToString("F02"))</ol>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Average Goals Against Per Game</h5>
+        @{count = 1;}
+        @foreach (var player in Model.top5PlayerGoalsAgainst)
+        {
+            <ol><text class="font-weight-bold">@count. @player.FirstName @player.LastName</text> : @(((float)player.GoalsAgainst / player.GamesPlayed).ToString("F02"))</ol>
+            count += 1;
+        }
+    </div>
+</div>
+
+
+
+<script>
+        new Chart(document.getElementById("RedVsBlue-chart"), {
+            type: 'doughnut',
+            data: {
+                labels: ["Red", "Blue"],
+                datasets: [{
+                    label: "Win Percentage Per Side",
+                    backgroundColor: ["#FF0000", "#0C00FF"],
+                    data: [@Model.RedWinPct, @Model.BlueWinPct]
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Win Percentage Per Side'
+                }
+            }
+        });
+</script>

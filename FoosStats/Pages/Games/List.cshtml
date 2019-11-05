@@ -5,6 +5,9 @@
 }
 
 <h1>Game List</h1>
+<div>
+    <a asp-page="./EditGame" class="btn btn-outline-primary">Add New</a>
+</div>
 <table class="table">
     <thead>
         <tr class="font-weight-bold">
@@ -20,29 +23,26 @@
     <tbody>
         @foreach (var game in Model.games)
         {
-        <tr>
-            <td>@game.GameTime</td>
-            <td><a href="../../Players/Detail/@game.BlueDefense">@game.BlueDefenseName</a></td>
-            <td><a href="../../Players/Detail/@game.BlueOffense">@game.BlueOffenseName</a></td>
-            <td>@game.BlueScore</td>
-            <td>@game.RedScore</td>
-            <td><a href="../../Players/Detail/@game.RedOffense">@game.RedOffenseName</a></td>
-            <td><a href="../../Players/Detail/@game.RedDefense">@game.RedDefenseName</a></td>
-            <td>
-                <a class="btn btn-lg" asp-page="./EditGame" asp-route-gameID="@game.GameID">
-                    <i class="fa fa-edit"></i>
-                </a>
-            </td>
-            <td>
-                <a class="btn btn-lg" asp-page="./DeleteGame" asp-route-gameID="@game.GameID">
-                    <i class="fa fa-trash"></i>
-                </a>
-            </td>
-        </tr>
+            <tr>
+                <td>@game.GameTime</td>
+                <td><a href="../../Players/Detail/@game.BlueDefense">@game.BlueDefenseName</a></td>
+                <td><a href="../../Players/Detail/@game.BlueOffense">@game.BlueOffenseName</a></td>
+                <td>@game.BlueScore</td>
+                <td>@game.RedScore</td>
+                <td><a href="../../Players/Detail/@game.RedOffense">@game.RedOffenseName</a></td>
+                <td><a href="../../Players/Detail/@game.RedDefense">@game.RedDefenseName</a></td>
+                <td>
+                    <a class="btn btn-lg" asp-page="./EditGame" asp-route-gameID="@game.GameID">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-lg" asp-page="./DeleteGame" asp-route-gameID="@game.GameID">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-<div>
-    <a asp-page="./EditGame" class="btn btn-outline-primary">Add New</a>
-</div>
 
