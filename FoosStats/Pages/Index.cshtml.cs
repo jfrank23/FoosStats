@@ -13,14 +13,13 @@ namespace FoosStats.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private IHomePageStatRetriever homePageStatRetriever;
+        public IHomePageStatRetriever homePageStatRetriever;
+        public Player bestOnBlue;
+
         public float RedWinPct { get; set; }
         public float BlueWinPct { get; set; }
-        public IEnumerable<Player> top5PlayerWinPct { get; set; }
-        public IEnumerable<Player> top5PlayerGoalsFor { get; set; }
-        public IEnumerable<Player> top5PlayerGoalsAgainst { get; set; }
-        public IEnumerable<DisplayGame> todaysGames { get; set; }
 
+        public Player bestOnRed;
 
         public IndexModel(ILogger<IndexModel> logger, IHomePageStatRetriever homePageStatRetriever)
         {
@@ -34,10 +33,8 @@ namespace FoosStats.Pages
             var sideWinArr = homePageStatRetriever.RedVsBlue();
             RedWinPct = (float)sideWinArr[0] / (sideWinArr[0] + sideWinArr[1]);
             BlueWinPct = (float)sideWinArr[1] / (sideWinArr[0] + sideWinArr[1]);
-            top5PlayerWinPct = homePageStatRetriever.TopPlayersByWinPct();
-            top5PlayerGoalsFor = homePageStatRetriever.TopPlayersByGoalsPerGameAvg();
-            top5PlayerGoalsAgainst = homePageStatRetriever.TopPlayersByGoalsAgainstPerGameAvg();
-            todaysGames = homePageStatRetriever.TodaysGames();
+            bestOnRed = homePageStatRetriever.BestOnRed();
+            bestOnBlue = homePageStatRetriever.BestOnBlue();
         }
     }
 }

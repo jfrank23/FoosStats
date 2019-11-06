@@ -8,10 +8,19 @@
 <div class="text-center">
     <h1 class="display-4">Welcome to FoosStats</h1>
 </div>
-<div style="margin-bottom:10px">
-    <canvas id="RedVsBlue-chart"></canvas>
+<div class="row">
+    <div class="w-75" style="margin-bottom:10px">
+        <canvas id="RedVsBlue-chart"></canvas>
+    </div>
+    <div class="w-25 card">
+        <h5 class="card-title text-center">Side Statistics</h5>
+        <p><text class="font-weight-bold">Games Played: </text>@Model.homePageStatRetriever.GamesPlayed()</p>
+        <p><text class="font-weight-bold">Blue Wins : </text>@Model.homePageStatRetriever.RedVsBlue()[1]</p>
+        <p><text class="font-weight-bold">Red Wins : </text>@Model.homePageStatRetriever.RedVsBlue()[0]</p>
+        <p><text class="font-weight-bold">Best On Red : <a href="\Players\Detail\@Model.bestOnRed.ID"></text>@Model.bestOnRed.FirstName @Model.bestOnRed.LastName</a></p>
+        <p><text class="font-weight-bold">Best On Blue : </text><a href="\Players\Detail\@Model.bestOnBlue.ID">@Model.bestOnBlue.FirstName @Model.bestOnBlue.LastName</a></p>
+    </div>
 </div>
-
 <hr />
 
 <h4 class="text-center">Leader Board</h4>
@@ -20,7 +29,7 @@
     <div class="card">
         <h5 class="card-title text-center">Win Percentage</h5>
         @{ var count = 1;}
-        @foreach (var player in Model.top5PlayerWinPct)
+        @foreach (var player in Model.homePageStatRetriever.TopPlayersByWinPct())
         {
             <ol><text class="font-weight-bold">@count. @player.FirstName @player.LastName</text> : @(((float)player.GamesWon / player.GamesPlayed * 100).ToString("F02"))%</ol>
             count += 1;
@@ -29,7 +38,7 @@
     <div class="card">
         <h5 class="card-title text-center">Average Goals For Per Game</h5>
         @{count = 1;}
-        @foreach (var player in Model.top5PlayerGoalsFor)
+        @foreach (var player in Model.homePageStatRetriever.TopPlayersByGoalsPerGameAvg())
         {
             <ol><text class="font-weight-bold">@count. @player.FirstName @player.LastName</text> : @(((float)player.GoalsFor / player.GamesPlayed).ToString("F02"))</ol>
             count += 1;
@@ -38,7 +47,7 @@
     <div class="card">
         <h5 class="card-title text-center">Average Goals Against Per Game</h5>
         @{count = 1;}
-        @foreach (var player in Model.top5PlayerGoalsAgainst)
+        @foreach (var player in Model.homePageStatRetriever.TopPlayersByGoalsAgainstPerGameAvg())
         {
             <ol><text class="font-weight-bold">@count. @player.FirstName @player.LastName</text> : @(((float)player.GoalsAgainst / player.GamesPlayed).ToString("F02"))</ol>
             count += 1;
@@ -61,7 +70,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var game in Model.todaysGames)
+            @foreach (var game in Model.homePageStatRetriever.TodaysGames())
             {
                 <tr>
                     <td>@game.GameTime</td>

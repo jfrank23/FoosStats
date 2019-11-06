@@ -7,6 +7,9 @@ namespace FoosStats.Core.Retrievers
 {
     public interface IHomePageStatRetriever
     {
+        Player BestOnBlue();
+        Player BestOnRed();
+        int GamesPlayed();
         int[] RedVsBlue();
         void Setup();
         IEnumerable<DisplayGame> TodaysGames();
@@ -53,7 +56,42 @@ namespace FoosStats.Core.Retrievers
             var today = DateTime.Now.Date;
             return games.Where(r => r.GameTime.Date == today);
         }
-
+        public int GamesPlayed()
+        {
+            return games.Count();
+        }
+        public Player BestOnRed()
+        {
+            var bestOnRed = new Player();
+            float winPct = 0;
+            foreach(var player in players)
+            {
+                var redGames = games.Where(r => r.RedDefense == player.ID || r.RedOffense == player.ID);
+                var redGameWins = redGames.Where(r => r.RedScore == 10).Count();
+                if((float)redGameWins/redGames.Count() > winPct)
+                {
+                    bestOnRed = player;
+                    winPct = (float)redGameWins / redGames.Count();
+                }
+            }
+            return bestOnRed;
+        }
+        public Player BestOnBlue()
+        {
+            var bestOnBlue = new Player();
+            float winPct = 0;
+            foreach (var player in players)
+            {
+                var blueGames = games.Where(r => r.BlueDefense == player.ID || r.BlueOffense == player.ID);
+                var blueGameWins = blueGames.Where(r => r.BlueScore == 10).Count();
+                if ((float)blueGameWins / blueGames.Count() > winPct)
+                {
+                    bestOnBlue = player;
+                    winPct = (float)blueGameWins / blueGames.Count();
+                }
+            }
+            return bestOnBlue;
+        }
         public void Setup()
         {
             games = gameRetriever.GetAllGames();
