@@ -9,6 +9,7 @@ namespace FoosStats.Core.Retrievers
     {
         int[] RedVsBlue();
         void Setup();
+        IEnumerable<DisplayGame> TodaysGames();
         IEnumerable<Player> TopPlayersByGoalsAgainstPerGameAvg();
         IEnumerable<Player> TopPlayersByGoalsPerGameAvg();
         IEnumerable<Player> TopPlayersByWinPct();
@@ -46,6 +47,11 @@ namespace FoosStats.Core.Retrievers
         {
             var topPlayers = players.OrderBy(r => ((float)r.GoalsAgainst / r.GamesPlayed));
             return topPlayers.ToList().Take(5);
+        }
+        public IEnumerable<DisplayGame> TodaysGames()
+        {
+            var today = DateTime.Now.Date;
+            return games.Where(r => r.GameTime.Date == today);
         }
 
         public void Setup()
