@@ -23,9 +23,8 @@
 </div>
 <hr />
 
-<h4 class="text-center">Leader Board</h4>
+<h3 class="text-center">Leader Board</h3>
 <div class="card-deck" style="margin-bottom:10px">
-    
     <div class="card">
         <h5 class="card-title text-center">Win Percentage</h5>
         @{ var count = 1;}
@@ -37,7 +36,7 @@
     </div>
     <div class="card">
         <h5 class="card-title text-center">Average Goals For Per Game</h5>
-        @{count = 1;}
+        @{ count = 1;}
         @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByGoalsPerGameAvg())
         {
             <ol><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.AverageGoalsPerGame.ToString("F02")</ol>
@@ -54,9 +53,50 @@
         }
     </div>
 </div>
+
+<div class="card-deck" style="margin-bottom:10px">
+
+
+    <div class="card">
+        <h5 class="card-title text-center">Offense Win Percentage</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByOffenseWinPct())
+        {
+            <ol><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.OffenceWinPct.ToString("F02")%</ol>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Defense Win Percentage</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByDefenseWinPct())
+        {
+            <ol><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.DefenseWinPct.ToString("F02")%</ol>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Win Percentage On Blue</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersOnBlue())
+        {
+            <ol><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.BlueWinPct.ToString("F02")%</ol>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Win Percentage on Red</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersOnRed())
+        {
+            <ol><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.RedWinPct.ToString("F02")%</ol>
+            count += 1;
+        }
+    </div>
+</div>
 <hr />
 <div>
-    <h4 class="text-center">Today's Games</h4>
+    <h3 class="text-center">Today's Games</h3>
     <table class="table">
         <thead>
             <tr class="font-weight-bold">

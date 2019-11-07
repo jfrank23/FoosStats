@@ -2,6 +2,7 @@
 using FoosStats.Core.Retrievers;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace FoosStats.Pages
 {
@@ -27,8 +28,8 @@ namespace FoosStats.Pages
             var sideWinArr = homePageStatRetriever.RedVsBlue();
             RedWinPct = (float)sideWinArr[0] / (sideWinArr[0] + sideWinArr[1]);
             BlueWinPct = (float)sideWinArr[1] / (sideWinArr[0] + sideWinArr[1]);
-            bestOnRed = homePageStatRetriever.BestOnRed();
-            bestOnBlue = homePageStatRetriever.BestOnBlue();
+            bestOnRed = homePageStatRetriever.TopPlayersOnRed().ToList()[0];
+            bestOnBlue = homePageStatRetriever.TopPlayersOnBlue().ToList()[0];
         }
     }
 }
