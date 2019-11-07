@@ -13,6 +13,7 @@ namespace FoosStats.Pages.Players
         public IPlayerRetriever playerRetriever;
         public IUpdater<Player> playerUpdater;
         public ICreator<Player> playerCreator;
+        private readonly ILeaderboards leaderboards;
 
         [BindProperty]
         public Player Player { get; set; }

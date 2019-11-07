@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FoosStats.Core.Retrievers
 {
-    public interface IPlayerDetailHandler
+    public interface IPlayerDetailRetriever
     {
         string BestWinPercentageTeammate();
         float BlueSideWinPct(Player player);
@@ -23,98 +23,62 @@ namespace FoosStats.Core.Retrievers
         int WinPercentageStanding(Player currentPlayer);
     }
 
-    public class PlayerDetailHandler : IPlayerDetailHandler
+    public class PlayerDetailRetriever : IPlayerDetailRetriever
     {
         private IGameRetriever gameRetriever;
         private IPlayerRetriever playerRetriever;
         private IEnumerable<Player> players;
         private IEnumerable<DisplayGame> games;
         private Dictionary<Guid, int[]> teammateStats = new Dictionary<Guid, int[]>();
-
-        public PlayerDetailHandler(IPlayerRetriever playerRetriever, IGameRetriever gameRetriever)
+        private IEnumerable<DerivedData> leaderboard;
+        public PlayerDetailRetriever(IPlayerRetriever playerRetriever, IGameRetriever gameRetriever,ILeaderboards leaderboards)
         {
             this.playerRetriever = playerRetriever;
             this.gameRetriever = gameRetriever;
+            leaderboard = leaderboards.GetLeaderboard();
         }
 
         public float DefenseWinPct(Player player)
         {
-            var redGames = games.Where(r => r.RedDefense == player.ID);
-            var blueGames = games.Where(r => r.BlueDefense == player.ID);
-            var redWins = redGames.Where(r => r.RedScore == 10).Count();
-            var blueWins = blueGames.Where(r => r.BlueScore == 10).Count();
-            var defenseWinPct = (float)(redWins + blueWins)/(redGames.Count() + blueGames.Count()) * 100;
-            if (float.IsNaN(defenseWinPct)) { defenseWinPct = 0; }
-            return defenseWinPct;
+            return leaderboard.FirstOrDefault(r => r.player.ID == player.ID).DefenseWinPct;
+            
         }
         public float OffenseWinPct(Player player)
         {
-            var redGames = games.Where(r => r.RedOffense == player.ID);
-            var blueGames = games.Where(r => r.BlueOffense == player.ID);
-            var redWins = redGames.Where(r => r.RedScore == 10).Count();
-            var blueWins = blueGames.Where(r => r.BlueScore == 10).Count();
-            var offenseWinPct = (float)(redWins + blueWins) / (redGames.Count() + blueGames.Count()) *100;
-            if (float.IsNaN(offenseWinPct)) { offenseWinPct = 0; }
-            return offenseWinPct;
+            return leaderboard.FirstOrDefault(r => r.player.ID == player.ID).OffenceWinPct;
         }
         public float BlueSideWinPct(Player player)
         {
-            var blueGames = games.Where(r => r.BlueOffense == player.ID || r.BlueDefense == player.ID);
-            var blueWins = blueGames.Where(r => r.BlueScore == 10).Count();
-            var blueWinPct = (float)blueWins / blueGames.Count() * 100;
-            if (float.IsNaN(blueWinPct)) { blueWinPct = 0; }
-            return blueWinPct;
+            return leaderboard.FirstOrDefault(r => r.player.ID == player.ID).BlueWinPct;
         }
         public float RedSideWinPct(Player player)
         {
-            var redGames = games.Where(r => r.RedOffense == player.ID || r.RedDefense == player.ID);
-            var redWins = redGames.Where(r => r.RedScore == 10).Count();
-            var redWinPct = (float)redWins / redGames.Count() * 100;
-            if (float.IsNaN(redWinPct)) { redWinPct = 0; }
-            return redWinPct;
+            return leaderboard.FirstOrDefault(r => r.player.ID == player.ID).RedWinPct;
         }
         public int WinPercentageStanding(Player currentPlayer)
         {
-            int betterStat = 1;
-            foreach (var player in players)
-            {
-                var currentWinPct = (float)currentPlayer.GamesWon / currentPlayer.GamesPlayed;
-                var otherWinPct = (float)player.GamesWon / player.GamesPlayed;
-                if (currentWinPct < otherWinPct)
-                {
-                    betterStat += 1;
-                }
-            }
+            var betterStat = leaderboard
+                .Where(r => r.WinPercentage > 
+                leaderboard.First(u => u.player.ID == currentPlayer.ID).WinPercentage)
+                .Count()+1;
             return betterStat;
         }
 
         public int GoalsForAverageStanding(Player currentPlayer)
         {
-            int betterStat = 1;
-            foreach (var player in players)
-            {
-                var currentGoalsForPct = (float)currentPlayer.GoalsFor / currentPlayer.GamesPlayed;
-                var otherGoalsForPct = (float)player.GoalsFor / player.GamesPlayed;
-                if (currentGoalsForPct < otherGoalsForPct)
-                {
-                    betterStat += 1;
-                }
-            }
+            var betterStat = leaderboard
+                .Where(r => r.AverageGoalsPerGame >
+                leaderboard.First(u => u.player.ID == currentPlayer.ID).AverageGoalsPerGame)
+                .Count() + 1;
             return betterStat;
         }
 
         public int GoalsAgainstAverageStanding(Player currentPlayer)
         {
-            int betterStat = 1;
-            foreach (var player in players)
-            {
-                var currentGoalsAgainstAvg = (float)currentPlayer.GoalsAgainst / currentPlayer.GamesPlayed;
-                var otherGoalsAgainstAvg = (float)player.GoalsAgainst / player.GamesPlayed;
-                if (currentGoalsAgainstAvg > otherGoalsAgainstAvg)
-                {
-                    betterStat += 1;
-                }
-            }
+            var betterStat = leaderboard
+                .Where(r => r.AverageGoalsAgainstPerGame <
+                leaderboard.First(u => u.player.ID == currentPlayer.ID).AverageGoalsAgainstPerGame)
+                .Count() + 1;
             return betterStat;
         }
 
@@ -175,25 +139,25 @@ namespace FoosStats.Core.Retrievers
                 {
                     if (game.BlueOffense == null) { continue; }
                     teammateStats[game.BlueOffense][0] += 1;
-                    if (game.BlueScore == 10) { teammateStats[game.BlueOffense][1] += 1; }
+                    if (game.BlueScore >game.RedScore) { teammateStats[game.BlueOffense][1] += 1; }
                 }
                 else if (playerID == game.BlueOffense)
                 {
                     if (game.BlueDefense == null) { continue; }
                     teammateStats[game.BlueDefense][0] += 1;
-                    if (game.BlueScore == 10) { teammateStats[game.BlueDefense][1] += 1; }
+                    if (game.BlueScore>game.RedScore) { teammateStats[game.BlueDefense][1] += 1; }
                 }
                 else if (playerID == game.RedDefense)
                 {
                     if (game.RedOffense == null) { continue; }
                     teammateStats[game.RedOffense][0] += 1;
-                    if (game.RedScore == 10) { teammateStats[game.RedOffense][1] += 1; }
+                    if (game.RedScore >game.BlueScore) { teammateStats[game.RedOffense][1] += 1; }
                 }
                 else if (playerID == game.RedOffense)
                 {
                     if (game.RedDefense == null) { continue; }
                     teammateStats[game.RedDefense][0] += 1;
-                    if (game.RedScore == 10) { teammateStats[game.RedDefense][1] += 1; }
+                    if (game.RedScore >game.BlueScore) { teammateStats[game.RedDefense][1] += 1; }
                 }
             }
             teammateStats.Remove(playerID);

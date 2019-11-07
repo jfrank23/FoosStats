@@ -14,12 +14,12 @@ namespace FoosStats.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         public IHomePageStatRetriever homePageStatRetriever;
-        public Player bestOnBlue;
+        public DerivedData bestOnBlue;
+        public DerivedData bestOnRed;
 
         public float RedWinPct { get; set; }
         public float BlueWinPct { get; set; }
 
-        public Player bestOnRed;
 
         public IndexModel(ILogger<IndexModel> logger, IHomePageStatRetriever homePageStatRetriever)
         {
@@ -29,7 +29,6 @@ namespace FoosStats.Pages
 
         public void OnGet()
         {
-            homePageStatRetriever.Setup();
             var sideWinArr = homePageStatRetriever.RedVsBlue();
             RedWinPct = (float)sideWinArr[0] / (sideWinArr[0] + sideWinArr[1]);
             BlueWinPct = (float)sideWinArr[1] / (sideWinArr[0] + sideWinArr[1]);

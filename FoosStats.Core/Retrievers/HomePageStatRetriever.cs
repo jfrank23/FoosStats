@@ -1,54 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Text;
 
 namespace FoosStats.Core.Retrievers
 {
     public interface IHomePageStatRetriever
     {
-        Player BestOnBlue();
-        Player BestOnRed();
+        DerivedData BestOnBlue();
+        DerivedData BestOnRed();
         int GamesPlayed();
         int[] RedVsBlue();
-        void Setup();
         IEnumerable<DisplayGame> TodaysGames();
-        IEnumerable<Player> TopPlayersByGoalsAgainstPerGameAvg();
-        IEnumerable<Player> TopPlayersByGoalsPerGameAvg();
-        IEnumerable<Player> TopPlayersByWinPct();
+        IEnumerable<DerivedData> TopPlayersByGoalsAgainstPerGameAvg();
+        IEnumerable<DerivedData> TopPlayersByGoalsPerGameAvg();
+        IEnumerable<DerivedData> TopPlayersByWinPct();
+        
     }
     public class HomePageStatRetriever : IHomePageStatRetriever
     {
-        private readonly IGameRetriever gameRetriever;
-        private readonly IPlayerRetriever playerRetriever;
-        private IEnumerable<DisplayGame> games;
-        private IEnumerable<Player> players;
 
-        public HomePageStatRetriever(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever)
+        private IEnumerable<DisplayGame> games;
+        private IEnumerable<DerivedData> leaderboard;
+
+        public HomePageStatRetriever(IGameRetriever gameRetriever,ILeaderboards leaderboards)
         {
-            this.gameRetriever = gameRetriever;
-            this.playerRetriever = playerRetriever;
+            games = gameRetriever.GetAllGames();
+            leaderboard = leaderboards.GetLeaderboard();
         }
         public int[] RedVsBlue()
         {
-            var redWin = games.Where(r => r.RedScore == 10).Count();
-            var blueWin = games.Where(r => r.BlueScore == 10).Count();
+            var redWin = games.Where(r => r.RedScore >r.BlueScore).Count();
+            var blueWin = games.Where(r => r.BlueScore >r.RedScore).Count();
 
             return new int[2]{ redWin, blueWin};
         }
-        public IEnumerable<Player> TopPlayersByWinPct()
+        public IEnumerable<DerivedData> TopPlayersByWinPct()
         {
-            var topPlayers = players.OrderByDescending(r => ((float)r.GamesWon / r.GamesPlayed));
+            var topPlayers = leaderboard.OrderByDescending(r=>r.WinPercentage);
             return topPlayers.ToList().Take(5);
         }
-        public IEnumerable<Player> TopPlayersByGoalsPerGameAvg()
+        public IEnumerable<DerivedData> TopPlayersByGoalsPerGameAvg()
         {
-            var topPlayers = players.OrderByDescending(r => ((float)r.GoalsFor / r.GamesPlayed));
+            var topPlayers = leaderboard.OrderByDescending(r => r.AverageGoalsPerGame);
             return topPlayers.ToList().Take(5);
         }
-        public IEnumerable<Player> TopPlayersByGoalsAgainstPerGameAvg()
+        public IEnumerable<DerivedData> TopPlayersByGoalsAgainstPerGameAvg()
         {
-            var topPlayers = players.OrderBy(r => ((float)r.GoalsAgainst / r.GamesPlayed));
+            var topPlayers = leaderboard.OrderBy(r => r.AverageGoalsAgainstPerGame);
             return topPlayers.ToList().Take(5);
         }
         public IEnumerable<DisplayGame> TodaysGames()
@@ -60,42 +60,16 @@ namespace FoosStats.Core.Retrievers
         {
             return games.Count();
         }
-        public Player BestOnRed()
+        public DerivedData BestOnRed()
         {
-            var bestOnRed = new Player();
-            float winPct = 0;
-            foreach(var player in players)
-            {
-                var redGames = games.Where(r => r.RedDefense == player.ID || r.RedOffense == player.ID);
-                var redGameWins = redGames.Where(r => r.RedScore == 10).Count();
-                if((float)redGameWins/redGames.Count() > winPct)
-                {
-                    bestOnRed = player;
-                    winPct = (float)redGameWins / redGames.Count();
-                }
-            }
-            return bestOnRed;
+            var bestOnRed = leaderboard.OrderByDescending(r => r.RedWinPct);
+            return bestOnRed.ToList()[0];
         }
-        public Player BestOnBlue()
+        public DerivedData BestOnBlue()
         {
-            var bestOnBlue = new Player();
-            float winPct = 0;
-            foreach (var player in players)
-            {
-                var blueGames = games.Where(r => r.BlueDefense == player.ID || r.BlueOffense == player.ID);
-                var blueGameWins = blueGames.Where(r => r.BlueScore == 10).Count();
-                if ((float)blueGameWins / blueGames.Count() > winPct)
-                {
-                    bestOnBlue = player;
-                    winPct = (float)blueGameWins / blueGames.Count();
-                }
-            }
-            return bestOnBlue;
+            var bestOnBlue= leaderboard.OrderByDescending(r => r.BlueWinPct);
+            return bestOnBlue.ToList()[0];
         }
-        public void Setup()
-        {
-            games = gameRetriever.GetAllGames();
-            players = playerRetriever.GetPlayersByName();
-        }
+
     }
 }

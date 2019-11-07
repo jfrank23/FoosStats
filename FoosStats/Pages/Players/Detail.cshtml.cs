@@ -12,7 +12,7 @@ namespace FoosStats.Pages.Players
     {
         public IPlayerRetriever playerRetriever;
         public IGameRetriever gameRetriever;
-        public IPlayerDetailHandler detailHandler;
+        public IPlayerDetailRetriever detailHandler;
         public IEnumerable<DisplayGame> top3Games { get; set; }
         public string MostPlayedWith { get; set; }
         public string BestPercentageWith { get; set; }
@@ -30,7 +30,7 @@ namespace FoosStats.Pages.Players
 
 
 
-        public DetailModel(IPlayerRetriever playerRetriever, IGameRetriever gameRetriever, IPlayerDetailHandler detailHandler)
+        public DetailModel(IPlayerRetriever playerRetriever, IGameRetriever gameRetriever, IPlayerDetailRetriever detailHandler)
         {
             this.playerRetriever = playerRetriever;
             this.gameRetriever = gameRetriever;
