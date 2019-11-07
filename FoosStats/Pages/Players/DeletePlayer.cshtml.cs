@@ -11,7 +11,6 @@ namespace FoosStats.Pages.Players
     {
         public IPlayerRetriever playerRetriever;
         public IDeleter<Player> playerDeleter;
-
         public Player player;
         public DeletePlayerModel(IPlayerRetriever playerRetriever, IDeleter<Player> playerDeleter)
         {

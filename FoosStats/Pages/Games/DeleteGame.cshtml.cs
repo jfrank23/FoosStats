@@ -9,6 +9,7 @@ namespace FoosStats.Pages.Games
     public class DeleteGameModel : PageModel
     {
         public IDeleter<Game> gameDeleter;
+
         public DeleteGameModel(IDeleter<Game> gameDeleter)
         {
             this.gameDeleter = gameDeleter;

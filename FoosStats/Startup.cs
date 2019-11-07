@@ -27,7 +27,7 @@ namespace FoosStats
             services.AddRazorPages();
             services.AddSingleton<IPlayerRepository, LitePlayerRepository>();
             services.AddSingleton<IGameRepository, LiteGameRepository>();
-
+            services.AddScoped<ILeaderboards, InMemoryLeaderboards>();
 
             services.AddScoped<ICreator<Game>, GameCreator>();
             services.AddScoped<ICreator<Player>, PlayerCreator>();
@@ -37,7 +37,8 @@ namespace FoosStats
 
             services.AddScoped<IGameRetriever, GameRetriever>();
             services.AddScoped<IPlayerRetriever, PlayerRetriever>();
-            services.AddScoped<IPlayerDetailHandler, PlayerDetailHandler>();
+            services.AddScoped<IPlayerDetailRetriever, PlayerDetailRetriever>();
+            services.AddScoped<IHomePageStatRetriever, HomePageStatRetriever>();
 
             services.AddScoped<IUpdater<Game>, GameUpdater>();
             services.AddScoped<IUpdater<Player>, PlayerUpdater>();
