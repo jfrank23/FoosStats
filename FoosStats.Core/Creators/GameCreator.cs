@@ -7,11 +7,9 @@ namespace FoosStats.Core.Creators
     public class GameCreator :ICreator<Game>
     {
         private IGameRepository gameRepository;
-        private ILeaderboards leaderboard;
-        public GameCreator(IGameRepository gameRepository, ILeaderboards leaderboard)
+        public GameCreator(IGameRepository gameRepository)
         {
             this.gameRepository = gameRepository;
-            this.leaderboard = leaderboard;
         }
         public Game Create(Game game)
         {
