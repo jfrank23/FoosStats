@@ -6,15 +6,16 @@ namespace FoosStats.Core.Retrievers
 {
     public interface IHomePageStatRetriever
     {
-        DerivedData BestOnBlue();
-        DerivedData BestOnRed();
+        IEnumerable<DerivedData> TopPlayersOnBlue();
+        IEnumerable<DerivedData> TopPlayersOnRed();
         int GamesPlayed();
         int[] RedVsBlue();
         IEnumerable<DisplayGame> TodaysGames();
         IEnumerable<DerivedData> TopPlayersByGoalsAgainstPerGameAvg();
         IEnumerable<DerivedData> TopPlayersByGoalsPerGameAvg();
         IEnumerable<DerivedData> TopPlayersByWinPct();
-        
+        IEnumerable<DerivedData> TopPlayersByDefenseWinPct();
+        IEnumerable<DerivedData> TopPlayersByOffenseWinPct();
     }
     public class HomePageStatRetriever : IHomePageStatRetriever
     {
@@ -58,16 +59,23 @@ namespace FoosStats.Core.Retrievers
         {
             return games.Count();
         }
-        public DerivedData BestOnRed()
+        public IEnumerable<DerivedData> TopPlayersOnRed()
         {
-            var bestOnRed = leaderboard.OrderByDescending(r => r.RedWinPct);
-            return bestOnRed.ToList()[0];
+            var bestOnRed = leaderboard.OrderByDescending(r => r.RedWinPct).ToList().Take(5);
+            return bestOnRed;
         }
-        public DerivedData BestOnBlue()
+        public IEnumerable<DerivedData> TopPlayersOnBlue()
         {
-            var bestOnBlue= leaderboard.OrderByDescending(r => r.BlueWinPct);
-            return bestOnBlue.ToList()[0];
+            var bestOnBlue= leaderboard.OrderByDescending(r => r.BlueWinPct).ToList().Take(5);
+            return bestOnBlue;
         }
-
+        public IEnumerable<DerivedData> TopPlayersByOffenseWinPct()
+        {
+            return leaderboard.OrderByDescending(r=>r.OffenceWinPct).ToList().Take(5);
+        }
+        public IEnumerable<DerivedData> TopPlayersByDefenseWinPct()
+        {
+            return leaderboard.OrderByDescending(r => r.DefenseWinPct).ToList().Take(5);
+        }
     }
 }
