@@ -12,13 +12,10 @@
     <div class="w-75" style="margin-bottom:10px">
         <canvas id="RedVsBlue-chart"></canvas>
     </div>
-    <div class="w-25 card">
-        <h5 class="card-title text-center">Side Statistics</h5>
+    <div >
         <p style="margin-left: 4px"><text class="font-weight-bold">Games Played: </text>@Model.homePageStatRetriever.GamesPlayed()</p>
         <p style="margin-left: 4px"><text class="font-weight-bold">Blue Wins : </text>@Model.homePageStatRetriever.RedVsBlue()[1]</p>
         <p style="margin-left: 4px"><text class="font-weight-bold">Red Wins : </text>@Model.homePageStatRetriever.RedVsBlue()[0]</p>
-        <p style="margin-left: 4px"><text class="font-weight-bold">Best On Red : <a href="\Players\Detail\@Model.bestOnRed.player.ID"></text>@Model.bestOnRed.player.FirstName @Model.bestOnRed.player.LastName</a></p>
-        <p style="margin-left: 4px"><text class="font-weight-bold">Best On Blue : </text><a href="\Players\Detail\@Model.bestOnBlue.player.ID">@Model.bestOnBlue.player.FirstName @Model.bestOnBlue.player.LastName</a></p>
     </div>
 </div>
 <hr />
