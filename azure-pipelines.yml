@@ -10,6 +10,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  dockerfoos: '82d168df-06b2-4fc7-8dc2-9087464747f1'
 
 stages:
 - stage: Build
