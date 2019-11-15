@@ -8,7 +8,7 @@ namespace FoosStats.Data
 {
     public class LitePlayerRepository : IPlayerRepository
     {
-        readonly string connectionString = "Data Source= " + Environment.CurrentDirectory.Replace("\\FoosStats\\FoosStats", "\\FoosStats") + "\\FoosStats.Data\\FoosData.db" + "; Version=3; BinaryGUID=False;";
+        readonly string connectionString = "Data Source= FoosData.db" + "; Version=3; BinaryGUID=False;";
         public LitePlayerRepository(string connectionString = null)
         {
             if (connectionString != null)
