@@ -28,8 +28,8 @@ namespace FoosStats.Pages
             var sideWinArr = homePageStatRetriever.RedVsBlue();
             RedWinPct = (float)sideWinArr[0] / (sideWinArr[0] + sideWinArr[1]);
             BlueWinPct = (float)sideWinArr[1] / (sideWinArr[0] + sideWinArr[1]);
-            bestOnRed = homePageStatRetriever.TopPlayersOnRed().ToList()[0];
-            bestOnBlue = homePageStatRetriever.TopPlayersOnBlue().ToList()[0];
+            bestOnRed = homePageStatRetriever.TopPlayersOnRed().FirstOrDefault();
+            bestOnBlue = homePageStatRetriever.TopPlayersOnBlue().FirstOrDefault();
         }
     }
 }
