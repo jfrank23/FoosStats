@@ -27,7 +27,7 @@ stages:
         containerRegistry: |
           $(dockerfoos)
         command: buildAndpush
-        repository: 'foosstats'
+        repository: 'jfrank23/foosstats'
         dockerfile: 'DockerFile'
         tags: |
           $(tag)
