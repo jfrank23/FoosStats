@@ -14,4 +14,10 @@
     <ProjectReference Include="..\FoosStats.Core\FoosStats.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="FoosData.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

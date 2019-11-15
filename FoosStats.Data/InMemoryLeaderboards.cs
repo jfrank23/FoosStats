@@ -24,6 +24,7 @@ namespace FoosStats.Core
             var lst =  new List<DerivedData>();
             foreach(var currentPlayer in players)
             {
+                if (currentPlayer.GamesPlayed < 3) { continue; }
                 lst.Add(new DerivedData
                 {
                     player = currentPlayer,
