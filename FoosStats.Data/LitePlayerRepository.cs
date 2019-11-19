@@ -15,7 +15,55 @@ namespace FoosStats.Data
             {
                 this.connectionString = connectionString;
             }
+            CheckDatabaseExists();
         }
+
+        private void CheckDatabaseExists()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = "Select * from Players ";
+                    var reader = command.ExecuteReader();
+                    var player = new Player();
+                    while (reader.Read())
+                    {
+                        player.ID = new Guid(reader.GetString(0));
+                        player.FirstName = reader.GetString(1);
+                        player.LastName = reader.GetString(2);
+                        player.GamesPlayed = reader.GetInt32(3);
+                        player.GamesWon = reader.GetInt32(4);
+                        player.GamesLost = reader.GetInt32(5);
+                        player.GoalsFor = reader.GetInt32(6);
+                        player.GoalsAgainst = reader.GetInt32(7);
+
+                    }
+                }
+            }
+            catch
+            {
+                using (var connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = $"CREATE TABLE \"Games\" (\"GameId\" TEXT NOT NULL UNIQUE, \"BlueScore\" INTEGER, \"RedScore\"  INTEGER, \"GameTime\"  TEXT, \"RedOffense\"    TEXT, \"RedDefense\"    TEXT, \"BlueOffense\"   TEXT, \"BlueDefense\"   TEXT, PRIMARY KEY(\"GameId\"))";
+                    command.ExecuteNonQuery();
+                    var command2 = connection.CreateCommand();
+                    command2.CommandText = $"CREATE TABLE \"Players\" ( \"PlayerId\" TEXT NOT NULL UNIQUE, \"FirstName\" TEXT, \"LastName\" TEXT, \"GamesPlayed\" INTEGER, \"GamesWon\" INTEGER, \"GamesLost\" INTEGER, \"GoalsFor\" INTEGER, \"GoalsAgainst\" INTEGER, PRIMARY KEY(\"PlayerId\") )";
+                    command2.ExecuteNonQuery();
+                    var command3 = connection.CreateCommand();
+                    command3.CommandText = $"CREATE TRIGGER addGame AFTER INSERT ON Games BEGIN UPDATE Players SET GoalsFor = GoalsFor + New.BlueScore, GoalsAgainst = GoalsAgainst + New.RedScore, GamesPlayed = GamesPlayed + 1, GamesWon = CASE WHEN New.BlueScore = 10 THEN GamesWon +1 ELSE GamesWon +0 END, GamesLost = CASE WHEN New.RedScore = 10 THEN GamesLost +1 ELSE GamesLost +0 END WHERE PlayerId = New.BlueDefense OR PlayerId = New.BlueOffense; UPDATE Players SET GoalsFor = GoalsFor + New.RedScore, GoalsAgainst = GoalsAgainst + New.BlueScore, GamesPlayed = GamesPlayed + 1, GamesWon = CASE WHEN New.RedScore = 10 THEN GamesWon +1 ELSE GamesWon +0 END, GamesLost = CASE WHEN New.BlueScore = 10 THEN GamesLost +1 ELSE GamesLost +0 END WHERE PlayerId = New.RedDefense OR PlayerId = New.RedOffense; END";
+                    command3.ExecuteNonQuery();
+                    var command4 = connection.CreateCommand();
+                    command4.CommandText = $"CREATE TRIGGER deleteGame AFTER DELETE ON Games BEGIN UPDATE Players SET GoalsFor = GoalsFor - Old.BlueScore, GoalsAgainst = GoalsAgainst - Old.RedScore, GamesPlayed = GamesPlayed - 1, GamesWon = CASE WHEN Old.BlueScore = 10 THEN GamesWon -1 ELSE GamesWon END, GamesLost = CASE WHEN Old.RedScore = 10 THEN GamesLost -1 ELSE GamesLost END WHERE PlayerId = Old.BlueDefense OR PlayerId = Old.BlueOffense; UPDATE Players SET GoalsFor = GoalsFor - Old.RedScore, GoalsAgainst = GoalsAgainst - Old.BlueScore, GamesPlayed = GamesPlayed - 1, GamesWon = CASE WHEN Old.RedScore = 10 THEN GamesWon -1 ELSE GamesWon +0  END, GamesLost = CASE WHEN Old.BlueScore = 10 THEN GamesLost -1 ELSE GamesLost +0  END WHERE PlayerId = Old.RedDefense OR PlayerId = Old.RedOffense; END";
+                    command4.ExecuteNonQuery();
+                }
+            }
+        }
+
         public Player Add(Player player)
         {
             player.ID = Guid.NewGuid();

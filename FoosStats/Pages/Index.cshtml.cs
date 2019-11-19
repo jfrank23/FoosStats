@@ -1,5 +1,6 @@
 ﻿using FoosStats.Core;
 using FoosStats.Core.Retrievers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Linq;
@@ -23,13 +24,23 @@ namespace FoosStats.Pages
             this.homePageStatRetriever = homePageStatRetriever;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            var sideWinArr = homePageStatRetriever.RedVsBlue();
-            RedWinPct = (float)sideWinArr[0] / (sideWinArr[0] + sideWinArr[1]);
-            BlueWinPct = (float)sideWinArr[1] / (sideWinArr[0] + sideWinArr[1]);
-            bestOnRed = homePageStatRetriever.TopPlayersOnRed().ToList()[0];
-            bestOnBlue = homePageStatRetriever.TopPlayersOnBlue().ToList()[0];
+            var gamesPlayed = homePageStatRetriever.GamesPlayed();
+            if (gamesPlayed > 3)
+            {
+                var sideWinArr = homePageStatRetriever.RedVsBlue();
+                RedWinPct = (float)sideWinArr[0] / (sideWinArr[0] + sideWinArr[1]);
+                BlueWinPct = (float)sideWinArr[1] / (sideWinArr[0] + sideWinArr[1]);
+                bestOnRed = homePageStatRetriever.TopPlayersOnRed().FirstOrDefault();
+                bestOnBlue = homePageStatRetriever.TopPlayersOnBlue().FirstOrDefault();
+                return Page();
+
+            }
+            else
+            {
+                return RedirectToPage("./NoData");
+            }
         }
     }
 }
