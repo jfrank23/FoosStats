@@ -17,12 +17,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @{int count = 0;}
                         @foreach (var player in Model.teamGenerator.players)
                         {
                             <tr>
-                                <td>@player.FirstName @player.LastName</td>
-                                <td><input name="selectedPlayers" type="checkbox" value="@player.ID" /></td>
+                                <td><label for=@(count.ToString() + "toggle")>@player.FirstName @player.LastName</label></td>
+                                <td><input id=@(count.ToString() + "toggle") name="selectedPlayers" type="checkbox" value="@player.ID" /></td>
                             </tr>
+                            count += 1;
                         }
                     </tbody>
                 </table>
