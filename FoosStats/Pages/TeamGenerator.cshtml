@@ -1,0 +1,60 @@
+﻿@page
+@model FoosStats.Pages.TeamGeneratorModel
+@{
+    ViewData["Title"] = "TeamGenerator";
+}
+
+<h1>Random Team Generator</h1>
+<div>
+    <form method="post">
+        <div class="row">
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Select</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var player in Model.teamGenerator.players)
+                        {
+                            <tr>
+                                <td>@player.FirstName @player.LastName</td>
+                                <td><input name="selectedPlayers" type="checkbox" value="@player.ID" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate</button>
+    </form>
+</div>
+
+<hr />
+
+<div class="card-deck">
+    <div class="card">
+        <h4 class="card-title text-center">Red Team</h4>
+        @foreach (var name in Model.teams[0])
+        {
+            <p class="card-text text-center" start="1">@name</p>
+        }
+
+    </div>
+    <div class="card">
+        <h4 class="card-title text-center">Blue Team</h4>
+        @foreach (var name in Model.teams[1])
+        {
+            <p class="card-text text-center" start="1">@name</p>
+        }
+    </div>
+    <div class="card">
+        <h4 class="card-title text-center">Bench</h4>
+        @foreach (var name in Model.teams[2])
+        {
+            <p class="card-text text-center" start="1">@name</p>
+        }
+    </div>
+</div>

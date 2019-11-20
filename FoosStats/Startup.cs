@@ -28,6 +28,7 @@ namespace FoosStats
             services.AddSingleton<IPlayerRepository, LitePlayerRepository>();
             services.AddSingleton<IGameRepository, LiteGameRepository>();
             services.AddScoped<ILeaderboards, InMemoryLeaderboards>();
+            services.AddScoped<ITeamGenerator, TeamGenerator>();
 
             services.AddScoped<ICreator<Game>, GameCreator>();
             services.AddScoped<ICreator<Player>, PlayerCreator>();
