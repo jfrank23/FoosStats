@@ -87,6 +87,7 @@ namespace FoosStats.Data
         }
 
 
+
         public void Delete(Guid playerID)
         {
             using (var connection = new SQLiteConnection(connectionString))
