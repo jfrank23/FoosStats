@@ -33,28 +33,30 @@
 </div>
 
 <hr />
+@if ((Model.teams[0].Count() + Model.teams[1].Count() + Model.teams[2].Count()) != 0)
+{
+    <div class="card-deck">
+        <div class="card">
+            <h4 class="card-title text-center">Red Team</h4>
+            @foreach (var name in Model.teams[0])
+            {
+                <p class="card-text text-center" start="1">@name</p>
+            }
 
-<div class="card-deck">
-    <div class="card">
-        <h4 class="card-title text-center">Red Team</h4>
-        @foreach (var name in Model.teams[0])
-        {
-            <p class="card-text text-center" start="1">@name</p>
-        }
-
+        </div>
+        <div class="card">
+            <h4 class="card-title text-center">Blue Team</h4>
+            @foreach (var name in Model.teams[1])
+            {
+                <p class="card-text text-center" start="1">@name</p>
+            }
+        </div>
+        <div class="card">
+            <h4 class="card-title text-center">Bench</h4>
+            @foreach (var name in Model.teams[2])
+            {
+                <p class="card-text text-center" start="1">@name</p>
+            }
+        </div>
     </div>
-    <div class="card">
-        <h4 class="card-title text-center">Blue Team</h4>
-        @foreach (var name in Model.teams[1])
-        {
-            <p class="card-text text-center" start="1">@name</p>
-        }
-    </div>
-    <div class="card">
-        <h4 class="card-title text-center">Bench</h4>
-        @foreach (var name in Model.teams[2])
-        {
-            <p class="card-text text-center" start="1">@name</p>
-        }
-    </div>
-</div>
+}

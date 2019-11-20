@@ -10,8 +10,9 @@ namespace FoosStats.Core
         IEnumerable<Player> players { get; set; }
 
         public List<List<String>> Randomize(IEnumerable<Guid> selectedPlayers)
-;    }
-    public class TeamGenerator: ITeamGenerator
+;
+    }
+    public class TeamGenerator : ITeamGenerator
     {
         public IEnumerable<Player> players { get; set; }
         private IPlayerRetriever playerRetriever;
@@ -41,11 +42,16 @@ namespace FoosStats.Core
         private List<List<string>> SplitIntoTeams(List<Guid> shuffled)
         {
             //Team indicies are red=0, blue =1, bench=2
-            var teams = new []{ new List<string>(),new List<string>(), new List<string>() };
-            if (shuffled.Count() < 4)
+            var teams = new[] { new List<string>(), new List<string>(), new List<string>() };
+            if (shuffled.Count() == 1)
+            {
+                teams[2].Add(playerRetriever.GuidToName(shuffled[0]));
+                return teams.ToList();
+            }
+            else if (shuffled.Count() < 4)
             {
                 var count = 0;
-                foreach(var playerId in shuffled)
+                foreach (var playerId in shuffled)
                 {
                     teams[count].Add(playerRetriever.GuidToName(playerId));
                     count += 1;
@@ -53,7 +59,7 @@ namespace FoosStats.Core
             }
             else
             {
-                foreach(var playerId in shuffled)
+                foreach (var playerId in shuffled)
                 {
                     if (teams[0].Count() < 2)
                     {
