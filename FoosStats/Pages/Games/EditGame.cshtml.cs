@@ -4,6 +4,7 @@ using FoosStats.Core;
 using FoosStats.Core.Creators;
 using FoosStats.Core.Retrievers;
 using FoosStats.Core.Updaters;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -16,22 +17,30 @@ namespace FoosStats.Pages.Games
         public IGameRetriever gameRetriever;
         public IPlayerRetriever playerRetriever;
         public IUpdater<Game> gameUpdater;
+        private readonly IHostingEnvironment env;
         public ICreator<Game> gameCreator;
 
         [BindProperty]
         public Game game { get; set; }
-        public EditGameModel(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, IUpdater<Game> gameUpdater)
+        public EditGameModel(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, IUpdater<Game> gameUpdater, IHostingEnvironment env)
         {
             this.gameRetriever = gameRetriever;
             this.playerRetriever = playerRetriever;
             this.gameCreator = gameCreator;
             this.gameUpdater = gameUpdater;
+            this.env = env;
         }
-        public void OnGet(Guid gameID)
+        public IActionResult OnGet(Guid gameID)
         {
+            if (! env.IsDevelopment())
+            {
+                return Redirect("../NoPermission");
+            }
             games = gameRetriever.GetAllGames();
             players = playerRetriever.GetPlayersByName();
             game = gameRetriever.GetGameById(gameID);
+            return Page();
+
         }
         public IActionResult OnPost()
         {
