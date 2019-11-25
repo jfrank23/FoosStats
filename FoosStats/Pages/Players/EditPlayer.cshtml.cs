@@ -5,6 +5,7 @@ using FoosStats.Core;
 using FoosStats.Core.Retrievers;
 using FoosStats.Core.Updaters;
 using FoosStats.Core.Creators;
+using Microsoft.AspNetCore.Hosting;
 
 namespace FoosStats.Pages.Players
 {
@@ -13,19 +14,25 @@ namespace FoosStats.Pages.Players
         public IPlayerRetriever playerRetriever;
         public IUpdater<Player> playerUpdater;
         public ICreator<Player> playerCreator;
+        private readonly IHostingEnvironment env;
 
         [BindProperty]
         public Player Player { get; set; }
 
-        public EditPlayerModel(IPlayerRetriever playerRetriever, IUpdater<Player> playerUpdater, ICreator<Player> playerCreator)
+        public EditPlayerModel(IPlayerRetriever playerRetriever, IUpdater<Player> playerUpdater, ICreator<Player> playerCreator, IHostingEnvironment env)
         {
             this.playerRetriever = playerRetriever;
             this.playerUpdater = playerUpdater;
             this.playerCreator = playerCreator;
+            this.env = env;
         }
 
         public IActionResult OnGet(Guid? playerID)
         {
+            if (!env.IsDevelopment())
+            {
+                return Redirect("../NoPermission");
+            }
             if (playerID.HasValue)
             {
                 Player = playerRetriever.GetPlayerById(playerID.Value);
