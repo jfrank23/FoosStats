@@ -31,3 +31,4 @@ stages:
         dockerfile: 'DockerFile'
         tags: |
           $(tag)
+          latest
