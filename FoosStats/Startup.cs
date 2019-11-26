@@ -40,6 +40,7 @@ namespace FoosStats
             services.AddScoped<IPlayerRetriever, PlayerRetriever>();
             services.AddScoped<IPlayerDetailRetriever, PlayerDetailRetriever>();
             services.AddScoped<IHomePageStatRetriever, HomePageStatRetriever>();
+            services.AddScoped<ITeamStatsRetriever, TeamStatsRetriever>();
 
             services.AddScoped<IUpdater<Game>, GameUpdater>();
             services.AddScoped<IUpdater<Player>, PlayerUpdater>();
