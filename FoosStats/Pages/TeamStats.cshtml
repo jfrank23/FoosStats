@@ -1,0 +1,53 @@
+﻿@page
+@model FoosStats.Pages.TeamStatsModel
+@{
+    ViewData["Title"] = "TeamStats";
+}
+
+<h1>Team Stats</h1>
+<p>Stats by team will only show if you have played 3 or more games with the individual.</p>
+<h3>By Position</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Defense</td>
+            <td>Offense</td>
+            <td>Win Percentage</td>
+            <td>Games Played</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model.teamsByPosition)
+        {
+            <tr>
+                <td><a href="./Players/Detail/@team.Defense.ID">@team.Defense.FirstName @team.Defense.LastName</a></td>
+                <td><a href="./Players/Detail/@team.Offense.ID">@team.Offense.FirstName @team.Offense.LastName</a></td>
+                <td>@team.WinPct.ToString("F02") %</td>
+                <td>@team.GamesPlayed</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Overall</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Player 1</td>
+            <td>Player 2</td>
+            <td>Win Percentage</td>
+            <td>Games Played</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model.overallTeams)
+        {
+            <tr>
+                <td><a href="./Players/Detail/@team.Defense.ID">@team.Defense.FirstName @team.Defense.LastName</a></td>
+                <td><a href="./Players/Detail/@team.Offense.ID">@team.Offense.FirstName @team.Offense.LastName</a></td>
+                <td>@team.WinPct.ToString("F02") %</td>
+                <td>@team.GamesPlayed</td>
+            </tr>
+        }
+    </tbody>
+</table>
