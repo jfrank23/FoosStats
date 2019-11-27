@@ -20,8 +20,8 @@
         @foreach (var team in Model.teamsByPosition)
         {
             <tr>
-                <td><a href="./Players/Detail/@team.Defense.ID">@team.Defense.FirstName @team.Defense.LastName</a></td>
-                <td><a href="./Players/Detail/@team.Offense.ID">@team.Offense.FirstName @team.Offense.LastName</a></td>
+                <td><a href="./Players/Detail/@team.DefenseID">@team.DefenseName</a></td>
+                <td><a href="./Players/Detail/@team.OffenseID">@team.OffenseName</a></td>
                 <td>@team.WinPct.ToString("F02") %</td>
                 <td>@team.GamesPlayed</td>
             </tr>
@@ -43,8 +43,8 @@
         @foreach (var team in Model.overallTeams)
         {
             <tr>
-                <td><a href="./Players/Detail/@team.Defense.ID">@team.Defense.FirstName @team.Defense.LastName</a></td>
-                <td><a href="./Players/Detail/@team.Offense.ID">@team.Offense.FirstName @team.Offense.LastName</a></td>
+                <td><a href="./Players/Detail/@team.DefenseID">@team.DefenseName</a></td>
+                <td><a href="./Players/Detail/@team.OffenseID">@team.OffenseName</a></td>
                 <td>@team.WinPct.ToString("F02") %</td>
                 <td>@team.GamesPlayed</td>
             </tr>
