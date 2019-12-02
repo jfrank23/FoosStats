@@ -12,17 +12,26 @@ namespace FoosStats.Pages
     public class TeamStatsModel : PageModel
     {
         private readonly ITeamStatsRetriever teamStatsRetriever;
-        public IEnumerable<Team> teamsByPosition;
-        public IEnumerable<Team> overallTeams;
+        private readonly ITeamRefresher teamRefresher;
+        public IEnumerable<DisplayTeam> teamsByPosition;
+        public IEnumerable<DisplayTeam> overallTeams;
 
-        public TeamStatsModel(ITeamStatsRetriever teamStatsRetriever)
+        public TeamStatsModel(ITeamStatsRetriever teamStatsRetriever, ITeamRefresher teamRefresher)
         {
             this.teamStatsRetriever = teamStatsRetriever;
+            this.teamRefresher = teamRefresher;
         }
         public void OnGet()
         {
             teamsByPosition = teamStatsRetriever.BestTeamsByPosition();
             overallTeams = teamStatsRetriever.BestOverallTeams();
+        }
+        public IActionResult OnPost()
+        {
+            teamRefresher.Refresh();
+            teamsByPosition = teamStatsRetriever.BestTeamsByPosition();
+            overallTeams = teamStatsRetriever.BestOverallTeams();
+            return Page();
         }
     }
 }

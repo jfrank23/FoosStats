@@ -17,17 +17,19 @@ namespace FoosStats.Pages.Games
         public IGameRetriever gameRetriever;
         public IPlayerRetriever playerRetriever;
         public IUpdater<Game> gameUpdater;
+        private readonly ITeamUpdater teamUpdater;
         private readonly IHostingEnvironment env;
         public ICreator<Game> gameCreator;
 
         [BindProperty]
         public Game game { get; set; }
-        public EditGameModel(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, IUpdater<Game> gameUpdater, IHostingEnvironment env)
+        public EditGameModel(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, IUpdater<Game> gameUpdater,ITeamUpdater teamUpdater, IHostingEnvironment env)
         {
             this.gameRetriever = gameRetriever;
             this.playerRetriever = playerRetriever;
             this.gameCreator = gameCreator;
             this.gameUpdater = gameUpdater;
+            this.teamUpdater = teamUpdater;
             this.env = env;
         }
         public IActionResult OnGet(Guid gameID)
@@ -57,6 +59,7 @@ namespace FoosStats.Pages.Games
             {
                 gameCreator.Create(game);
             }
+            teamUpdater.Update(game);
             TempData["Message"] = "Game saved!";
             return RedirectToPage("./List");
         }
