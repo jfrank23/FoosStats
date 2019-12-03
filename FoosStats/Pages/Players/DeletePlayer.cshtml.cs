@@ -11,11 +11,13 @@ namespace FoosStats.Pages.Players
     {
         public IPlayerRetriever playerRetriever;
         public IDeleter<Player> playerDeleter;
+        private readonly IDeleter<Team> teamDeleter;
         public Player player;
-        public DeletePlayerModel(IPlayerRetriever playerRetriever, IDeleter<Player> playerDeleter)
+        public DeletePlayerModel(IPlayerRetriever playerRetriever, IDeleter<Player> playerDeleter, IDeleter<Team> teamDeleter)
         {
             this.playerRetriever = playerRetriever;
             this.playerDeleter = playerDeleter;
+            this.teamDeleter = teamDeleter;
         }
 
         public IActionResult OnGet(Guid playerID)
@@ -31,6 +33,7 @@ namespace FoosStats.Pages.Players
         public IActionResult OnPost(Guid playerID)
         {
             playerDeleter.Delete(playerID);
+            teamDeleter.Delete(playerID);
             return Redirect("~/Players/List");
         }
     }

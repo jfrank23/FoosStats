@@ -9,10 +9,12 @@ namespace FoosStats.Pages.Games
     public class DeleteGameModel : PageModel
     {
         public IDeleter<Game> gameDeleter;
+        private readonly ITeamRefresher teamRefresher;
 
-        public DeleteGameModel(IDeleter<Game> gameDeleter)
+        public DeleteGameModel(IDeleter<Game> gameDeleter, ITeamRefresher teamRefresher)
         {
             this.gameDeleter = gameDeleter;
+            this.teamRefresher = teamRefresher;
         }
 
         public IActionResult OnGet(Guid gameID)
@@ -27,6 +29,7 @@ namespace FoosStats.Pages.Games
         public IActionResult OnPost(Guid gameID)
         {
             gameDeleter.Delete(gameID);
+            teamRefresher.Refresh();
             return Redirect("~/Games/List");
         }
     }

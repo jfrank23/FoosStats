@@ -1,6 +1,6 @@
 ﻿namespace FoosStats.Core
 {
-    public class DerivedData
+    public class DerivedPlayerData
     {
         public Player player { get; set; }
         public float WinPercentage { get; set; }

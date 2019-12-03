@@ -6,7 +6,7 @@
 
 <h1>Team Stats</h1>
 <form method="post">
-    <button type="submit" class="btn btn-primary">Refesh</button>
+    <button type="submit" class="btn btn-primary">Refresh</button>
 </form>
 <p>Stats by team will only show if you have played 3 or more games with the individual.</p>
 <h3>By Position</h3>
@@ -17,6 +17,7 @@
             <td>Offense</td>
             <td>Win Percentage</td>
             <td>Games Played</td>
+            <td>Rank</td>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +28,7 @@
                 <td><a href="./Players/Detail/@team.OffenseID">@team.OffenseName</a></td>
                 <td>@team.WinPct.ToString("F02") %</td>
                 <td>@team.GamesPlayed</td>
+                <td>@team.Rank</td>
             </tr>
         }
     </tbody>
