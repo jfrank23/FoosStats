@@ -135,7 +135,7 @@ namespace FoosStats.Data
             var redTeam = GetTeams().FirstOrDefault(g => (g.DefenseID == newGame.RedDefense) && (g.OffenseID == newGame.RedOffense));
             if (blueTeam == null)
             {
-                blueTeam = Add(new DisplayTeam
+                blueTeam = (DisplayTeam)Add(new Team
                 {
                     DefenseID = newGame.BlueDefense,
                     OffenseID = newGame.BlueOffense,
@@ -164,7 +164,7 @@ namespace FoosStats.Data
 
             if (redTeam == null)
             {
-                redTeam = (DisplayTeam)Add(new Team
+                Add(new Team
                 {
                     DefenseID = newGame.RedDefense,
                     OffenseID = newGame.RedOffense,
