@@ -7,6 +7,7 @@ using FoosStats.Core.Updaters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Hosting;
 
 namespace FoosStats.Pages.Games
 {
@@ -18,12 +19,12 @@ namespace FoosStats.Pages.Games
         public IPlayerRetriever playerRetriever;
         public IUpdater<Game> gameUpdater;
         private readonly ITeamUpdater teamUpdater;
-        private readonly IHostingEnvironment env;
+        private readonly IWebHostEnvironment env;
         public ICreator<Game> gameCreator;
 
         [BindProperty]
         public Game game { get; set; }
-        public EditGameModel(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, IUpdater<Game> gameUpdater,ITeamUpdater teamUpdater, IHostingEnvironment env)
+        public EditGameModel(IGameRetriever gameRetriever, IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, IUpdater<Game> gameUpdater,ITeamUpdater teamUpdater, IWebHostEnvironment env)
         {
             this.gameRetriever = gameRetriever;
             this.playerRetriever = playerRetriever;

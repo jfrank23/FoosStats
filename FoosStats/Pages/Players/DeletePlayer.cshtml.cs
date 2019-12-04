@@ -12,13 +12,11 @@ namespace FoosStats.Pages.Players
         public IPlayerRetriever playerRetriever;
         private readonly ITeamRefresher teamRefresher;
         public IDeleter<Player> playerDeleter;
-        private readonly IDeleter<Team> teamDeleter;
         public Player player;
-        public DeletePlayerModel(IPlayerRetriever playerRetriever, ITeamRefresher teamRefresher, IDeleter<Team> teamDeleter)
+        public DeletePlayerModel(IPlayerRetriever playerRetriever, ITeamRefresher teamRefresher)
         {
             this.playerRetriever = playerRetriever;
             this.teamRefresher = teamRefresher;
-            this.teamDeleter = teamDeleter;
         }
 
         public IActionResult OnGet(Guid playerID)

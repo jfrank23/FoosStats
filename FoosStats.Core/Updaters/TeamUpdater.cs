@@ -1,7 +1,6 @@
 ﻿using FoosStats.Core.Creators;
 using FoosStats.Core.ELO;
 using FoosStats.Core.Retrievers;
-using System.Linq;
 
 namespace FoosStats.Core.Updaters
 {
@@ -13,20 +12,17 @@ namespace FoosStats.Core.Updaters
     {
 
         private readonly ITeamRepository teamRepository;
-        private readonly IGameRetriever gameRetriever;
-        private readonly ITeamStatsRetriever teamStatsRetriever;
+        private readonly ITeamRetriever teamStatsRetriever;
         private readonly ICreator<Team> teamCreator;
 
-        public TeamUpdater(ITeamRepository teamRepository, IGameRetriever gameRetriever, ITeamStatsRetriever teamStatsRetriever, ICreator<Team> teamCreator)
+        public TeamUpdater(ITeamRepository teamRepository, ITeamRetriever teamStatsRetriever, ICreator<Team> teamCreator)
         {
             this.teamRepository = teamRepository;
-            this.gameRetriever = gameRetriever;
             this.teamStatsRetriever = teamStatsRetriever;
             this.teamCreator = teamCreator;
         }
         public void Update(Game newGame)
         {
-            var games = gameRetriever.GetAllGames();
             //win = {blue,red}
             var win = new[] { 0, 0 };
             if (newGame.BlueScore > newGame.RedScore)

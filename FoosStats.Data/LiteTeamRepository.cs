@@ -1,6 +1,4 @@
 ﻿using FoosStats.Core;
-using FoosStats.Core.ELO;
-using FoosStats.Core.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FoosStats.Core.Creators
+﻿namespace FoosStats.Core.Creators
 {
     public class GameCreator :ICreator<Game>
     {

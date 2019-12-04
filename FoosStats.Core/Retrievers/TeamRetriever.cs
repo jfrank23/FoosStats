@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FoosStats.Core.Creators;
 
 namespace FoosStats.Core.Retrievers
 {
-    public interface ITeamStatsRetriever
+    public interface ITeamRetriever
     {
         IEnumerable<DisplayTeam> BestOverallTeams();
         IEnumerable<DisplayTeam> BestTeamsByPosition();
         IEnumerable<DisplayTeam> GetAllTeams();
         DisplayTeam GetTeamByPlayers(Guid DefenseID, Guid OffenseID);
     }
-    public class TeamStatsRetriever : ITeamStatsRetriever
+    public class TeamRetriever : ITeamRetriever
     {
         private readonly ITeamRepository teamRepository;
         private readonly IEnumerable<DisplayTeam> teams;
 
-        public TeamStatsRetriever(ITeamRepository teamRepository)
+        public TeamRetriever(ITeamRepository teamRepository)
         {
             this.teamRepository = teamRepository;
             teams = teamRepository.GetTeams();
@@ -28,24 +27,28 @@ namespace FoosStats.Core.Retrievers
             foreach (var team1 in teams)
             {
                 if(overallTeams.Where(t=>(t.DefenseID == team1.DefenseID && t.OffenseID == team1.OffenseID)||(t.DefenseID == team1.OffenseID && t.OffenseID == team1.DefenseID)).Count() > 0) { continue; }
-                foreach(var team2 in teams)
+
+                var tempTeam = new DisplayTeam
                 {
+                    DefenseID = team1.DefenseID,
+                    OffenseID = team1.OffenseID,
+                    GamesPlayed = team1.GamesPlayed,
+                    GamesWon = team1.GamesWon,
+                    DefenseName = team1.DefenseName,
+                    OffenseName = team1.OffenseName,
+                    TeamID = team1.TeamID
+                };
+                foreach (var team2 in teams)
+                {
+                    
                     if((team1.DefenseID == team2.OffenseID) && (team1.OffenseID == team2.DefenseID))
                     {
-                        overallTeams.Add(new DisplayTeam
-                        {
-                            DefenseID = team1.DefenseID,
-                            OffenseID = team1.OffenseID,
-                            GamesPlayed = team1.GamesPlayed + team2.GamesPlayed,
-                            GamesWon = team1.GamesWon + team2.GamesWon,
-                            DefenseName = team1.DefenseName,
-                            OffenseName = team1.OffenseName,
-                            TeamID = team1.TeamID,
-                            WinPct = (float)(team1.GamesWon + team2.GamesWon) /(team1.GamesPlayed + team2.GamesPlayed)*100
-                        }
-                            );;
+                        tempTeam.GamesPlayed += team2.GamesPlayed;
+                        tempTeam.GamesWon += team2.GamesWon;
                     }
                 }
+                tempTeam.WinPct = (float)tempTeam.GamesWon / tempTeam.GamesPlayed *100;
+                overallTeams.Add(tempTeam);
             }
             return overallTeams.Where(t=>t.GamesPlayed>3).OrderByDescending(t=>t.WinPct);
         }

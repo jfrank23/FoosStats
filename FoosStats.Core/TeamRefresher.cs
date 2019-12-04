@@ -1,9 +1,6 @@
 ﻿using FoosStats.Core.Retrievers;
 using FoosStats.Core.Updaters;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FoosStats.Core
 {

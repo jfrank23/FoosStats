@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FoosStats.Core;
 using FoosStats.Core.Retrievers;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +8,12 @@ namespace FoosStats.Pages
 {
     public class TeamStatsModel : PageModel
     {
-        private readonly ITeamStatsRetriever teamStatsRetriever;
+        private readonly ITeamRetriever teamStatsRetriever;
         private readonly ITeamRefresher teamRefresher;
         public IEnumerable<DisplayTeam> teamsByPosition;
         public IEnumerable<DisplayTeam> overallTeams;
 
-        public TeamStatsModel(ITeamStatsRetriever teamStatsRetriever, ITeamRefresher teamRefresher)
+        public TeamStatsModel(ITeamRetriever teamStatsRetriever, ITeamRefresher teamRefresher)
         {
             this.teamStatsRetriever = teamStatsRetriever;
             this.teamRefresher = teamRefresher;
