@@ -51,7 +51,7 @@ namespace FoosStats.Core.Retrievers
         }
         public IEnumerable<DisplayTeam> BestTeamsByPosition()
         {
-            return teams.Where(t => t.GamesPlayed >= 3).OrderByDescending(t => ((float)t.GamesWon / t.GamesPlayed)); ;
+            return teams.Where(t => t.GamesPlayed >= 3).OrderByDescending(t => t.Rank);
         }
         public IEnumerable<DisplayTeam> GetAllTeams()
         {

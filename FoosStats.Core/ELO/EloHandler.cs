@@ -22,17 +22,18 @@ namespace FoosStats.Core.ELO
         public static int[] UpdatedRanks(Team blue, Team red, Game game)
         {
             var expectedScores = ExpectedScores(blue.Rank, red.Rank);
-            var k_A = K_Decision(blue);
-            var k_B = K_Decision(red);
-            var updatedRankBlue = (int)Math.Round(blue.Rank + k_A * (ActualScore(game)[0] - expectedScores[0]));
-            var updatedRankRed = (int)Math.Round(red.Rank + k_B * (ActualScore(game)[1] - expectedScores[1]));
+            var K_Blue = K_Decision(blue);
+            var K_Red = K_Decision(red);
+            var updatedRankBlue = (int)Math.Round(blue.Rank + K_Blue * (ActualScore(game)[0] - expectedScores[0]));
+            var updatedRankRed = (int)Math.Round(red.Rank + K_Red * (ActualScore(game)[1] - expectedScores[1]));
             return new int[] { updatedRankBlue, updatedRankRed };
         }
 
         private static double[] ExpectedScores(int rankBlue, int rankRed)
         {
             var blueAdvantage = 100;
-            var expectedScoreBlue = 1 / (1 + Math.Pow(10, (rankRed + blueAdvantage - rankBlue) / 400));
+            rankBlue += blueAdvantage;
+            var expectedScoreBlue = 1 / (1 + Math.Pow(10, (rankRed - rankBlue) / 400));
             var expectedScoreRed = 1 / (1 + Math.Pow(10, (rankBlue - rankRed) / 400));
             return new double[] { expectedScoreBlue, expectedScoreRed };
         }

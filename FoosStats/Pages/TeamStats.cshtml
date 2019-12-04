@@ -13,23 +13,27 @@
 <table class="table">
     <thead>
         <tr>
+            <td>Position</td>
             <td>Defense</td>
             <td>Offense</td>
             <td>Win Percentage</td>
             <td>Games Played</td>
-            <td>Rank</td>
+            <td>Elo Score</td>
         </tr>
     </thead>
     <tbody>
+        @{int count = 1; }
         @foreach (var team in Model.teamsByPosition)
         {
             <tr>
+                <td>@count.</td>
                 <td><a href="./Players/Detail/@team.DefenseID">@team.DefenseName</a></td>
                 <td><a href="./Players/Detail/@team.OffenseID">@team.OffenseName</a></td>
                 <td>@team.WinPct.ToString("F02") %</td>
                 <td>@team.GamesPlayed</td>
                 <td>@team.Rank</td>
             </tr>
+            count += 1;
         }
     </tbody>
 </table>

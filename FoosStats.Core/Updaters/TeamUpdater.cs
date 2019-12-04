@@ -78,16 +78,18 @@ namespace FoosStats.Core.Updaters
                 };
                 
             }
-
+            var updatedScores = EloHandler.UpdatedRanks(blueTeam, redTeam, newGame);
             blueTeam.GamesPlayed += 1;
             blueTeam.GamesWon += win[0];
-            blueTeam.Rank = EloHandler.UpdatedRanks(blueTeam, redTeam, newGame)[0];
-            teamRepository.Update(blueTeam);
+            blueTeam.Rank = updatedScores[0];
+            
 
 
             redTeam.GamesPlayed += 1;
             redTeam.GamesWon += win[1];
-            redTeam.Rank = EloHandler.UpdatedRanks(blueTeam, redTeam, newGame)[1];
+            redTeam.Rank = updatedScores[1];
+
+            teamRepository.Update(blueTeam);
             teamRepository.Update(redTeam);
         }
     }
