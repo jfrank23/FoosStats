@@ -23,7 +23,20 @@ namespace FoosStats.Core
         public string RedDefenseName { get; set; }
         public string BlueOffenseName { get; set; }
         public string BlueDefenseName { get; set; }
-
+        public Game ToGame()
+        {
+            return new Game
+            {
+                GameID = this.GameID,
+                GameTime = this.GameTime,
+                RedOffense = this.RedOffense,
+                RedDefense = this.RedDefense,
+                BlueOffense = this.BlueOffense,
+                BlueDefense = this.BlueDefense,
+                RedScore = this.RedScore,
+                BlueScore = this.BlueScore
+            };
+        }
     }
 }
 

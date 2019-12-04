@@ -10,7 +10,7 @@
         }
         public Team Create(Team team)
         {
-            return teamRepository.Add(team);
+            return teamRepository.Create(team);
         }
     }
 

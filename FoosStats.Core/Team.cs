@@ -19,5 +19,17 @@ namespace FoosStats.Core
         public string DefenseName { get; set; }
         public string OffenseName { get; set; }
         public float WinPct { get; set; }
+        public Team ToTeam()
+        {
+            return new Team
+            {
+                OffenseID = this.OffenseID,
+                DefenseID = this.DefenseID,
+                Rank = this.Rank,
+                GamesPlayed = this.GamesPlayed,
+                GamesWon = this.GamesWon,
+                TeamID = this.TeamID
+            };
+        }
     }
 }

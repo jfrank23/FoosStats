@@ -19,14 +19,14 @@ namespace FoosStats.Core.ELO
     public static class EloHandler
     {
         public static readonly int StartingScore = 1200;
-        public static double[] UpdatedRanks(Team blue, Team red, Game game)
+        public static int[] UpdatedRanks(Team blue, Team red, Game game)
         {
             var expectedScores = ExpectedScores(blue.Rank, red.Rank);
             var k_A = K_Decision(blue);
             var k_B = K_Decision(red);
-            var updatedRankBlue = blue.Rank + k_A * (ActualScore(game)[0] - expectedScores[0]);
-            var updatedRankRed = red.Rank + k_B * (ActualScore(game)[1] - expectedScores[1]);
-            return new double[] { updatedRankBlue, updatedRankRed };
+            var updatedRankBlue = (int)Math.Round(blue.Rank + k_A * (ActualScore(game)[0] - expectedScores[0]));
+            var updatedRankRed = (int)Math.Round(red.Rank + k_B * (ActualScore(game)[1] - expectedScores[1]));
+            return new int[] { updatedRankBlue, updatedRankRed };
         }
 
         private static double[] ExpectedScores(int rankBlue, int rankRed)
@@ -39,17 +39,18 @@ namespace FoosStats.Core.ELO
         
         private static int K_Decision(Team team)
         {
+            var multiplier = 5;
             if (team.GamesPlayed < 10)
             {
-                return 40;
+                return 40 * multiplier;
             }
             else if (team.Rank < 2400)
             {
-                return 20;
+                return 20 * multiplier;
             }
             else
             {
-                return 10;
+                return 10 * multiplier;
             }
         }
         private static int[] ActualScore(Game game)

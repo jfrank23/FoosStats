@@ -6,10 +6,11 @@ namespace FoosStats.Core
 {
     public interface ITeamRepository
     {
-        Team Add(Team newTeam);
+        void Clear();
+        Team Create(Team newTeam);
         void Delete(Guid playerID);
+        DisplayTeam GetTeamByPlayers(Guid DefenseID, Guid OffenseID);
         IEnumerable<DisplayTeam> GetTeams();
-        void Refresh();
-        void Update(Game newGame);
+        void Update(Team updatedTeam);
     }
 }
