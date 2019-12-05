@@ -1,8 +1,5 @@
 ﻿using FoosStats.Core;
-using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Text;
 
 namespace FoosStats.Tests
 {

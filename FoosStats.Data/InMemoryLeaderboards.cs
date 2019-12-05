@@ -8,24 +8,24 @@ namespace FoosStats.Core
     {
         private readonly IEnumerable<Player> players;
         private IEnumerable<DisplayGame> games;
-        public IEnumerable<DerivedData> leaderboard;
+        public IEnumerable<DerivedPlayerData> leaderboard;
         public InMemoryLeaderboards(IPlayerRepository playerRepository, IGameRepository gameRepository)
         {
             players = playerRepository.GetPlayersByName();
             games = gameRepository.GetGames();
             MakeLeaderboard();
         }
-        public IEnumerable<DerivedData> GetLeaderboard()
+        public IEnumerable<DerivedPlayerData> GetLeaderboard()
         {
             return leaderboard;
         }
         public void MakeLeaderboard()
         {
-            var lst =  new List<DerivedData>();
+            var lst =  new List<DerivedPlayerData>();
             foreach(var currentPlayer in players)
             {
                 if (currentPlayer.GamesPlayed < 3) { continue; }
-                lst.Add(new DerivedData
+                lst.Add(new DerivedPlayerData
                 {
                     player = currentPlayer,
                     WinPercentage= (float)currentPlayer.GamesWon/currentPlayer.GamesPlayed*100,

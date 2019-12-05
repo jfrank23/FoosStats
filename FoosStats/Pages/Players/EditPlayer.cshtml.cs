@@ -6,6 +6,7 @@ using FoosStats.Core.Retrievers;
 using FoosStats.Core.Updaters;
 using FoosStats.Core.Creators;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace FoosStats.Pages.Players
 {
@@ -14,12 +15,12 @@ namespace FoosStats.Pages.Players
         public IPlayerRetriever playerRetriever;
         public IUpdater<Player> playerUpdater;
         public ICreator<Player> playerCreator;
-        private readonly IHostingEnvironment env;
+        private readonly IWebHostEnvironment env;
 
         [BindProperty]
         public Player Player { get; set; }
 
-        public EditPlayerModel(IPlayerRetriever playerRetriever, IUpdater<Player> playerUpdater, ICreator<Player> playerCreator, IHostingEnvironment env)
+        public EditPlayerModel(IPlayerRetriever playerRetriever, IUpdater<Player> playerUpdater, ICreator<Player> playerCreator, IWebHostEnvironment env)
         {
             this.playerRetriever = playerRetriever;
             this.playerUpdater = playerUpdater;

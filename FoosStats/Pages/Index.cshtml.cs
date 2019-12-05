@@ -11,8 +11,8 @@ namespace FoosStats.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         public IHomePageStatRetriever homePageStatRetriever;
-        public DerivedData bestOnBlue;
-        public DerivedData bestOnRed;
+        public DerivedPlayerData bestOnBlue;
+        public DerivedPlayerData bestOnRed;
 
         public float RedWinPct { get; set; }
         public float BlueWinPct { get; set; }

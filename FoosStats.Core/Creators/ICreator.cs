@@ -4,4 +4,5 @@
     {
         T Create(T element);
     }
+
 }

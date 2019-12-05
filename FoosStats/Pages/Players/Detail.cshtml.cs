@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using FoosStats.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
 using FoosStats.Core.Retrievers;
 
 namespace FoosStats.Pages.Players

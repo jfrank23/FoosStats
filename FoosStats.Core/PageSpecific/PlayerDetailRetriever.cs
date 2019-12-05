@@ -30,7 +30,7 @@ namespace FoosStats.Core.Retrievers
         private IEnumerable<Player> players;
         private IEnumerable<DisplayGame> games;
         private Dictionary<Guid, int[]> teammateStats = new Dictionary<Guid, int[]>();
-        private IEnumerable<DerivedData> leaderboard;
+        private IEnumerable<DerivedPlayerData> leaderboard;
         public PlayerDetailRetriever(IPlayerRetriever playerRetriever, IGameRetriever gameRetriever,ILeaderboards leaderboards)
         {
             this.playerRetriever = playerRetriever;

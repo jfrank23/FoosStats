@@ -27,24 +27,29 @@ namespace FoosStats
             services.AddRazorPages();
             services.AddSingleton<IPlayerRepository, LitePlayerRepository>();
             services.AddSingleton<IGameRepository, LiteGameRepository>();
+            services.AddSingleton<ITeamRepository, LiteTeamRepository>();
             services.AddScoped<ILeaderboards, InMemoryLeaderboards>();
             services.AddScoped<ITeamGenerator, TeamGenerator>();
 
             services.AddScoped<ICreator<Game>, GameCreator>();
             services.AddScoped<ICreator<Player>, PlayerCreator>();
+            services.AddScoped<ICreator<Team>,TeamCreator>();
 
             services.AddScoped<IDeleter<Game>, GameDeleter>();
             services.AddScoped<IDeleter<Player>, PlayerDeleter>();
+            services.AddScoped<IDeleter<Team>, TeamDeleter>();
 
             services.AddScoped<IGameRetriever, GameRetriever>();
             services.AddScoped<IPlayerRetriever, PlayerRetriever>();
             services.AddScoped<IPlayerDetailRetriever, PlayerDetailRetriever>();
             services.AddScoped<IHomePageStatRetriever, HomePageStatRetriever>();
-            services.AddScoped<ITeamStatsRetriever, TeamStatsRetriever>();
+            services.AddScoped<ITeamRetriever, TeamRetriever>();
 
             services.AddScoped<IUpdater<Game>, GameUpdater>();
             services.AddScoped<IUpdater<Player>, PlayerUpdater>();
+            services.AddScoped<ITeamUpdater, TeamUpdater>();
 
+            services.AddScoped<ITeamRefresher, TeamRefresher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
