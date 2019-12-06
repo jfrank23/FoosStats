@@ -66,6 +66,7 @@ namespace FoosStats.Core.PageSpecific
                     minPerm = perm;
                 }
             }
+            if(minDifference == 10000) { return new List<DisplayTeam>(); }
             foreach (var id in minPerm)
             {
                 selectedPlayersList.Remove(id);

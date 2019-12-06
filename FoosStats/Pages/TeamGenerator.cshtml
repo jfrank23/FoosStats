@@ -4,7 +4,10 @@
     ViewData["Title"] = "TeamGenerator";
 }
 
-<h1>Random Team Generator</h1>
+<h1>Team Generator</h1>
+<p class="font-italic"><text class="font-weight-bold">Fair Teams</text> : Selections of greater than 4 players will randomly sit players out then generate the fair teams with the remaining 4 players. 
+    A selection of less than 4 players will result in no fair team generation.
+    If a fair team does not appear and you have selected at least 4 players, then there is no way to get teams where both teams have played at least 1 game together.</p>
 <div>
     <form method="post">
         <div class="row">
@@ -66,7 +69,6 @@
 @if ((Model.fairTeams.Count) != 0)
 {
     <h4>Fair Teams</h4>
-    <p class="font-italic">Selections of greater than 4 players will randomly sit players out then generate the fair teams with the remaining 4 players. A selection of less than 4 players will result in no fair team generation.</p>
     <div class="card-deck" style="margin-bottom:10px">
         <div class="card">
             <h4 class="card-title text-center">Red Team</h4>

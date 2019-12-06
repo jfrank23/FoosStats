@@ -32,7 +32,15 @@ namespace FoosStats.Pages
         {
             teams = teamGenerator.RandomTeams(selectedPlayers);
             fairTeams = teamGenerator.FairTeams(selectedPlayers);
-            fairTeamsBenched = fairTeams.GetRange(2, fairTeams.Count - 2);
+            if (fairTeams.Count == 0)
+            {
+                fairTeamsBenched = new List<DisplayTeam>();
+            }
+            else
+            {
+                fairTeamsBenched = fairTeams.GetRange(2, fairTeams.Count - 2);
+
+            }
         }
     }
 }
