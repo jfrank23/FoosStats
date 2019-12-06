@@ -1,4 +1,5 @@
 ﻿using FoosStats.Core;
+using FoosStats.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;

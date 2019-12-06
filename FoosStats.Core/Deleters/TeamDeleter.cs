@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoosStats.Core.Repositories;
+using System;
 
 namespace FoosStats.Core.Deleters
 {

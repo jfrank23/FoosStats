@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using FoosStats.Core;
+using FoosStats.Core.Repositories;
 
 namespace FoosStats.Data
 {
@@ -125,7 +126,7 @@ namespace FoosStats.Data
                     });
                 }
 
-                return games.OrderBy(r => r.GameTime).Reverse();
+                return games.OrderByDescending(r => r.GameTime);
             }
         }
 

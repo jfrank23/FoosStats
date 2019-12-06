@@ -1,4 +1,6 @@
-﻿namespace FoosStats.Core.Updaters
+﻿using FoosStats.Core.Repositories;
+
+namespace FoosStats.Core.Updaters
 {
     public class GameUpdater:IUpdater<Game>
     {

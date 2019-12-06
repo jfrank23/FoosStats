@@ -1,6 +1,8 @@
 using FoosStats.Core;
 using FoosStats.Core.Creators;
 using FoosStats.Core.Deleters;
+using FoosStats.Core.PageSpecific;
+using FoosStats.Core.Repositories;
 using FoosStats.Core.Retrievers;
 using FoosStats.Core.Updaters;
 using FoosStats.Data;
@@ -28,6 +30,8 @@ namespace FoosStats
             services.AddSingleton<IPlayerRepository, LitePlayerRepository>();
             services.AddSingleton<IGameRepository, LiteGameRepository>();
             services.AddSingleton<ITeamRepository, LiteTeamRepository>();
+            services.AddSingleton<IHistoricalData, InMemoryHistoricalData>();
+
             services.AddScoped<ILeaderboards, InMemoryLeaderboards>();
             services.AddScoped<ITeamGenerator, TeamGenerator>();
 
@@ -43,6 +47,7 @@ namespace FoosStats
             services.AddScoped<IPlayerRetriever, PlayerRetriever>();
             services.AddScoped<IPlayerDetailRetriever, PlayerDetailRetriever>();
             services.AddScoped<IHomePageStatRetriever, HomePageStatRetriever>();
+            services.AddScoped<TeamDetailRetriever, TeamDetailRetriever>();
             services.AddScoped<ITeamRetriever, TeamRetriever>();
 
             services.AddScoped<IUpdater<Game>, GameUpdater>();

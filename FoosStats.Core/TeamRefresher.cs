@@ -1,4 +1,5 @@
-﻿using FoosStats.Core.Retrievers;
+﻿using FoosStats.Core.Repositories;
+using FoosStats.Core.Retrievers;
 using FoosStats.Core.Updaters;
 using System.Linq;
 

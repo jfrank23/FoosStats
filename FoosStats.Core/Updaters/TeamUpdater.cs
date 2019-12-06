@@ -1,5 +1,6 @@
 ﻿using FoosStats.Core.Creators;
 using FoosStats.Core.ELO;
+using FoosStats.Core.Repositories;
 using FoosStats.Core.Retrievers;
 
 namespace FoosStats.Core.Updaters
@@ -14,12 +15,14 @@ namespace FoosStats.Core.Updaters
         private readonly ITeamRepository teamRepository;
         private readonly ITeamRetriever teamStatsRetriever;
         private readonly ICreator<Team> teamCreator;
+        private readonly IHistoricalData historicalData;
 
-        public TeamUpdater(ITeamRepository teamRepository, ITeamRetriever teamStatsRetriever, ICreator<Team> teamCreator)
+        public TeamUpdater(ITeamRepository teamRepository, ITeamRetriever teamStatsRetriever, ICreator<Team> teamCreator,IHistoricalData historicalData)
         {
             this.teamRepository = teamRepository;
             this.teamStatsRetriever = teamStatsRetriever;
             this.teamCreator = teamCreator;
+            this.historicalData = historicalData;
         }
         public void Update(Game newGame)
         {
@@ -80,10 +83,18 @@ namespace FoosStats.Core.Updaters
             blueTeam.Rank = updatedScores[0];
             
 
-
             redTeam.GamesPlayed += 1;
             redTeam.GamesWon += win[1];
             redTeam.Rank = updatedScores[1];
+
+            if (blueTeam.DefenseID == new System.Guid("7f9793ea-952e-41f8-9c3a-d6ba6fb07766") && blueTeam.OffenseID == new System.Guid("96b64fc4-a6be-41cf-a107-5b9c4054b076"))
+            {
+                System.Console.WriteLine(blueTeam.Rank);
+            }
+            if (redTeam.DefenseID == new System.Guid("7f9793ea-952e-41f8-9c3a-d6ba6fb07766") && redTeam.OffenseID == new System.Guid("96b64fc4-a6be-41cf-a107-5b9c4054b076"))
+            {
+                System.Console.WriteLine(redTeam.Rank);
+            }
 
             teamRepository.Update(blueTeam);
             teamRepository.Update(redTeam);

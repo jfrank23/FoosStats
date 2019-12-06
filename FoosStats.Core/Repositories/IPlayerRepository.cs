@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FoosStats.Core
+namespace FoosStats.Core.Repositories
 {
     public interface IPlayerRepository
     {
