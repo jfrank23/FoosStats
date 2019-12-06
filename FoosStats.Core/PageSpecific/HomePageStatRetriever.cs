@@ -1,8 +1,10 @@
-﻿using System;
+﻿using FoosStats.Core.Repositories;
+using FoosStats.Core.Retrievers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FoosStats.Core.Retrievers
+namespace FoosStats.Core.PageSpecific
 {
     public interface IHomePageStatRetriever
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FoosStats.Core.Retrievers;
 
-namespace FoosStats.Core
+namespace FoosStats.Core.PageSpecific
 {
     public interface ITeamGenerator
     {

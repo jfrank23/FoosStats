@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoosStats.Core.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,7 @@ namespace FoosStats.Core.Retrievers
         IEnumerable<DisplayTeam> BestOverallTeams();
         IEnumerable<DisplayTeam> BestTeamsByPosition();
         IEnumerable<DisplayTeam> GetAllTeams();
+        DisplayTeam GetTeamById(Guid teamID);
         DisplayTeam GetTeamByPlayers(Guid DefenseID, Guid OffenseID);
     }
     public class TeamRetriever : ITeamRetriever
@@ -64,6 +66,13 @@ namespace FoosStats.Core.Retrievers
         {
             return teamRepository.GetTeamByPlayers(DefenseID, OffenseID);
         }
+        public DisplayTeam GetTeamById(Guid teamID)
+        {
+            return teamRepository.GetTeamById(teamID);
+        }
+
+
+
         //public IEnumerable<DisplayTeam> BestOverallTeams()
         //{
         //    var bestOverall = new List<DisplayTeam>();

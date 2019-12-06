@@ -1,4 +1,5 @@
 ﻿using FoosStats.Core;
+using FoosStats.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -66,8 +67,10 @@ namespace FoosStats.Data
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
-                newTeam.TeamID = Guid.NewGuid();
-                newTeam.Rank = newTeam.Rank;
+                if(newTeam.TeamID == Guid.Empty)
+                {
+                    newTeam.TeamID = Guid.NewGuid();
+                }
                 connection.Open();
                 var command = connection.CreateCommand();
                 command.CommandText = $"Insert into Teams(TeamID, DefenseID, OffenseID, GamesPlayed, GamesWon, Rank) values(@TeamID, @DefenseID, @OffenseID, @GamesPlayed, @GamesWon, @Rank)";
@@ -100,6 +103,40 @@ namespace FoosStats.Data
                 command.Parameters.Add(new SQLiteParameter("@DefenseID", DefenseID));
                 command.Parameters.Add(new SQLiteParameter("@OffenseID", OffenseID));
 
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    teams.Add(new DisplayTeam
+                    {
+                        TeamID = new Guid(reader.GetString(0)),
+                        DefenseID = new Guid(reader.GetString(1)),
+                        OffenseID = new Guid(reader.GetString(2)),
+                        GamesPlayed = reader.GetInt32(3),
+                        GamesWon = reader.GetInt32(4),
+                        Rank = reader.GetInt32(5),
+                        DefenseName = $"{reader.GetString(6)} {reader.GetString(7)}",
+                        OffenseName = $"{reader.GetString(8)} {reader.GetString(9)}",
+                        WinPct = (float)reader.GetInt32(4) / reader.GetInt32(3) * 100
+
+                    });
+                }
+                return teams.FirstOrDefault();
+            }
+        }
+        public DisplayTeam GetTeamById(Guid TeamID)
+        {
+            var teams = new List<DisplayTeam>();
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT " +
+                    "TeamId, DefenseID, OffenseID, GamesPlayed, GamesWon, Rank, DFirst, DLast, OFirst, OLast " +
+                    "From(SELECT * FROM Teams " +
+                    "LEFT JOIN(SELECT PlayerId as DId,FirstName as DFirst,LastName as DLast from Players) ON DefenseID = DId " +
+                    "LEFT JOIN(SELECT PlayerId as OId,FirstName as OFirst,LastName as OLast from Players) ON OffenseID = OId) " +
+                    "Where TeamID = @TeamID ;";
+                command.Parameters.Add(new SQLiteParameter("@TeamID", TeamID));
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {

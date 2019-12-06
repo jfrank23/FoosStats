@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FoosStats.Core.Repositories;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 

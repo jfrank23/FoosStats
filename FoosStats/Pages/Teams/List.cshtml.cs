@@ -4,16 +4,16 @@ using FoosStats.Core.Retrievers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoosStats.Pages
+namespace FoosStats.Pages.Teams
 {
-    public class TeamStatsModel : PageModel
+    public class List : PageModel
     {
         private readonly ITeamRetriever teamStatsRetriever;
         private readonly ITeamRefresher teamRefresher;
         public IEnumerable<DisplayTeam> teamsByPosition;
         public IEnumerable<DisplayTeam> overallTeams;
 
-        public TeamStatsModel(ITeamRetriever teamStatsRetriever, ITeamRefresher teamRefresher)
+        public List(ITeamRetriever teamStatsRetriever, ITeamRefresher teamRefresher)
         {
             this.teamStatsRetriever = teamStatsRetriever;
             this.teamRefresher = teamRefresher;

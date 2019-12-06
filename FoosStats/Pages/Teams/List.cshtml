@@ -1,5 +1,5 @@
 ﻿@page
-@model FoosStats.Pages.TeamStatsModel
+@model FoosStats.Pages.Teams.List
 @{
     ViewData["Title"] = "TeamStats";
 }
@@ -21,6 +21,7 @@
             <td>Win Percentage</td>
             <td>Games Played</td>
             <td>Elo Score</td>
+            <td>Details</td>
         </tr>
     </thead>
     <tbody>
@@ -34,6 +35,11 @@
                 <td>@team.WinPct.ToString("F02") %</td>
                 <td>@team.GamesPlayed</td>
                 <td>@team.Rank</td>
+                <td>
+                    <a class="btn btn-lg" asp-page="./Detail" asp-route-teamID="@team.TeamID">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </td>
             </tr>
             count += 1;
         }

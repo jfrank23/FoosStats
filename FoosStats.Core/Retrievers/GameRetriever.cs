@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoosStats.Core.Repositories;
+using System;
 using System.Collections.Generic;
 
 namespace FoosStats.Core.Retrievers

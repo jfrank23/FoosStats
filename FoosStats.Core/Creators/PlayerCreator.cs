@@ -1,4 +1,6 @@
-﻿namespace FoosStats.Core.Creators
+﻿using FoosStats.Core.Repositories;
+
+namespace FoosStats.Core.Creators
 {
     public class PlayerCreator :ICreator<Player>
     {

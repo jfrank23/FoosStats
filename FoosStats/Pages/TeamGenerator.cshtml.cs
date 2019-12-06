@@ -1,4 +1,5 @@
 ﻿using FoosStats.Core;
+using FoosStats.Core.PageSpecific;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;

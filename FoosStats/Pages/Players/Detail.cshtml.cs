@@ -4,6 +4,7 @@ using FoosStats.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FoosStats.Core.Retrievers;
+using FoosStats.Core.PageSpecific;
 
 namespace FoosStats.Pages.Players
 {
