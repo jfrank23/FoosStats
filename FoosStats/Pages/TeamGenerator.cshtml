@@ -37,7 +37,8 @@
 <hr />
 @if ((Model.teams[0].Count() + Model.teams[1].Count() + Model.teams[2].Count()) != 0)
 {
-    <div class="card-deck">
+    <h4>Random Teams</h4>
+    <div class="card-deck" style="margin-bottom: 10px">
         <div class="card">
             <h4 class="card-title text-center">Red Team</h4>
             @foreach (var name in Model.teams[0])
@@ -59,6 +60,30 @@
             {
                 <p class="card-text text-center" start="1">@name</p>
             }
+        </div>
+    </div>
+}
+@if ((Model.fairTeams.Count) != 0)
+{
+    <h4>Fair Teams</h4>
+    <div class="card-deck" style="margin-bottom:10px">
+        <div class="card">
+            <h4 class="card-title text-center">Red Team</h4>
+            <p> Offense: @Model.fairTeams[1].OffenseName</p>
+            <p> Defense: @Model.fairTeams[1].DefenseName</p>
+            <p> Rank: @Model.fairTeams[1].Rank</p>
+
+
+        </div>
+        <div class="card">
+            <h4 class="card-title text-center">Blue Team</h4>
+            <p> Offense: @Model.fairTeams[0].OffenseName</p>
+            <p> Defense: @Model.fairTeams[0].DefenseName</p>
+            <p> Rank: @Model.fairTeams[0].Rank + 100 </p>
+        </div>
+        <div class="card">
+            <h4 class="card-title text-center">Bench</h4>
+
         </div>
     </div>
 }

@@ -9,23 +9,32 @@ namespace FoosStats.Core.PageSpecific
     {
         IEnumerable<Player> players { get; set; }
 
-        public List<List<String>> Randomize(IEnumerable<Guid> selectedPlayers)
-;
+        List<DisplayTeam> FairTeams(IEnumerable<Guid> selectedPlayers);
+        public List<List<String>> RandomTeams(IEnumerable<Guid> selectedPlayers);
     }
     public class TeamGenerator : ITeamGenerator
     {
         public IEnumerable<Player> players { get; set; }
+        public ITeamRetriever teamRetriever { get; }
+        public IEnumerable<DisplayTeam> teams;
         private IPlayerRetriever playerRetriever;
         private Random random = new Random();
 
 
-        public TeamGenerator(IPlayerRetriever playerRetriever)
+        public TeamGenerator(IPlayerRetriever playerRetriever, ITeamRetriever teamRetriever)
         {
             this.playerRetriever = playerRetriever;
+            teams = teamRetriever.GetAllTeams();
             players = playerRetriever.GetPlayersByName();
         }
 
-        public List<List<String>> Randomize(IEnumerable<Guid> selectedPlayers)
+        public List<List<String>> RandomTeams(IEnumerable<Guid> selectedPlayers)
+        {
+            List<Guid> shuffled = Shuffle(selectedPlayers);
+            return SplitIntoTeams(shuffled);
+        }
+
+        private List<Guid> Shuffle(IEnumerable<Guid> selectedPlayers)
         {
             var unShuffled = selectedPlayers.ToList();
             var shuffled = new List<Guid>();
@@ -36,7 +45,8 @@ namespace FoosStats.Core.PageSpecific
                 shuffled.Add(player);
                 unShuffled.Remove(player);
             }
-            return SplitIntoTeams(shuffled);
+
+            return shuffled;
         }
 
         private List<List<string>> SplitIntoTeams(List<Guid> shuffled)
@@ -78,5 +88,60 @@ namespace FoosStats.Core.PageSpecific
             }
             return teams.ToList();
         }
+
+        public List<DisplayTeam> FairTeams(IEnumerable<Guid> selectedPlayers)
+        {
+            if (selectedPlayers.Count() < 4)
+            {
+                return new List<DisplayTeam>();
+            }
+            
+            var matchup = new List<DisplayTeam>();
+            var minDifference = 10000;
+            foreach (var perm in permute4(selectedPlayers))
+            {
+                var blueTeam = teams.FirstOrDefault(t=>(t.DefenseID==perm[0])&&(t.OffenseID == perm[1]));
+                var redTeam = teams.FirstOrDefault(t=>(t.DefenseID==perm[2])&&(t.OffenseID == perm[3]));
+                if ((blueTeam==null)||(redTeam==null))
+                {
+                    continue;
+                }
+                var difference = Math.Abs(blueTeam.Rank + 100 - redTeam.Rank); //Blue Team with blue advantage minus redd rank
+                if ( difference < minDifference)
+                {
+                    minDifference = difference;
+                    matchup = new List<DisplayTeam> { blueTeam, redTeam };
+                }
+
+            }
+            return matchup;
+
+        }
+        private List<List<Guid>> permute4(IEnumerable<Guid> selectedPlayers)
+        {
+            var allPermuted = new List<List<Guid>>();
+            foreach (var id1 in selectedPlayers)
+            {
+                foreach (var id2 in selectedPlayers)
+                {
+                    foreach (var id3 in selectedPlayers)
+                    {
+                        foreach (var id4 in selectedPlayers)
+                        {
+
+                            var permutation = new List<Guid> { id1, id2, id3, id4 };
+                            var groups = permutation.GroupBy(i=>i);
+                            if (groups.Count() < 4)
+                            {
+                                continue;
+                            }
+                            allPermuted.Add(permutation);
+                        }
+                    }
+                }
+            }
+            return allPermuted;
+        }
+
     }
 }

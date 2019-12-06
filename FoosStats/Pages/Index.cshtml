@@ -38,7 +38,7 @@
         </thead>
         <tbody>
             @{int count = 1; }
-            @foreach (var team in Model.teamRetriever.BestTeamsByPosition().ToList().Take(5))
+            @foreach (var team in Model.teamRetriever.BestTeamsByPosition().ToList().Take(3))
             {
                 <tr>
                     <td>@count.</td>
