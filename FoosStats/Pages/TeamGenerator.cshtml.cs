@@ -15,6 +15,8 @@ namespace FoosStats.Pages
         public IEnumerable<Guid> selectedPlayers{ get; set; }
         public List<List<String>> teams = new List<List<string>>();
         public List<DisplayTeam> fairTeams = new List<DisplayTeam>();
+        public List<DisplayTeam> fairTeamsBenched;
+
         public TeamGeneratorModel(ITeamGenerator teamGenerator)
         {
             this.teamGenerator = teamGenerator;
@@ -30,6 +32,7 @@ namespace FoosStats.Pages
         {
             teams = teamGenerator.RandomTeams(selectedPlayers);
             fairTeams = teamGenerator.FairTeams(selectedPlayers);
+            fairTeamsBenched = fairTeams.GetRange(2, fairTeams.Count - 2);
         }
     }
 }

@@ -81,9 +81,17 @@
             <p> Defense: @Model.fairTeams[0].DefenseName</p>
             <p> Rank: @Model.fairTeams[0].Rank + 100 </p>
         </div>
-        <div class="card">
-            <h4 class="card-title text-center">Bench</h4>
+        @if (Model.fairTeams.Count() > 2)
+        {
+            <div class="card">
+                <h4 class="card-title text-center">Bench</h4>
+                @foreach (var benched in Model.fairTeamsBenched)
+                {
+                    <p>@benched.DefenseName</p>
 
-        </div>
+                }
+            </div>
+        }
+
     </div>
 }

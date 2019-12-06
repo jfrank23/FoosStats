@@ -18,7 +18,7 @@ namespace FoosStats.Core.PageSpecific
         public ITeamRetriever teamRetriever { get; }
         public IEnumerable<DisplayTeam> teams;
         private IPlayerRetriever playerRetriever;
-        private Random random = new Random();
+        private Random random;
 
 
         public TeamGenerator(IPlayerRetriever playerRetriever, ITeamRetriever teamRetriever)
@@ -30,10 +30,53 @@ namespace FoosStats.Core.PageSpecific
 
         public List<List<String>> RandomTeams(IEnumerable<Guid> selectedPlayers)
         {
+            random = new Random();
             List<Guid> shuffled = Shuffle(selectedPlayers);
             return SplitIntoTeams(shuffled);
         }
+        public List<DisplayTeam> FairTeams(IEnumerable<Guid> selectedPlayers)
+        {
+            random = new Random();
+            var selectedPlayersList = selectedPlayers.ToList();
+            var shuffled = selectedPlayers;
+            if (selectedPlayers.Count() < 4)
+            {
+                return new List<DisplayTeam>();
+            }
+            if (selectedPlayers.Count() > 4)
+            {
+                shuffled = Shuffle(selectedPlayers);
+            }
+            var matchup = new List<DisplayTeam>();
+            var minDifference = 10000;
+            var minPerm = Enumerable.Empty<Guid>();
+            foreach (var perm in permute4(shuffled))
+            {
+                var blueTeam = teams.FirstOrDefault(t => (t.DefenseID == perm[0]) && (t.OffenseID == perm[1]));
+                var redTeam = teams.FirstOrDefault(t => (t.DefenseID == perm[2]) && (t.OffenseID == perm[3]));
+                if ((blueTeam == null) || (redTeam == null))
+                {
+                    continue;
+                }
+                var difference = Math.Abs(blueTeam.Rank + 100 - redTeam.Rank); //Blue Team with blue advantage minus redd rank
+                if (difference < minDifference)
+                {
+                    minDifference = difference;
+                    matchup = new List<DisplayTeam> { blueTeam, redTeam };
+                    minPerm = perm;
+                }
+            }
+            foreach (var id in minPerm)
+            {
+                selectedPlayersList.Remove(id);
+            }
+            foreach(var id in selectedPlayersList)
+            {
+                matchup.Add(new DisplayTeam { DefenseName = playerRetriever.GuidToName(id)});
+            }
+            return matchup;
 
+        }
         private List<Guid> Shuffle(IEnumerable<Guid> selectedPlayers)
         {
             var unShuffled = selectedPlayers.ToList();
@@ -89,34 +132,7 @@ namespace FoosStats.Core.PageSpecific
             return teams.ToList();
         }
 
-        public List<DisplayTeam> FairTeams(IEnumerable<Guid> selectedPlayers)
-        {
-            if (selectedPlayers.Count() < 4)
-            {
-                return new List<DisplayTeam>();
-            }
-            
-            var matchup = new List<DisplayTeam>();
-            var minDifference = 10000;
-            foreach (var perm in permute4(selectedPlayers))
-            {
-                var blueTeam = teams.FirstOrDefault(t=>(t.DefenseID==perm[0])&&(t.OffenseID == perm[1]));
-                var redTeam = teams.FirstOrDefault(t=>(t.DefenseID==perm[2])&&(t.OffenseID == perm[3]));
-                if ((blueTeam==null)||(redTeam==null))
-                {
-                    continue;
-                }
-                var difference = Math.Abs(blueTeam.Rank + 100 - redTeam.Rank); //Blue Team with blue advantage minus redd rank
-                if ( difference < minDifference)
-                {
-                    minDifference = difference;
-                    matchup = new List<DisplayTeam> { blueTeam, redTeam };
-                }
-
-            }
-            return matchup;
-
-        }
+        
         private List<List<Guid>> permute4(IEnumerable<Guid> selectedPlayers)
         {
             var allPermuted = new List<List<Guid>>();
