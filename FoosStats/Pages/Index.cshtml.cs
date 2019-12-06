@@ -12,6 +12,7 @@ namespace FoosStats.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         public IHomePageStatRetriever homePageStatRetriever;
+        public readonly ITeamRetriever teamRetriever;
         public DerivedPlayerData bestOnBlue;
         public DerivedPlayerData bestOnRed;
 
@@ -19,10 +20,11 @@ namespace FoosStats.Pages
         public float BlueWinPct { get; set; }
 
 
-        public IndexModel(ILogger<IndexModel> logger, IHomePageStatRetriever homePageStatRetriever)
+        public IndexModel(ILogger<IndexModel> logger, IHomePageStatRetriever homePageStatRetriever, ITeamRetriever teamRetriever)
         {
             _logger = logger;
             this.homePageStatRetriever = homePageStatRetriever;
+            this.teamRetriever = teamRetriever;
         }
 
         public IActionResult OnGet()

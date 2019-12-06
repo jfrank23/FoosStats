@@ -21,10 +21,49 @@
 <hr />
 
 <h3 class="text-center">Leader Board</h3>
+
+<div class="card" style="margin-bottom:10px">
+    <h5 class="card-title text-center">Top Teams</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Position</td>
+                <td>Defense</td>
+                <td>Offense</td>
+                <td>Win Percentage</td>
+                <td>Games Played</td>
+                <td>Elo Score</td>
+                <td>Details</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{int count = 1; }
+            @foreach (var team in Model.teamRetriever.BestTeamsByPosition().ToList().Take(3))
+            {
+                <tr>
+                    <td>@count.</td>
+                    <td><a href="./Players/Detail/@team.DefenseID">@team.DefenseName</a></td>
+                    <td><a href="./Players/Detail/@team.OffenseID">@team.OffenseName</a></td>
+                    <td>@team.WinPct.ToString("F02") %</td>
+                    <td>@team.GamesPlayed</td>
+                    <td>@team.Rank</td>
+                    <td>
+                        <a class="btn btn-lg" asp-page="./Teams/Detail" asp-route-teamID="@team.TeamID">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </td>
+                </tr>
+                count += 1;
+            }
+        </tbody>
+    </table>
+</div>
+
 <div class="card-deck" style="margin-bottom:10px">
+    
     <div class="card">
         <h5 class="card-title text-center">Win Percentage</h5>
-        @{ var count = 1;}
+        @{ count = 1;}
         @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByWinPct())
         {
             <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @(derivedData.WinPercentage.ToString("F02"))%</p>

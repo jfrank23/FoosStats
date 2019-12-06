@@ -14,6 +14,7 @@ namespace FoosStats.Pages
         [BindProperty]
         public IEnumerable<Guid> selectedPlayers{ get; set; }
         public List<List<String>> teams = new List<List<string>>();
+        public List<DisplayTeam> fairTeams = new List<DisplayTeam>();
         public TeamGeneratorModel(ITeamGenerator teamGenerator)
         {
             this.teamGenerator = teamGenerator;
@@ -23,10 +24,12 @@ namespace FoosStats.Pages
             teams.Add(new List<string>());
             teams.Add(new List<string>());
             teams.Add(new List<string>());
+
         }
         public void OnPost()
         {
-            teams = teamGenerator.Randomize(selectedPlayers);
+            teams = teamGenerator.RandomTeams(selectedPlayers);
+            fairTeams = teamGenerator.FairTeams(selectedPlayers);
         }
     }
 }
