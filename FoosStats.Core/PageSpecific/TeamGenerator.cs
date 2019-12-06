@@ -54,9 +54,23 @@ namespace FoosStats.Core.PageSpecific
             {
                 var blueTeam = teams.FirstOrDefault(t => (t.DefenseID == perm[0]) && (t.OffenseID == perm[1]));
                 var redTeam = teams.FirstOrDefault(t => (t.DefenseID == perm[2]) && (t.OffenseID == perm[3]));
-                if ((blueTeam == null) || (redTeam == null))
+                if ((blueTeam == null))
                 {
-                    continue;
+                    blueTeam = new DisplayTeam
+                    {
+                        DefenseName = playerRetriever.GuidToName(perm[0]),
+                        OffenseName = playerRetriever.GuidToName(perm[1]),
+                        Rank = ELO.EloHandler.StartingScore
+                    };
+                }
+                if ((redTeam == null))
+                {
+                    redTeam = new DisplayTeam
+                    {
+                        DefenseName = playerRetriever.GuidToName(perm[2]),
+                        OffenseName = playerRetriever.GuidToName(perm[3]),
+                        Rank = ELO.EloHandler.StartingScore
+                    };
                 }
                 var difference = Math.Abs(blueTeam.Rank + 100 - redTeam.Rank); //Blue Team with blue advantage minus redd rank
                 if (difference < minDifference)
