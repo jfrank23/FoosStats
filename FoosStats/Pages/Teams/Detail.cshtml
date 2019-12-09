@@ -4,10 +4,31 @@
     ViewData["Title"] = "Detail";
 }
 
-<h1>Team Details</h1>
+<h1 class="text-center">Team Details</h1>
 
+
+<div>
+    <div class="flex-fill"><h3>Offense: @Model.team.OffenseName</h3></div>
+    <div class="flex-fill"><h3>Defense: @Model.team.DefenseName</h3></div>
+</div>
+<div class="card-deck">
+    <div class="card">
+        <p><text class="font-weight-bold">Games Played:</text> @Model.gamesPlayed</p>
+        <p><text class="font-weight-bold">Record:</text> @Model.record[0] - @Model.record[1]</p>
+        <p><text class="font-weight-bold">Win Percentage:</text> @Model.team.WinPct.ToString("F02")%</p>
+    </div>
+    <div class="card">
+        <p><text class="font-weight-bold">Red Record:</text> @Model.redRecord[0] - @Model.redRecord[1] </p>
+        <p><text class="font-weight-bold">Red Win Percentage:</text> @Model.redPct.ToString("F02")% </p>
+        <p><text class="font-weight-bold">Blue Record:</text> @Model.blueRecord[0] - @Model.blueRecord[1] </p>
+        <p><text class="font-weight-bold">Blue Win Percentage:</text> @Model.bluePct.ToString("F02")% </p>
+    </div>
+    <div class="card">
+        <p><text class="font-weight-bold">Goals For Per Game:</text> @Model.avgGoalsFor.ToString("F02")</p>
+        <p><text class="font-weight-bold">Goals Against Per Game:</text> @Model.avgGoalsAgainst.ToString("F02")</p>
+    </div>
+</div>
 <canvas id="line-chart" width="800" height="450"></canvas>
-
 <div>
     <h3 class="text-center">Team's Games</h3>
     <table class="table">

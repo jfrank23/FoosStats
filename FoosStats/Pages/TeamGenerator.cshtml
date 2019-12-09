@@ -71,9 +71,9 @@
     <div class="card-deck" style="margin-bottom:10px">
         <div class="card">
             <h4 class="card-title text-center">Red Team</h4>
-            <p> Offense: @Model.fairTeams[1].OffenseName</p>
-            <p> Defense: @Model.fairTeams[1].DefenseName</p>
-            <p> Rank: @Model.fairTeams[1].Rank</p>
+            <p> <text class="font-weight-bold">Offense:</text> @Model.fairTeams[1].OffenseName</p>
+            <p> <text class="font-weight-bold">Defense:</text> @Model.fairTeams[1].DefenseName</p>
+            <p> <text class="font-weight-bold">Rank:</text> @Model.fairTeams[1].Rank</p>
             @if(Model.fairTeams[1].TeamID == Guid.Empty)
             {
                 <p class="font-italic">New Team</p>
@@ -81,9 +81,9 @@
         </div>
         <div class="card">
             <h4 class="card-title text-center">Blue Team</h4>
-            <p> Offense: @Model.fairTeams[0].OffenseName</p>
-            <p> Defense: @Model.fairTeams[0].DefenseName</p>
-            <p> Rank: @Model.fairTeams[0].Rank + 100 </p>
+            <p> <text class="font-weight-bold">Offense:</text> @Model.fairTeams[0].OffenseName</p>
+            <p> <text class="font-weight-bold">Defense:</text> @Model.fairTeams[0].DefenseName</p>
+            <p> <text class="font-weight-bold">Rank:</text> @Model.fairTeams[0].Rank + 100 </p>
             @if (Model.fairTeams[0].TeamID == Guid.Empty)
             {
                 <p class="font-italic">New Team</p>
