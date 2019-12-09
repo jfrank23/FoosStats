@@ -29,7 +29,7 @@
             <td>Games Lost</td>
             <td>Details</td>
             <td>Edit</td>
-            <td>Delete</td>
+            @*<td>Delete</td>*@
         </tr>
     </thead>
     <tbody>
@@ -67,11 +67,11 @@
                     <i class="fa fa-edit"></i>
                 </a>
             </td>
-            <td>
+            @*<td>
                 <a class="btn btn-lg" asp-page="./DeletePlayer" asp-route-playerID="@player.ID">
                     <i class="fa fa-trash"></i>
                 </a>
-            </td>
+            </td>*@
         </tr>
         }
     </tbody>
