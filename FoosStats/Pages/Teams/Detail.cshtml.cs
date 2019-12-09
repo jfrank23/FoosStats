@@ -1,6 +1,7 @@
 ﻿using FoosStats.Core;
 using FoosStats.Core.PageSpecific;
 using FoosStats.Core.Retrievers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -35,9 +36,13 @@ namespace FoosStats.Pages.Teams
             this.teamDetailRetriever = teamDetailRetriever;
             this.teamRetriever = teamRetriever;
         }
-        public void OnGet(Guid teamID)
+        public IActionResult OnGet(Guid teamID)
         {
             team = teamRetriever.GetTeamById(teamID);
+            if (team == null)
+            {
+                return RedirectToPage("./NotFound");
+            }
             labels = new List<int>();
             games = teamDetailRetriever.GetGamesInvolved(teamID);
 
@@ -64,6 +69,7 @@ namespace FoosStats.Pages.Teams
             {
                 labels.Add(i);
             }
+            return Page();
         }
     }
 }
