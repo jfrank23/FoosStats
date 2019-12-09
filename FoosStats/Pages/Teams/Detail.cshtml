@@ -42,7 +42,7 @@
                 <td>Red Score</td>
                 <td>Red Offense</td>
                 <td>Red Defense</td>
-                <td>Rank After Game</td>
+                <td>Change In Elo Score</td>
             </tr>
         </thead>
         <tbody>
@@ -58,7 +58,7 @@
                     <td>@game.RedScore</td>
                     <td><a href="../../Players/Detail/@game.RedOffense">@game.RedOffenseName</a></td>
                     <td><a href="../../Players/Detail/@game.RedDefense">@game.RedDefenseName</a></td>
-                    <td>@Model.historicalElo[count]</td>
+                    <td>@Model.GetDelta(count, Model.historicalElo)</td>
                 </tr>
                 count -= 1;
             }

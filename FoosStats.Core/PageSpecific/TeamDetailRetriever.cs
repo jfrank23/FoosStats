@@ -31,5 +31,6 @@ namespace FoosStats.Core.PageSpecific
             var team = teamRetriever.GetTeamById(teamID);
             return gameRetriever.GetAllGames().Where(g => (g.BlueDefense == team.DefenseID && g.BlueOffense == team.OffenseID) || (g.RedDefense==team.DefenseID && g.RedOffense == team.OffenseID));
         }
+
     }
 }

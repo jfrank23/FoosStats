@@ -71,5 +71,15 @@ namespace FoosStats.Pages.Teams
             }
             return Page();
         }
+        public string GetDelta(int count, List<int> historical)
+        {
+            var delta = historical[count] - historical[count - 1];
+            if (delta >= 0)
+            {
+                return $"+{delta}"; 
+            }
+            return delta.ToString();
+            
+        }
     }
 }
