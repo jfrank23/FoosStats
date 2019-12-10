@@ -18,6 +18,8 @@ namespace FoosStats.Core.PageSpecific
         IEnumerable<DerivedPlayerData> TopPlayersByWinPct();
         IEnumerable<DerivedPlayerData> TopPlayersByDefenseWinPct();
         IEnumerable<DerivedPlayerData> TopPlayersByOffenseWinPct();
+        IEnumerable<DerivedPlayerData> TopAverageEloDefense();
+        IEnumerable<DerivedPlayerData> TopAverageEloOffense();
     }
     public class HomePageStatRetriever : IHomePageStatRetriever
     {
@@ -78,6 +80,14 @@ namespace FoosStats.Core.PageSpecific
         public IEnumerable<DerivedPlayerData> TopPlayersByDefenseWinPct()
         {
             return leaderboard.OrderByDescending(r => r.DefenseWinPct).ToList().Take(5);
+        }
+        public IEnumerable<DerivedPlayerData> TopAverageEloOffense()
+        {
+            return leaderboard.OrderByDescending(r => r.AverageOffenseElo).ToList().Take(5);
+        }
+        public IEnumerable<DerivedPlayerData> TopAverageEloDefense()
+        {
+            return leaderboard.OrderByDescending(r => r.AverageDefenseElo).ToList().Take(5);
         }
     }
 }
