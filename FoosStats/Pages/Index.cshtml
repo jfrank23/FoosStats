@@ -130,6 +130,26 @@
         }
     </div>
 </div>
+<div class=" card-deck" style="margin-bottom: 10px">
+    <div class="card">
+        <h5 class="card-title text-center">Average Offense Elo</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopAverageEloOffense())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.AverageOffenseElo</p>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Average Defense Elo</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopAverageEloDefense())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.AverageDefenseElo</p>
+            count += 1;
+        }
+    </div>
+</div>
 <hr />
 @if (Model.homePageStatRetriever.TodaysGames().Count() != 0)
 {

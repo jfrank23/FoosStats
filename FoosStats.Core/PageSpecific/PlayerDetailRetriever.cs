@@ -23,20 +23,23 @@ namespace FoosStats.Core.PageSpecific
         void SetupTeammateStats(Guid playerID);
 
         int WinPercentageStanding(Player currentPlayer);
+        int[] AverageEloByPosition(Player player);
     }
 
     public class PlayerDetailRetriever : IPlayerDetailRetriever
     {
         private IGameRetriever gameRetriever;
+        private readonly ITeamRetriever teamRetriever;
         private IPlayerRetriever playerRetriever;
         private IEnumerable<Player> players;
         private IEnumerable<DisplayGame> games;
         private Dictionary<Guid, int[]> teammateStats = new Dictionary<Guid, int[]>();
         private IEnumerable<DerivedPlayerData> leaderboard;
-        public PlayerDetailRetriever(IPlayerRetriever playerRetriever, IGameRetriever gameRetriever,ILeaderboards leaderboards)
+        public PlayerDetailRetriever(IPlayerRetriever playerRetriever, IGameRetriever gameRetriever,ILeaderboards leaderboards, ITeamRetriever teamRetriever)
         {
             this.playerRetriever = playerRetriever;
             this.gameRetriever = gameRetriever;
+            this.teamRetriever = teamRetriever;
             leaderboard = leaderboards.GetLeaderboard();
         }
 
@@ -163,6 +166,12 @@ namespace FoosStats.Core.PageSpecific
                 }
             }
             teammateStats.Remove(playerID);
+        }
+
+        public int[] AverageEloByPosition(Player player)
+        {
+            var playerData = leaderboard.FirstOrDefault(p => p.player.ID == player.ID);
+            return new int[] { playerData.AverageOffenseElo, playerData.AverageDefenseElo };
         }
     }
 }

@@ -10,6 +10,7 @@
         public float DefenseWinPct { get; set; }
         public float RedWinPct { get; set; }
         public float BlueWinPct { get; set; }
-
+        public int AverageOffenseElo { get; set; }
+        public int AverageDefenseElo { get; set; }
     }
 }

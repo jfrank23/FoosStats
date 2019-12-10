@@ -25,6 +25,9 @@ namespace FoosStats.Pages.Players
         public float OffenseWinPct { get; set; }
         public float DefenseWinPct { get; set; }
         public float BlueWinPct { get; set; }
+
+        public int[] avgElo;
+
         public float RedWinPct { get; set; }
         public Player Player { get; private set; }
 
@@ -58,6 +61,7 @@ namespace FoosStats.Pages.Players
             DefenseWinPct = detailHandler.DefenseWinPct(Player);
             RedWinPct = detailHandler.RedSideWinPct(Player);
             BlueWinPct = detailHandler.BlueSideWinPct(Player);
+            avgElo= detailHandler.AverageEloByPosition(Player);
             return Page();
         }
 
