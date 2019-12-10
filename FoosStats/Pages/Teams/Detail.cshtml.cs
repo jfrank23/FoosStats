@@ -58,7 +58,14 @@ namespace FoosStats.Pages.Teams
             blueRecord = new int[] { blueWins, bluePlayed - blueWins };
             redPct = (float) redWins / redPlayed *100;
             bluePct = (float) blueWins / bluePlayed * 100;
-
+            if (float.IsNaN(redPct))
+            {
+                redPct = 0;
+            }
+            if (float.IsNaN(bluePct))
+            {
+                bluePct= 0;
+            }
             var goalsFor = games.Where(g => g.BlueDefense == team.DefenseID && g.BlueOffense == team.OffenseID).Select(r => r.BlueScore).Sum() + games.Where(g => g.RedDefense == team.DefenseID && g.RedOffense == team.OffenseID).Select(r => r.RedScore).Sum();
             var goalsAgainst = games.Where(g => g.BlueDefense == team.DefenseID && g.BlueOffense == team.OffenseID).Select(r => r.RedScore).Sum() + games.Where(g => g.RedDefense == team.DefenseID && g.RedOffense == team.OffenseID).Select(r => r.BlueScore).Sum();
             avgGoalsFor = (float)goalsFor / gamesPlayed;
