@@ -3,7 +3,8 @@ namespace FoosStats.Core.Repositories
 {
     public interface ILeaderboards
     {
-        IEnumerable<DerivedPlayerData> GetLeaderboard();
+        IEnumerable<DerivedPlayerData> GetFullLeaderboard();
+        IEnumerable<DerivedPlayerData> GetLimitedLeaderboard();
         void MakeLeaderboard();
         void Update();
     }

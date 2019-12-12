@@ -40,7 +40,7 @@ namespace FoosStats.Core.PageSpecific
             this.playerRetriever = playerRetriever;
             this.gameRetriever = gameRetriever;
             this.teamRetriever = teamRetriever;
-            leaderboard = leaderboards.GetLeaderboard();
+            leaderboard = leaderboards.GetFullLeaderboard();
         }
 
         public float DefenseWinPct(Player player)
