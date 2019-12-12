@@ -30,7 +30,7 @@ namespace FoosStats.Core.PageSpecific
         public HomePageStatRetriever(IGameRetriever gameRetriever,ILeaderboards leaderboards)
         {
             games = gameRetriever.GetAllGames();
-            leaderboard = leaderboards.GetLeaderboard();
+            leaderboard = leaderboards.GetLimitedLeaderboard();
         }
         public int[] RedVsBlue()
         {

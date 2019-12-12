@@ -20,9 +20,13 @@ namespace FoosStats.Core
             MakeLeaderboard();
 
         }
-        public IEnumerable<DerivedPlayerData> GetLeaderboard()
+        public IEnumerable<DerivedPlayerData> GetFullLeaderboard()
         {
             return leaderboard;
+        }
+        public IEnumerable<DerivedPlayerData> GetLimitedLeaderboard()
+        {
+            return leaderboard.Where(p=>p.player.GamesPlayed >3);
         }
         public void MakeLeaderboard()
         {
@@ -30,7 +34,6 @@ namespace FoosStats.Core
             foreach(var currentPlayer in players)
             {
                 var avgElo = AverageEloByPosition(currentPlayer);
-                if (currentPlayer.GamesPlayed < 3) { continue; }
                 lst.Add(new DerivedPlayerData
                 {
                     player = currentPlayer,
@@ -112,8 +115,10 @@ namespace FoosStats.Core
                 defenseDenom += team.GamesPlayed;
             }
             var offenseAvg = (int)Math.Round((float)offenseNum / offenseDenom);
-            var defesneAvg = (int)Math.Round((float)defenseNum / defenseDenom);
-            return new int[] { offenseAvg, defesneAvg };
+            var defenseAvg = (int)Math.Round((float)defenseNum / defenseDenom);
+            if (offenseAvg < 0) { offenseAvg = 0; }
+            if (defenseAvg < 0) { defenseAvg = 0; }
+            return new int[] { offenseAvg, defenseAvg };
         }
     }
 
