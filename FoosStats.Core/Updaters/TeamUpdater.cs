@@ -87,15 +87,6 @@ namespace FoosStats.Core.Updaters
             redTeam.GamesWon += win[1];
             redTeam.Rank = updatedScores[1];
 
-            if (blueTeam.DefenseID == new System.Guid("7f9793ea-952e-41f8-9c3a-d6ba6fb07766") && blueTeam.OffenseID == new System.Guid("96b64fc4-a6be-41cf-a107-5b9c4054b076"))
-            {
-                System.Console.WriteLine(blueTeam.Rank);
-            }
-            if (redTeam.DefenseID == new System.Guid("7f9793ea-952e-41f8-9c3a-d6ba6fb07766") && redTeam.OffenseID == new System.Guid("96b64fc4-a6be-41cf-a107-5b9c4054b076"))
-            {
-                System.Console.WriteLine(redTeam.Rank);
-            }
-
             teamRepository.Update(blueTeam);
             teamRepository.Update(redTeam);
         }
