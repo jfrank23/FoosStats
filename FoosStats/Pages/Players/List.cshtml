@@ -5,7 +5,7 @@
 }
 
 <h1>Players</h1>
-<table class="table table-striped" id="players">
+<table class="table table-striped" id="players" style="display:none">
     <thead class="font-weight-bold">
         <tr>
             <td>First Name</td>
@@ -72,6 +72,7 @@
     <script>
         $(document).ready(function () {
             $('#players').DataTable();
+            $('#players').show();
         });
     </script>
 }
