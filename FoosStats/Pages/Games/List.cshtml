@@ -12,6 +12,7 @@
 <table class="table table-striped" id="games" style="display:none">
     <thead class="table-head">
         <tr class="font-weight-bold">
+            <td>Number</td>
             <td>Game</td>
             <td>Blue Defense</td>
             <td>Blue Offense</td>
@@ -24,9 +25,11 @@
         </tr>
     </thead>
     <tbody>
+        @{var count = Model.games.Count(); }
         @foreach (var game in Model.games)
         {
             <tr>
+                <td>@count</td>
                 <td>@game.GameTime</td>
                 <td><a href="../../Players/Detail/@game.BlueDefense">@game.BlueDefenseName</a></td>
                 <td><a href="../../Players/Detail/@game.BlueOffense">@game.BlueOffenseName</a></td>
@@ -45,6 +48,7 @@
                     </a>
                 </td>
             </tr>
+            count -= 1;
         }
     </tbody>
 </table>
