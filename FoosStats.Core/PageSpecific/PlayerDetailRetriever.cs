@@ -132,7 +132,7 @@ namespace FoosStats.Core.PageSpecific
 
         public void SetupTeammateStats(Guid playerID)
         {
-            players = playerRetriever.GetPlayersByName();
+            players = playerRetriever.GetPlayers();
             games = gameRetriever.GetAllGames();
             foreach (var player in players)
             {

@@ -6,7 +6,7 @@ namespace FoosStats.Core.Repositories
 {
     public interface IPlayerRepository
     {
-        IEnumerable<Player> GetPlayersByName(string name = null);
+        IEnumerable<Player> GetPlayers();
         Player GetPlayerById(Guid id);
         Player Update(Player player);
         Player Add(Player player);

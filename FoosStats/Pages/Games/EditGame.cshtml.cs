@@ -45,7 +45,7 @@ namespace FoosStats.Pages.Games
                 return Redirect("../NoPermission");
             }
             games = gameRetriever.GetAllGames();
-            players = playerRetriever.GetPlayersByName();
+            players = playerRetriever.GetPlayers();
             game = gameRetriever.GetGameById(gameID);
             return Page();
 

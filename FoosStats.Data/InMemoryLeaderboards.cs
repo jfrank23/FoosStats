@@ -14,7 +14,7 @@ namespace FoosStats.Core
         public IEnumerable<DerivedPlayerData> leaderboard;
         public InMemoryLeaderboards(IPlayerRepository playerRepository, IGameRepository gameRepository, ITeamRepository teamRepository)
         {
-            players = playerRepository.GetPlayersByName();
+            players = playerRepository.GetPlayers();
             games = gameRepository.GetGames();
             this.teamRepository = teamRepository;
             MakeLeaderboard();
