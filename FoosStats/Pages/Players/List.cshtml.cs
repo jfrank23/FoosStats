@@ -11,17 +11,14 @@ namespace FoosStats.Pages.Players
     {
         public IPlayerRetriever playerRetreiver;
         public IEnumerable<Player> players;
-        public IConfiguration config;
 
-        [BindProperty (SupportsGet = true)]
-        public string SearchTerm { get; set; }
         public ListModel(IPlayerRetriever playerRetreiver)
         {
             this.playerRetreiver = playerRetreiver;
         }
         public void OnGet()
         {
-            players = playerRetreiver.GetPlayersByName(SearchTerm);
+            players = playerRetreiver.GetPlayers();
         }
     }
 }

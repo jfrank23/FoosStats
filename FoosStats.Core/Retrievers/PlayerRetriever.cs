@@ -7,7 +7,7 @@ namespace FoosStats.Core.Retrievers
     public interface IPlayerRetriever
     {
         Player GetPlayerById(Guid playerID);
-        IEnumerable<Player> GetPlayersByName(string name = null);
+        IEnumerable<Player> GetPlayers();
         string GuidToName(Guid Id);
     }
     public class PlayerRetriever : IPlayerRetriever
@@ -21,9 +21,9 @@ namespace FoosStats.Core.Retrievers
         {
             return playerRepository.GetPlayerById(playerID);
         }
-        public IEnumerable<Player> GetPlayersByName(string name = null)
+        public IEnumerable<Player> GetPlayers()
         {
-            return playerRepository.GetPlayersByName(name);
+            return playerRepository.GetPlayers();
         }
         public string GuidToName(Guid Id)
         {

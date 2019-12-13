@@ -127,54 +127,29 @@ namespace FoosStats.Data
             }
         }
 
-        public IEnumerable<Player> GetPlayersByName(string name = null)
+        public IEnumerable<Player> GetPlayers()
         {
-
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 var players = new List<Player>();
                 var command = connection.CreateCommand();
-                if (name == null)
+
+                command.CommandText = "Select * from Players";
+                var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    command.CommandText = "Select * from Players";
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
+                    players.Add(new Player
                     {
-                        players.Add(new Player
-                        {
-                            ID = new Guid(reader.GetString(0)),
-                            FirstName = reader.GetString(1),
-                            LastName = reader.GetString(2),
-                            GamesPlayed = reader.GetInt32(3),
-                            GamesWon = reader.GetInt32(4),
-                            GamesLost = reader.GetInt32(5),
-                            GoalsFor = reader.GetInt32(6),
-                            GoalsAgainst = reader.GetInt32(7)
-                        });
-                    }
-                }
-                else
-                {
-                    command.CommandText = "Select * from Players";
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        if (reader.GetString(1).ToLower().Contains(name.ToLower()) || reader.GetString(2).ToLower().Contains(name.ToLower()))
-                        {
-                            players.Add(new Player
-                            {
-                                ID = new Guid(reader.GetString(0)),
-                                FirstName = reader.GetString(1),
-                                LastName = reader.GetString(2),
-                                GamesPlayed = reader.GetInt32(3),
-                                GamesWon = reader.GetInt32(4),
-                                GamesLost = reader.GetInt32(5),
-                                GoalsFor = reader.GetInt32(6),
-                                GoalsAgainst = reader.GetInt32(7)
-                            });
-                        }
-                    }
+                        ID = new Guid(reader.GetString(0)),
+                        FirstName = reader.GetString(1),
+                        LastName = reader.GetString(2),
+                        GamesPlayed = reader.GetInt32(3),
+                        GamesWon = reader.GetInt32(4),
+                        GamesLost = reader.GetInt32(5),
+                        GoalsFor = reader.GetInt32(6),
+                        GoalsAgainst = reader.GetInt32(7)
+                    });
                 }
                 return players.OrderBy(r => r.LastName);
             }

@@ -25,7 +25,7 @@ namespace FoosStats.Core.PageSpecific
         {
             this.playerRetriever = playerRetriever;
             teams = teamRetriever.GetAllTeams();
-            players = playerRetriever.GetPlayersByName();
+            players = playerRetriever.GetPlayers();
         }
 
         public List<List<String>> RandomTeams(IEnumerable<Guid> selectedPlayers)
