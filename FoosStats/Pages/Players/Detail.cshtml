@@ -48,7 +48,7 @@
 </div>
 <div>
     <h2>Games Played In</h2>
-    <table class="table" id="gamesPlayed">
+    <table class="table" id="gamesPlayed" style="display:none">
         <thead>
             <tr class="font-weight-bold">
                 <td>Game</td>
@@ -80,7 +80,8 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('#gamesPlayed').DataTable({"order":[[0,"desc"]]});
+            $('#gamesPlayed').DataTable({ "order": [[0, "desc"]] });
+            $('#gamesPlayed').show();
         });
     </script>
 }
