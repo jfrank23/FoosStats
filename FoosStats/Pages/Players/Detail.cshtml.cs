@@ -13,7 +13,7 @@ namespace FoosStats.Pages.Players
         public IPlayerRetriever playerRetriever;
         public IGameRetriever gameRetriever;
         public IPlayerDetailRetriever detailHandler;
-        public IEnumerable<DisplayGame> top3Games { get; set; }
+        public IEnumerable<DisplayGame> gamesPlayed { get; set; }
         public string MostPlayedWith { get; set; }
         public string BestPercentageWith { get; set; }
         public float GoalsForPerGame{ get; set; }
@@ -48,7 +48,7 @@ namespace FoosStats.Pages.Players
                 return RedirectToPage("./NotFound");
             }
             detailHandler.SetupTeammateStats(playerID);
-            top3Games = detailHandler.GetTop3Games(playerID);
+            gamesPlayed = detailHandler.GamesPlayedIn(playerID);
             MostPlayedWith = detailHandler.MostPlayedWith();
             BestPercentageWith = detailHandler.BestWinPercentageTeammate();
             WinPercentage = (float)Player.GamesWon / Player.GamesPlayed *100;

@@ -11,7 +11,7 @@ namespace FoosStats.Core.PageSpecific
         string BestWinPercentageTeammate();
         float BlueSideWinPct(Player player);
         float DefenseWinPct(Player player);
-        IEnumerable<DisplayGame> GetTop3Games(Guid playerID);
+        IEnumerable<DisplayGame> GamesPlayedIn(Guid playerID);
 
         int GoalsAgainstAverageStanding(Player currentPlayer);
 
@@ -87,13 +87,11 @@ namespace FoosStats.Core.PageSpecific
             return betterStat;
         }
 
-        public IEnumerable<DisplayGame> GetTop3Games(Guid playerID)
+        public IEnumerable<DisplayGame> GamesPlayedIn(Guid playerID)
         {
             games = gameRetriever.GetAllGames();
             return games
-                .Where(r => r.BlueDefense == playerID || r.BlueOffense == playerID || r.RedDefense == playerID || r.RedOffense == playerID)
-                .ToList()
-                .Take(3);
+                .Where(r => r.BlueDefense == playerID || r.BlueOffense == playerID || r.RedDefense == playerID || r.RedOffense == playerID);
         }
 
         public string MostPlayedWith()
