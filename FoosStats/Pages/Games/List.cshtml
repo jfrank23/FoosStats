@@ -8,7 +8,8 @@
 <div>
     <a asp-page="./EditGame" class="btn btn-outline-primary">Add New</a>
 </div>
-<table class="table table-striped">
+
+<table class="table table-striped" id="games">
     <thead class="table-head">
         <tr class="font-weight-bold">
             <td>Game</td>
@@ -18,6 +19,8 @@
             <td>Red Score</td>
             <td>Red Offense</td>
             <td>Red Defense</td>
+            <td>Edit</td>
+            <td>Delete</td>
         </tr>
     </thead>
     <tbody>
@@ -45,5 +48,14 @@
         }
     </tbody>
 </table>
+
+@section scripts{<script>
+    $(document).ready(function() {
+        $('#games').DataTable({"order":[[0,"desc"]]});
+} );
+</script>
+}
+
+
 
 
