@@ -12,7 +12,7 @@
 </environment>
 <p>Stats by team will only show if you have played 3 or more games with the individual.</p>
 <h3>By Position</h3>
-<table class="table table-striped">
+<table class="table table-striped" id="positionTeams">
     <thead>
         <tr>
             <td>Office Rank</td>
@@ -48,7 +48,7 @@
 
 <h3>Overall</h3>
 <p>Position does not matter.</p>
-<table class="table table-striped">
+<table class="table table-striped" id="overallTeams">
     <thead>
         <tr>
             <td>Player 1</td>
@@ -69,3 +69,16 @@
         }
     </tbody>
 </table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#positionTeams').DataTable();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#overallTeams').DataTable({"order":[[2,"desc"]]});
+        });
+    </script>
+}
