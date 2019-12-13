@@ -31,7 +31,7 @@
 <canvas id="line-chart" width="800" height="450"></canvas>
 <div>
     <h3 class="text-center">Team's Games</h3>
-    <table class="table table-striped">
+    <table class="table table-striped" id="teamGames">
         <thead>
             <tr class="font-weight-bold">
                 <td>Game Number</td>
@@ -46,7 +46,7 @@
             </tr>
         </thead>
         <tbody>
-            @{ var count = Model.labels.Count-1;}
+            @{ var count = Model.labels.Count - 1;}
             @foreach (var game in Model.games)
             {
                 <tr>
@@ -65,8 +65,13 @@
         </tbody>
     </table>
 </div>
-
-<script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#teamGames').DataTable({"order":[[0,"desc"]]});
+        });
+    </script>
+    <script>
     var labels = JSON.parse('@Html.Raw(Json.Serialize(@Model.labels))')
     var historical = JSON.parse('@Html.Raw(Json.Serialize(@Model.historicalElo))')
     new Chart(document.getElementById("line-chart"), {
@@ -104,4 +109,5 @@
             }
         }
     });
-</script>
+    </script>
+}
