@@ -30,7 +30,6 @@ namespace FoosStats.Pages.Games
         public IActionResult OnPost(Guid gameID)
         {
             gameDeleter.Delete(gameID);
-            teamUpdater.Refresh();
             return Redirect("~/Games/List");
         }
     }

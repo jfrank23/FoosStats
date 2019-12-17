@@ -8,16 +8,19 @@ namespace FoosStats.Core.Updaters
     {
         private readonly ICreator<Game> gameCreator;
         private readonly IDeleter<Game> gameDeleter;
+        private readonly ITeamUpdater teamUpdater;
 
-        public GameUpdater(ICreator<Game> gameCreator, IDeleter<Game> gameDeleter)
+        public GameUpdater(ICreator<Game> gameCreator, IDeleter<Game> gameDeleter, ITeamUpdater teamUpdater)
         {
             this.gameCreator = gameCreator;
             this.gameDeleter = gameDeleter;
+            this.teamUpdater = teamUpdater;
         }
         public Game Update(Game game)
         {
             gameDeleter.Delete(game.GameID);
             gameCreator.Create(game);
+            teamUpdater.Refresh();
 
             return game;
              

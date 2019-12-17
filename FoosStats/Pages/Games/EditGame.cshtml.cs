@@ -58,12 +58,10 @@ namespace FoosStats.Pages.Games
             if (!Guid.Equals(game.GameID, Guid.Empty))
             {
                 gameUpdater.Update(game);
-                teamUpdater.Refresh();
             }
             else
             {
                 gameCreator.Create(game);
-                teamUpdater.Update(game);
 
             }
             TempData["Message"] = "Game saved!";
