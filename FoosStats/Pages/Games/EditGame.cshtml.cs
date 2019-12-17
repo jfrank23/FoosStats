@@ -19,7 +19,6 @@ namespace FoosStats.Pages.Games
         public IPlayerRetriever playerRetriever;
         public IUpdater<Game> gameUpdater;
         private readonly ITeamUpdater teamUpdater;
-        private readonly ITeamRefresher teamRefresher;
         private readonly IWebHostEnvironment env;
         public ICreator<Game> gameCreator;
 
@@ -28,14 +27,13 @@ namespace FoosStats.Pages.Games
         public EditGameModel(IGameRetriever gameRetriever, 
             IPlayerRetriever playerRetriever, ICreator<Game> gameCreator, 
             IUpdater<Game> gameUpdater, ITeamUpdater teamUpdater, 
-            ITeamRefresher teamRefresher, IWebHostEnvironment env)
+            IWebHostEnvironment env)
         {
             this.gameRetriever = gameRetriever;
             this.playerRetriever = playerRetriever;
             this.gameCreator = gameCreator;
             this.gameUpdater = gameUpdater;
             this.teamUpdater = teamUpdater;
-            this.teamRefresher = teamRefresher;
             this.env = env;
         }
         public IActionResult OnGet(Guid gameID)
@@ -60,7 +58,7 @@ namespace FoosStats.Pages.Games
             if (!Guid.Equals(game.GameID, Guid.Empty))
             {
                 gameUpdater.Update(game);
-                teamRefresher.Refresh();
+                teamUpdater.Refresh();
             }
             else
             {

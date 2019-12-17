@@ -2,11 +2,13 @@
 using FoosStats.Core.ELO;
 using FoosStats.Core.Repositories;
 using FoosStats.Core.Retrievers;
+using System.Linq;
 
 namespace FoosStats.Core.Updaters
 {
     public interface ITeamUpdater
     {
+        void Refresh();
         void Update(Game newGame);
     }
     public class TeamUpdater : ITeamUpdater
@@ -16,13 +18,15 @@ namespace FoosStats.Core.Updaters
         private readonly ITeamRetriever teamStatsRetriever;
         private readonly ICreator<Team> teamCreator;
         private readonly IHistoricalData historicalData;
+        private readonly IGameRetriever gameRetriever;
 
-        public TeamUpdater(ITeamRepository teamRepository, ITeamRetriever teamStatsRetriever, ICreator<Team> teamCreator,IHistoricalData historicalData)
+        public TeamUpdater(ITeamRepository teamRepository, ITeamRetriever teamStatsRetriever, ICreator<Team> teamCreator,IHistoricalData historicalData, IGameRetriever gameRetriever)
         {
             this.teamRepository = teamRepository;
             this.teamStatsRetriever = teamStatsRetriever;
             this.teamCreator = teamCreator;
             this.historicalData = historicalData;
+            this.gameRetriever = gameRetriever;
         }
         public void Update(Game newGame)
         {
@@ -90,8 +94,16 @@ namespace FoosStats.Core.Updaters
             teamRepository.Update(blueTeam);
             teamRepository.Update(redTeam);
         }
-    }
+        public void Refresh()
+        {
+            teamRepository.Clear();
+            foreach (var game in gameRetriever.GetAllGames().OrderBy(g => g.GameTime))
+            {
+                Update(game);
+            }
 
+        }
+    }
 }
 
 //var players = playerRetriever.GetPlayersByName();

@@ -1,6 +1,7 @@
 ﻿using System;
 using FoosStats.Core;
 using FoosStats.Core.Deleters;
+using FoosStats.Core.Updaters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,12 +10,12 @@ namespace FoosStats.Pages.Games
     public class DeleteGameModel : PageModel
     {
         public IDeleter<Game> gameDeleter;
-        private readonly ITeamRefresher teamRefresher;
+        private readonly ITeamUpdater teamUpdater;
 
-        public DeleteGameModel(IDeleter<Game> gameDeleter, ITeamRefresher teamRefresher)
+        public DeleteGameModel(IDeleter<Game> gameDeleter, ITeamUpdater teamUpdater)
         {
             this.gameDeleter = gameDeleter;
-            this.teamRefresher = teamRefresher;
+            this.teamUpdater = teamUpdater;
         }
 
         public IActionResult OnGet(Guid gameID)
@@ -29,7 +30,7 @@ namespace FoosStats.Pages.Games
         public IActionResult OnPost(Guid gameID)
         {
             gameDeleter.Delete(gameID);
-            teamRefresher.Refresh();
+            teamUpdater.Refresh();
             return Redirect("~/Games/List");
         }
     }
