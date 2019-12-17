@@ -12,7 +12,6 @@ namespace FoosStats.Data
         readonly string connectionString = "Data Source= " + "FoosData.db" + "; Version=3; BinaryGUID=False;";
         private readonly IGameRepository gameRepository;
         private readonly IPlayerRepository playerRepository;
-        private IEnumerable<Player> players;
 
         public LiteTeamRepository(IGameRepository gameRepository, IPlayerRepository playerRepository, string connectionString = null)
         {

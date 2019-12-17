@@ -2,6 +2,7 @@
 using FoosStats.Core;
 using FoosStats.Core.Deleters;
 using FoosStats.Core.Retrievers;
+using FoosStats.Core.Updaters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,14 +13,14 @@ namespace FoosStats.Pages.Players
     public class DeletePlayerModel : PageModel
     {
         public IPlayerRetriever playerRetriever;
-        private readonly ITeamRefresher teamRefresher;
+        private readonly ITeamUpdater teamUpdater;
         private readonly IWebHostEnvironment env;
         public IDeleter<Player> playerDeleter;
         public Player player;
-        public DeletePlayerModel(IPlayerRetriever playerRetriever, ITeamRefresher teamRefresher, IWebHostEnvironment env)
+        public DeletePlayerModel(IPlayerRetriever playerRetriever, ITeamUpdater teamUpdater, IWebHostEnvironment env)
         {
             this.playerRetriever = playerRetriever;
-            this.teamRefresher = teamRefresher;
+            this.teamUpdater = teamUpdater;
             this.env = env;
         }
 
@@ -40,7 +41,7 @@ namespace FoosStats.Pages.Players
         public IActionResult OnPost(Guid playerID)
         {
             playerDeleter.Delete(playerID);
-            teamRefresher.Refresh();
+            teamUpdater.Refresh();
             return Redirect("~/Players/List");
         }
     }

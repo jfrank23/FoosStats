@@ -1,16 +1,16 @@
-﻿using System;
+﻿using FoosStats.Core;
+using FoosStats.Core.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
-using FoosStats.Core;
-using FoosStats.Core.Repositories;
 
 namespace FoosStats.Data
 {
     public class LiteGameRepository : IGameRepository
     {
         //Add and Delete games automatically triggers a response in the players table to update those stats. Look at the SQL files to see update information
-        readonly string connectionString = "Data Source= " + "FoosData.db" + "; Version=3; BinaryGUID=False;";
+        readonly string connectionString = "Data Source= FoosData.db; Version=3; BinaryGUID=False;";
         public LiteGameRepository(string connectionString = null)
         {
             if (connectionString != null)
@@ -130,11 +130,6 @@ namespace FoosStats.Data
             }
         }
 
-        public Game Update(Game updatedGame)
-        {
-            Delete(updatedGame.GameID);
-            Add(updatedGame);
-            return updatedGame;
-        }
+
     }
 }

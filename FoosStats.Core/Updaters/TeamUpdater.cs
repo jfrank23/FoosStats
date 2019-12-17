@@ -2,11 +2,14 @@
 using FoosStats.Core.ELO;
 using FoosStats.Core.Repositories;
 using FoosStats.Core.Retrievers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FoosStats.Core.Updaters
 {
     public interface ITeamUpdater
     {
+        void Refresh();
         void Update(Game newGame);
     }
     public class TeamUpdater : ITeamUpdater
@@ -15,15 +18,15 @@ namespace FoosStats.Core.Updaters
         private readonly ITeamRepository teamRepository;
         private readonly ITeamRetriever teamStatsRetriever;
         private readonly ICreator<Team> teamCreator;
-        private readonly IHistoricalData historicalData;
+        private readonly IGameRetriever gameRetriever;
 
-        public TeamUpdater(ITeamRepository teamRepository, ITeamRetriever teamStatsRetriever, ICreator<Team> teamCreator,IHistoricalData historicalData)
+        public TeamUpdater(ITeamRepository teamRepository, ITeamRetriever teamStatsRetriever, ICreator<Team> teamCreator, IGameRetriever gameRetriever)
         {
             this.teamRepository = teamRepository;
             this.teamStatsRetriever = teamStatsRetriever;
             this.teamCreator = teamCreator;
-            this.historicalData = historicalData;
-        }
+            this.gameRetriever = gameRetriever;
+            }
         public void Update(Game newGame)
         {
             //win = {blue,red}
@@ -37,7 +40,7 @@ namespace FoosStats.Core.Updaters
                 win = new[] { 0, 1 };
             }
 
-            var blueTeam = teamStatsRetriever.GetTeamByPlayers(newGame.BlueDefense,newGame.BlueOffense);
+            var blueTeam = teamStatsRetriever.GetTeamByPlayers(newGame.BlueDefense, newGame.BlueOffense);
             var redTeam = teamStatsRetriever.GetTeamByPlayers(newGame.RedDefense, newGame.RedOffense);
             if (blueTeam == null)
             {
@@ -75,13 +78,13 @@ namespace FoosStats.Core.Updaters
                     GamesWon = 0,
                     Rank = EloHandler.StartingScore
                 };
-                
+
             }
             var updatedScores = EloHandler.UpdatedRanks(blueTeam, redTeam, newGame);
             blueTeam.GamesPlayed += 1;
             blueTeam.GamesWon += win[0];
             blueTeam.Rank = updatedScores[0];
-            
+
 
             redTeam.GamesPlayed += 1;
             redTeam.GamesWon += win[1];
@@ -89,9 +92,18 @@ namespace FoosStats.Core.Updaters
 
             teamRepository.Update(blueTeam);
             teamRepository.Update(redTeam);
+
+        }
+        public void Refresh()
+        {
+            teamRepository.Clear();
+            foreach (var game in gameRetriever.GetAllGames().OrderBy(g => g.GameTime))
+            {
+                Update(game);
+            }
+
         }
     }
-
 }
 
 //var players = playerRetriever.GetPlayersByName();

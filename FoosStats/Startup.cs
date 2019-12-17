@@ -45,16 +45,16 @@ namespace FoosStats
 
             services.AddScoped<IGameRetriever, GameRetriever>();
             services.AddScoped<IPlayerRetriever, PlayerRetriever>();
+            services.AddScoped<ITeamRetriever, TeamRetriever>();
+
             services.AddScoped<IPlayerDetailRetriever, PlayerDetailRetriever>();
             services.AddScoped<IHomePageStatRetriever, HomePageStatRetriever>();
             services.AddScoped<TeamDetailRetriever, TeamDetailRetriever>();
-            services.AddScoped<ITeamRetriever, TeamRetriever>();
 
             services.AddScoped<IUpdater<Game>, GameUpdater>();
-            services.AddScoped<IUpdater<Player>, PlayerUpdater>();
+            services.AddScoped<IPlayerUpdater, PlayerUpdater>();
             services.AddScoped<ITeamUpdater, TeamUpdater>();
 
-            services.AddScoped<ITeamRefresher, TeamRefresher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

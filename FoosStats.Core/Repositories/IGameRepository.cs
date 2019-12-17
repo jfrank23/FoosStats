@@ -8,7 +8,6 @@ namespace FoosStats.Core.Repositories
     {
         Game Add(Game newGame);
         IEnumerable<DisplayGame> GetGames();
-        Game Update(Game updatedGame);
         DisplayGame GetGameByID(Guid gameID);
         void Delete(Guid gameID);
     }
