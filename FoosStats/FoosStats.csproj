@@ -22,10 +22,4 @@
     <ProjectReference Include="..\FoosStats.Data\FoosStats.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="FoosData.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

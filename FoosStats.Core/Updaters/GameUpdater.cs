@@ -1,17 +1,26 @@
-﻿using FoosStats.Core.Repositories;
+﻿using FoosStats.Core.Creators;
+using FoosStats.Core.Deleters;
+using FoosStats.Core.Repositories;
 
 namespace FoosStats.Core.Updaters
 {
     public class GameUpdater:IUpdater<Game>
     {
-        private IGameRepository gameRepository;
-        public GameUpdater(IGameRepository gameRepository)
+        private readonly ICreator<Game> gameCreator;
+        private readonly IDeleter<Game> gameDeleter;
+
+        public GameUpdater(ICreator<Game> gameCreator, IDeleter<Game> gameDeleter)
         {
-            this.gameRepository = gameRepository;
+            this.gameCreator = gameCreator;
+            this.gameDeleter = gameDeleter;
         }
         public Game Update(Game game)
         {
-            return gameRepository.Update(game);
+            gameDeleter.Delete(game.GameID);
+            gameCreator.Create(game);
+
+            return game;
+             
         }
     }
 }

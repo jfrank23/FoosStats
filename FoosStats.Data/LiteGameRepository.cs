@@ -1,9 +1,9 @@
-﻿using System;
+﻿using FoosStats.Core;
+using FoosStats.Core.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
-using FoosStats.Core;
-using FoosStats.Core.Repositories;
 
 namespace FoosStats.Data
 {
@@ -130,11 +130,6 @@ namespace FoosStats.Data
             }
         }
 
-        public Game Update(Game updatedGame)
-        {
-            Delete(updatedGame.GameID);
-            Add(updatedGame);
-            return updatedGame;
-        }
+
     }
 }

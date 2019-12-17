@@ -51,7 +51,7 @@ namespace FoosStats
             services.AddScoped<ITeamRetriever, TeamRetriever>();
 
             services.AddScoped<IUpdater<Game>, GameUpdater>();
-            services.AddScoped<IUpdater<Player>, PlayerUpdater>();
+            services.AddScoped<IPlayerUpdater, PlayerUpdater>();
             services.AddScoped<ITeamUpdater, TeamUpdater>();
 
             services.AddScoped<ITeamRefresher, TeamRefresher>();
