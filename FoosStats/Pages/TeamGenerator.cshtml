@@ -12,13 +12,13 @@
 <div>
     <form method="post">
         <div class="row">
-            <div style="margin-bottom:10px">
+            <div style="margin-bottom:10px; display:none" id="select">
                 <select class="js-example-basic-multiple" asp-for="selectedPlayers" multiple="multiple" style="width:800px">
                     @foreach (var player in Model.teamGenerator.players)
                     {
                         <option value="@player.ID">@player.FirstName @player.LastName</option>
                     }
-                    </select>
+                </select>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Generate</button>
@@ -92,9 +92,14 @@
 }
 
 @section scripts{
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('.js-example-basic-multiple').select2();
+            $('#select').show();
+
         });
     </script>
 }
