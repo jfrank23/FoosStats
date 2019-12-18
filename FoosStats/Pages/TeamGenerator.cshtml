@@ -5,31 +5,20 @@
 }
 
 <h1>Team Generator</h1>
-<p class="font-italic"><text class="font-weight-bold">Fair Teams</text> : Selections of greater than 4 players will randomly sit players out then generate the fair teams with the remaining 4 players. 
-    A selection of less than 4 players will result in no fair team generation.</p>
+<p class="font-italic">
+    <text class="font-weight-bold">Fair Teams</text> : Selections of greater than 4 players will randomly sit players out then generate the fair teams with the remaining 4 players.
+    A selection of less than 4 players will result in no fair team generation.
+</p>
 <div>
     <form method="post">
         <div class="row">
-            <div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td>Name</td>
-                            <td>Select</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{int count = 0;}
-                        @foreach (var player in Model.teamGenerator.players)
-                        {
-                            <tr>
-                                <td><label for=@(count.ToString() + "toggle")>@player.FirstName @player.LastName</label></td>
-                                <td><input id=@(count.ToString() + "toggle") name="selectedPlayers" type="checkbox" value="@player.ID" /></td>
-                            </tr>
-                            count += 1;
-                        }
-                    </tbody>
-                </table>
+            <div style="margin-bottom:10px">
+                <select class="js-example-basic-multiple" asp-for="selectedPlayers" multiple="multiple" style="width:800px">
+                    @foreach (var player in Model.teamGenerator.players)
+                    {
+                        <option value="@player.ID">@player.FirstName @player.LastName</option>
+                    }
+                    </select>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Generate</button>
@@ -74,7 +63,7 @@
             <p> <text class="font-weight-bold">Offense:</text> @Model.fairTeams[1].OffenseName</p>
             <p> <text class="font-weight-bold">Defense:</text> @Model.fairTeams[1].DefenseName</p>
             <p> <text class="font-weight-bold">Rank:</text> @Model.fairTeams[1].Rank</p>
-            @if(Model.fairTeams[1].TeamID == Guid.Empty)
+            @if (Model.fairTeams[1].TeamID == Guid.Empty)
             {
                 <p class="font-italic">New Team</p>
             }
@@ -100,4 +89,12 @@
 
 
     </div>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
 }
