@@ -4,7 +4,7 @@
     ViewData["Title"] = "FireTV";
 }
 
-<div class="card-deck" style="margin-bottom:10px">
+<div class="card-deck" >
 
     <div class="card">
         <h5 class="card-title text-center">Win Percentage</h5>
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<div class="card-deck" style="margin-bottom:10px">
+<div class="card-deck" >
 
 
     <div class="card">
@@ -56,26 +56,8 @@
             count += 1;
         }
     </div>
-    <div class="card">
-        <h5 class="card-title text-center">Win Percentage On Blue</h5>
-        @{count = 1;}
-        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersOnBlue())
-        {
-            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.BlueWinPct.ToString("F02")%</p>
-            count += 1;
-        }
-    </div>
-    <div class="card">
-        <h5 class="card-title text-center">Win Percentage on Red</h5>
-        @{count = 1;}
-        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersOnRed())
-        {
-            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.RedWinPct.ToString("F02")%</p>
-            count += 1;
-        }
-    </div>
 </div>
-<div class=" card-deck" style="margin-bottom: 10px">
+<div class=" card-deck" >
     <div class="card">
         <h5 class="card-title text-center">Average Offense Elo</h5>
         @{count = 1;}
