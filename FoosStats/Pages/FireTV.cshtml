@@ -1,0 +1,131 @@
+﻿@page
+@model FoosStats.Pages.FireTVModel
+@{
+    ViewData["Title"] = "FireTV";
+}
+
+<div class="card-deck" style="margin-bottom:10px">
+
+    <div class="card">
+        <h5 class="card-title text-center">Win Percentage</h5>
+        @{ var count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByWinPct())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @(derivedData.WinPercentage.ToString("F02"))%</p>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Average Goals For Per Game</h5>
+        @{ count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByGoalsPerGameAvg())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.AverageGoalsPerGame.ToString("F02")</p>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Average Goals Against Per Game</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByGoalsAgainstPerGameAvg())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.AverageGoalsAgainstPerGame.ToString("F02")</p>
+            count += 1;
+        }
+    </div>
+</div>
+
+<div class="card-deck" style="margin-bottom:10px">
+
+
+    <div class="card">
+        <h5 class="card-title text-center">Offense Win Percentage</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByOffenseWinPct())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.OffenceWinPct.ToString("F02")%</p>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Defense Win Percentage</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersByDefenseWinPct())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.DefenseWinPct.ToString("F02")%</p>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Win Percentage On Blue</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersOnBlue())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.BlueWinPct.ToString("F02")%</p>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Win Percentage on Red</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopPlayersOnRed())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.RedWinPct.ToString("F02")%</p>
+            count += 1;
+        }
+    </div>
+</div>
+<div class=" card-deck" style="margin-bottom: 10px">
+    <div class="card">
+        <h5 class="card-title text-center">Average Offense Elo</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopAverageEloOffense())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.AverageOffenseElo</p>
+            count += 1;
+        }
+    </div>
+    <div class="card">
+        <h5 class="card-title text-center">Average Defense Elo</h5>
+        @{count = 1;}
+        @foreach (var derivedData in Model.homePageStatRetriever.TopAverageEloDefense())
+        {
+            <p style="margin-left: 4px"><text class="font-weight-bold">@count. @derivedData.player.FirstName @derivedData.player.LastName</text> : @derivedData.AverageDefenseElo</p>
+            count += 1;
+        }
+    </div>
+</div>
+<hr />
+@if (Model.homePageStatRetriever.TodaysGames().Count() != 0)
+{
+    <div>
+        <h3 class="text-center">Today's Games</h3>
+        <table class="table">
+            <thead>
+                <tr class="font-weight-bold">
+                    <td>Game</td>
+                    <td>Blue Defense</td>
+                    <td>Blue Offense</td>
+                    <td>Blue Score</td>
+                    <td>Red Score</td>
+                    <td>Red Offense</td>
+                    <td>Red Defense</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in Model.homePageStatRetriever.TodaysGames())
+                {
+                    <tr>
+                        <td>@game.GameTime</td>
+                        <td><a href="../../Players/Detail/@game.BlueDefense">@game.BlueDefenseName</a></td>
+                        <td><a href="../../Players/Detail/@game.BlueOffense">@game.BlueOffenseName</a></td>
+                        <td>@game.BlueScore</td>
+                        <td>@game.RedScore</td>
+                        <td><a href="../../Players/Detail/@game.RedOffense">@game.RedOffenseName</a></td>
+                        <td><a href="../../Players/Detail/@game.RedDefense">@game.RedDefenseName</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
