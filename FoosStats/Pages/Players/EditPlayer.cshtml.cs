@@ -13,14 +13,14 @@ namespace FoosStats.Pages.Players
     public class EditPlayerModel : PageModel
     {
         public IPlayerRetriever playerRetriever;
-        public IUpdater<Player> playerUpdater;
+        public IPlayerUpdater playerUpdater;
         public ICreator<Player> playerCreator;
         private readonly IWebHostEnvironment env;
 
         [BindProperty]
         public Player Player { get; set; }
 
-        public EditPlayerModel(IPlayerRetriever playerRetriever, IUpdater<Player> playerUpdater, ICreator<Player> playerCreator, IWebHostEnvironment env)
+        public EditPlayerModel(IPlayerRetriever playerRetriever, IPlayerUpdater playerUpdater, ICreator<Player> playerCreator, IWebHostEnvironment env)
         {
             this.playerRetriever = playerRetriever;
             this.playerUpdater = playerUpdater;
