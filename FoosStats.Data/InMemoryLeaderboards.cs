@@ -17,18 +17,75 @@ namespace FoosStats.Core
             players = playerRepository.GetPlayers();
             games = gameRepository.GetGames();
             this.teamRepository = teamRepository;
-            MakeLeaderboard();
+            leaderboard = MakeLeaderboard();
 
         }
         public IEnumerable<DerivedPlayerData> GetFullLeaderboard()
         {
             return leaderboard;
         }
+
+        public DerivedPlayerData GetDataById(Guid Id)
+        {
+            return leaderboard.FirstOrDefault(p => p.player.ID == Id);
+        }
+
+        public PlayerStandingData GetPlayerStandings(Guid Id)
+        {
+            return new PlayerStandingData
+            {
+                WinPercentStanding = leaderboard
+                .Where(r => r.WinPercentage >
+                leaderboard.First(u => u.player.ID == Id).WinPercentage)
+                .Count() + 1,
+
+                GoalsForAverageStanding = leaderboard
+                .Where(r => r.AverageGoalsPerGame >
+                leaderboard.First(u => u.player.ID == Id).AverageGoalsPerGame)
+                .Count() + 1,
+
+                GoalAgainstAverageStanding = leaderboard
+                .Where(r => r.AverageGoalsAgainstPerGame <
+                leaderboard.First(u => u.player.ID == Id).AverageGoalsAgainstPerGame)
+                .Count() + 1,
+
+                OffenceWinPercentStanding = leaderboard
+                .Where(r => r.OffenceWinPct >
+                leaderboard.First(u => u.player.ID == Id).OffenceWinPct)
+                .Count() + 1,
+
+                DefenseWinPercentStanding = leaderboard
+                .Where(r => r.DefenseWinPct >
+                leaderboard.First(u => u.player.ID == Id).DefenseWinPct)
+                .Count() + 1,
+
+                RedWinPercentStanding = leaderboard
+                .Where(r => r.RedWinPct >
+                leaderboard.First(u => u.player.ID == Id).RedWinPct)
+                .Count() + 1,
+
+                BlueWinPercentStanding = leaderboard
+                .Where(r => r.BlueWinPct >
+                leaderboard.First(u => u.player.ID == Id).BlueWinPct)
+                .Count() + 1,
+
+                AverageOffenseEloStanding = leaderboard
+                .Where(r => r.AverageOffenseElo >
+                leaderboard.First(u => u.player.ID == Id).AverageOffenseElo)
+                .Count() + 1,
+
+                AverageDefenseEloStanding = leaderboard
+                .Where(r => r.AverageDefenseElo >
+                leaderboard.First(u => u.player.ID == Id).AverageDefenseElo)
+                .Count() + 1,
+            };
+        }
+
         public IEnumerable<DerivedPlayerData> GetLimitedLeaderboard()
         {
             return leaderboard.Where(p=>p.player.GamesPlayed >3);
         }
-        public void MakeLeaderboard()
+        public IEnumerable<DerivedPlayerData> MakeLeaderboard()
         {
             var lst =  new List<DerivedPlayerData>();
             foreach(var currentPlayer in players)
@@ -48,15 +105,12 @@ namespace FoosStats.Core
                     AverageDefenseElo = avgElo[1]
                 });
             }
-            leaderboard = lst;
+            return lst;
         }
         public void Update()
         {
-            MakeLeaderboard();
+            leaderboard = MakeLeaderboard();
         }
-
-
-
 
         public float OffenseWinPct(Player player)
         {
