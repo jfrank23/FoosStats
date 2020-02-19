@@ -1,26 +1,78 @@
 import React, { Component } from 'react';
+import { LeaderboardCard } from "../PageElements/LeaderboardCard";
+import { CardDeck } from 'reactstrap';
+import {RedVsBluePieChart} from '../PageElements/RedVsBluePieChart';
 
 export class Home extends Component {
   static displayName = Home.name;
 
-  render () {
+  constructor(props) {
+    super(props);
+    this.state = {
+      winPercentage: [],
+      averageGoalsPerGame: [],
+      averageGoalsAgainstPerGame: [],
+      offenceWinPct: [],
+      defenseWinPct: [],
+      redWinPct: [],
+      blueWinPct: [],
+      averageOffenseElo: [],
+      averageDefenseElo: [],
+      leaderboard: [],
+      winPerSide: [],
+      loading: true,
+    };
+  }
+
+
+  componentDidMount() {
+    this.populateAllData();
+  }
+
+  async populateAllData() {
+    let response1 = await fetch('https://localhost:44308/api/leaderboard')
+    let leaderboardData = await response1.json();
+    let response2 = await fetch('https://localhost:44308/api/league/winperside')
+    let graphData = await response2.json();
+    this.setState({ leaderboard: leaderboardData, winPerSide: [{ name: "Blue", value: graphData[0] }, { name: "Red", value: graphData[1] }], loading: false });
+
+  };
+
+  render() {
+    if (this.state.loading) {
+      var contents = <p>Loading...</p>
+    }
+    else {
+      contents = <div>
+        
+        <RedVsBluePieChart blueWins={this.state.winPerSide[0].value} redWins={this.state.winPerSide[1].value}/>
+        <hr></hr>
+        <h2>Leaderboards</h2>
+        <CardDeck>
+          <LeaderboardCard category='winPercentage' leaderboard={this.state.leaderboard} title='Win Percentage' type='percent' />
+          <LeaderboardCard category='averageGoalsPerGame' leaderboard={this.state.leaderboard} title='Average Goals Per Game' />
+          <LeaderboardCard category='averageGoalsAgainstPerGame' leaderboard={this.state.leaderboard} title='Average Goals Against Per Game' />
+        </CardDeck>
+        <CardDeck>
+          <LeaderboardCard category='offenceWinPct' leaderboard={this.state.leaderboard} title='Offense Win Percentage' type='percent' />
+          <LeaderboardCard category='defenseWinPct' leaderboard={this.state.leaderboard} title='Defense Win Percentage' type='percent' />
+          <LeaderboardCard category='redWinPct' leaderboard={this.state.leaderboard} title='Red Win Percentage' type='percent' />
+          <LeaderboardCard category='blueWinPct' leaderboard={this.state.leaderboard} title='Blue Win Percentage' type='percent' />
+        </CardDeck>
+        <CardDeck>
+          <LeaderboardCard category='averageOffenseElo' leaderboard={this.state.leaderboard} title='Average Offense Elo' type='integer' />
+          <LeaderboardCard category='averageDefenseElo' leaderboard={this.state.leaderboard} title='Average Defense Elo' type='integer' />
+        </CardDeck>
+        <hr></hr>
+      </div>
+    }
     return (
       <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
+        <h1>Welcome To FoosStats</h1>
+        {contents}
       </div>
+
     );
   }
+
 }
